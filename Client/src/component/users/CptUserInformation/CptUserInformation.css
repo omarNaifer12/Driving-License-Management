@@ -1,0 +1,50 @@
+/* Container for the entire component */
+.user-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 40px auto;
+  }
+  
+  /* Styling for person information */
+  .cpt-person-information {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Container for user details */
+  .user-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+    width: 100%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Individual user detail styling */
+  .user-detail {
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-detail strong {
+    color: #555;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
+    .user-details {
+      grid-template-columns: 1fr;
+    }
+  }
+  

@@ -1,0 +1,72 @@
+.person-list {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.add-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+.person-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.person-table th, .person-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.person-table th {
+  background-color: #f2f2f2;
+}
+
+.person-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.edit-button, .delete-button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-button {
+  background-color: #008CBA;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #007BB5;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #e31e10;
+}

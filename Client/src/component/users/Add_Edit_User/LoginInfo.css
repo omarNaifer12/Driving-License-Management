@@ -1,0 +1,73 @@
+.login-info-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-info-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .is-active {
+    display: flex;
+    align-items: center;
+  }
+  
+  .toggle-sign {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .toggle-sign.active {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .toggle-sign:not(.active) {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .login-info-container button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+ .login-info-container button:hover {
+    background-color: #0056b3;
+  }
+  

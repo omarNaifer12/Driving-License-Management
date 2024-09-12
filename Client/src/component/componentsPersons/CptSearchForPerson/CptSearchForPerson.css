@@ -1,0 +1,78 @@
+/* Container for the entire component */
+.search-for-person-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    margin: 40px auto;
+  }
+  
+  /* Section for search input and button */
+  .search-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .search-section h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .search-section input {
+    width: 80%;
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+  }
+  
+  .search-section input:focus {
+    border-color: #0056b3;
+    outline: none;
+  }
+  
+  .search-section button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .search-section button:hover {
+    background-color: #0056b3;
+  }
+  
+  .additional-content {
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  /* For CptPersonInformation component styling */
+  .cpt-person-information {
+    width: 100%;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
+    .search-section input,
+    .search-section button {
+      width: 100%;
+    }
+  }
+  

@@ -1,0 +1,83 @@
+
+
+.form-container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  max-width: 700px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-container h1 {
+  text-align: center;
+  color: #333333;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #666666;
+  font-weight: 600;
+}
+
+.form-group input, 
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus, 
+.form-group select:focus {
+  border-color: #6a11cb;
+  outline: none;
+}
+
+.form-group input[type="file"] {
+  padding: 0.5rem;
+}
+
+.form-group button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #6a11cb;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-group button:hover {
+  background-color: #2575fc;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.full-width {
+  flex-basis: 100%;
+}

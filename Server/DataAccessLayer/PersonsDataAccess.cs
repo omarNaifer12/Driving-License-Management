@@ -58,7 +58,8 @@ namespace Server.DataAccessLayer
     {
         public static List<PersonDTO>GetAllPeople()
         {
-            var peopleList= new List<PersonDTO>();
+            var peopleList = new List<PersonDTO>();
+
         using    SqlConnection connection = new (DataAccessSettings.ConnectionString);
             string sql= @"SELECT People.PersonID, People.NationalNo,
               People.FirstName, People.SecondName, People.ThirdName, People.LastName,
@@ -116,9 +117,21 @@ namespace Server.DataAccessLayer
                 return peopleList;
         }
     
-        public static PersonDTO? GetOnePerson( int PersonID)
+        public static PersonDTO? GetOnePersonByID( int PersonID)
         {
-            string query = "SELECT * FROM People WHERE PersonID = @PersonID";
+            string query = @"SELECT People.PersonID, People.NationalNo,
+              People.FirstName, People.SecondName, People.ThirdName, People.LastName,
+			  People.DateOfBirth, People.Gendor,  
+				  CASE
+                  WHEN People.Gendor = 0 THEN 'Male'
+
+                  ELSE 'Female'
+
+                  END as GendorCaption ,
+			  People.Address, People.Phone, People.Email, 
+              People.NationalityCountryID, Countries.CountryName, People.ImagePath
+              FROM  People INNER JOIN
+                         Countries ON People.NationalityCountryID = Countries.CountryID  WHERE PersonID = @PersonID";
             using SqlConnection connection=new (DataAccessSettings.ConnectionString);
          
             using SqlCommand command = new (query, connection);
@@ -147,8 +160,8 @@ namespace Server.DataAccessLayer
                     reader["Email"] != DBNull.Value?(string)reader["Email"]:"",
                     (int)reader["NationalityCountryID"],
                     reader["ImagePath"] != DBNull.Value?(string)reader["ImagePath"]:"",
-                    "",
-                    "");
+                    (string)reader["CountryName"],
+                    (string)reader["GendorCaption"]);
                 
                 }
             else{

@@ -1,32 +1,17 @@
 import React, { useContext,useEffect } from 'react'
 import "./CptPersonInformation.css"
 import { StoreContext } from '../../../context/storeContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOnePerson } from '../../../Redux/Actions/peopleAction';
 const CptPersonInformation = ({id}) => {
-    const{getPersonById,person,setPerson}=useContext(StoreContext);
+    const person=useSelector((state)=>state.Persons.Person);
+    const dispatch=useDispatch();
     useEffect(()=>{
-        const fetchPerson=async()=>{
-          
-            setPerson({
-              FirstName: '',
-              SecondName: '',
-              ThirdName: '',
-              LastName: '',
-              NationalNo: '',
-              DateOfBirth: '',
-              Gendor: '',
-              Address: '',
-              Phone: '',
-              Email: '',
-              NationalityCountryID: '',
-              ImagePath: ''
-            });
-          
+        const fetchPerson=async()=>{    
+          console.log("id person is",id);
+            
     if(id){ 
-    const respnse= await getPersonById(id);
-    console.log("resonseda",respnse);
-    if(!respnse){
-      alert(" error id ");
-    }
+   dispatch(getOnePerson(id));
     }
    
     };
@@ -43,19 +28,19 @@ const CptPersonInformation = ({id}) => {
       />
     </div>
     <div className="person-text">
-      <h2>{person.id ? `${person.FirstName} ${person.SecondName} ${person.ThirdName} ${person.LastName}` : '????'}</h2>
-      <p><strong>Person ID:</strong> {person.id ? person.PersonID : '????'}</p>
-      <p><strong>First Name:</strong> {person.id ? person.FirstName : '????'}</p>
-      <p><strong>Second Name:</strong> {person.id ? person.SecondName : '????'}</p>
-      <p><strong>Third Name:</strong> {person.id ? person.ThirdName : '????'}</p>
-      <p><strong>Last Name:</strong> {person.id ? person.LastName : '????'}</p>
-      <p><strong>National No:</strong> {person.id ? person.NationalNo : '????'}</p>
-      <p><strong>Date of Birth:</strong> {person.id ? person.DateOfBirth : '????'}</p>
-      <p><strong>Gender:</strong> {person.id ? person.Gendor : '????'}</p>
-      <p><strong>Address:</strong> {person.id ? person.Address : '????'}</p>
-      <p><strong>Phone:</strong> {person.id ? person.Phone : '????'}</p>
-      <p><strong>Email:</strong> {person.id ? person.Email : '????'}</p>
-      <p><strong>Nationality:</strong> {person.id ? person.NationalityCountryID : '????'}</p>
+      <h2>{person.PersonID ? `${person.FirstName} ${person.SecondName} ${person.ThirdName} ${person.LastName}` : '????'}</h2>
+      <p><strong>Person ID:</strong> {person.PersonID ? person.PersonID : '????'}</p>
+      <p><strong>First Name:</strong> {person.PersonID ? person.FirstName : '????'}</p>
+      <p><strong>Second Name:</strong> {person.PersonID ? person.SecondName : '????'}</p>
+      <p><strong>Third Name:</strong> {person.PersonID ? person.ThirdName : '????'}</p>
+      <p><strong>Last Name:</strong> {person.PersonID ? person.LastName : '????'}</p>
+      <p><strong>National No:</strong> {person.PersonID ? person.NationalNo : '????'}</p>
+      <p><strong>Date of Birth:</strong> {person.PersonID ? person.DateOfBirth : '????'}</p>
+      <p><strong>Gender:</strong> {person.PersonID ? person.GendorCaption : '????'}</p>
+      <p><strong>Address:</strong> {person.PersonID ? person.Address : '????'}</p>
+      <p><strong>Phone:</strong> {person.PersonID ? person.Phone : '????'}</p>
+      <p><strong>Email:</strong> {person.PersonID ? person.Email : '????'}</p>
+      <p><strong>Nationality:</strong> {person.PersonID ? person.CountryName : '????'}</p>
     </div>
   </div>
   )

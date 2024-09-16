@@ -1,6 +1,6 @@
 import React from 'react'
 import ListPersons from './component/componentsPersons/ListPerson/ListPersons'
-import {   Route, Routes } from 'react-router-dom';
+import { Route,Routes } from 'react-router-dom';
 import Add_Edit_Person from './component/componentsPersons/Add_Edit/Add_Edit_Person';
 import PersonDetails from './component/componentsPersons/PersonDetails/PersonDetails';
 import AllUsers from './component/users/AllUsers/AllUsers';
@@ -13,10 +13,11 @@ import Navbar from './component/Navbar/Navbar ';
 import LoginForm from './component/LoginForm/LoginForm';
 import ApplicationType from './component/ApplicationType/ApplicationType';
 import TestType from './component/TestType/TestType';
-const App = () => {
+const App=() => {
   return (
     <div>
-      <Routes>
+
+        <Routes>
  <Route path='/all-people' element={<ListPersons />} />     
  <Route path='/add-Person' element={<Add_Edit_Person />} />     
  <Route path='/edit-Person/:id' element={<Add_Edit_Person />} />     
@@ -26,16 +27,12 @@ const App = () => {
  <Route path='/add-users-login' element={<LoginInfo />} />     
  <Route path='/change-password/:id' element={<ChangePassword />} />     
  <Route path='/user-details/:id' element={<CptUserInformation />} />     
- <Route path='/Home' element={<Home />} />     
+ <Route path='/' element={<Home />} />     
  <Route path='/navbar' element={<Navbar />} />     
- <Route path='/' element={<LoginForm />} />   
+ <Route path='/loginForm' element={<LoginForm />} />   
  <Route path='/Application-type' element={<ApplicationType />} />   
- <Route path='/Test-type' element={<TestType />} />   
-
-
-
-      </Routes>
-   
+ <Route path='/Test-type' element={<TestType />}/>
+        </Routes>
     </div>
   )
 }

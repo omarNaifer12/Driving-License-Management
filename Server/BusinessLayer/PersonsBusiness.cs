@@ -13,7 +13,7 @@ namespace Server.BusinessLayer
         {
            get {return new PersonDTO(this.PersonID, this.FirstName, this.SecondName,this.ThirdName, this.LastName,
            this.NationalNo,this.DateOfBirth,this.Gendor,this.Address,this.Phone,this.Email,this.NationalityCountryID,
-           this.ImagePath,"","");}
+           this.ImagePath,this.CountryName,this.GendorCaption);}
         }
        
 
@@ -30,6 +30,9 @@ namespace Server.BusinessLayer
         public string Email { set; get; }
         public int NationalityCountryID { set; get; }
         public string ImagePath { set; get; }
+        public string GendorCaption {set; get; }
+
+        public string CountryName {set; get; }
 
         
 
@@ -49,12 +52,14 @@ namespace Server.BusinessLayer
         this.Email = person.Email;
         this.NationalityCountryID = person.NationalityCountryID;
         this.ImagePath = person.ImagePath;
+        this.CountryName = person.CountryName;
+        this.GendorCaption = person.GendorCaption;
         Mode = mode;
 
         }
-        public static PersonsBusiness? GetOnePerson(int PersonID)
+        public static PersonsBusiness? GetOnePersonByID(int PersonID)
         {
-            PersonDTO? person=PersonsDataAccess.GetOnePerson(PersonID);
+            PersonDTO? person=PersonsDataAccess.GetOnePersonByID(PersonID);
             if(person!=null){
                 return new PersonsBusiness(person,EnMode.Update);
             }

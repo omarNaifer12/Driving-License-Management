@@ -3,40 +3,20 @@ import axios from 'axios';
 import "./people.css"
 import { useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../../context/storeContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPeople } from '../../../Redux/Actions/peopleAction';
 function ListPersons() {
-const [persons,setPersons]=useState([]);
-const navigate=useNavigate();
-const {user}=useContext(StoreContext);
-useEffect(()=>{
-    const fetchData = async () => {
-      console.log("user us ",user);
-      try {
-          const response = await axios.get('http://localhost:3000/people');
-          console.log('API response:',response.data);
-          setPersons(response.data);
-       
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };  
-      fetchData();
-},[])
-const handleDelete = async (id) => {
-  if (window.confirm("Are you sure you want to delete this person?")) {
-    try {
-      const response = await axios.delete(`http://localhost:3000/people/${id}`);
-      setPersons(persons.filter((person)=>{
-        return person.id!==id;
-      }))
-      alert('Delete successful');
-    
-    } catch (error) {
-      console.error('Error deleting person:', error);
-      alert('Failed to delete person');
-    }
-  }
-};
 
+const navigate=useNavigate();
+const dispatch=useDispatch();
+const persons=useSelector((state)=>state.Persons.People);
+useEffect(()=>{
+   dispatch(getAllPeople());
+   
+   
+},[dispatch])
+
+console.log("persons is ",persons);
 return (
   <div className="person-list">
     <h1>Manage People</h1>
@@ -73,17 +53,17 @@ return (
             <td>{person.LastName}</td>
             <td>{person.NationalNo}</td>
             <td>{person.DateOfBirth}</td>
-            <td>{person.Gendor}</td>
+            <td>{person.GendorCaption}</td>
             <td>{person.Address}</td>
             <td>{person.Phone}</td>
             <td>{person.Email}</td>
-            <td>{person.NationalityCountryID}</td>
+            <td>{person.CountryName}</td>
             <td><img src={person.ImagePath} alt={`${person.FirstName} ${person.LastName}`} className="person-image" /></td>
             <td>
-              <p>{console.log("id",person.id)}</p>
-              <button className="edit-button" onClick={() => navigate(`/edit-Person/${person.id}`)}>Edit</button>
-              <button className="delete-button" onClick={()=>handleDelete(person.id)}>Delete</button>
-              <button className="delete-button"  onClick={()=>navigate(`/Person-details/${person.id}`)}>Show Details</button>
+              <p>{console.log("id",person.PersonID)}</p>
+              <button className="edit-button" onClick={() => navigate(`/edit-Person/${person.PersonID}`)}>Edit</button>
+              <button className="delete-button" >Delete</button>
+              <button className="delete-button"  onClick={()=>navigate(`/Person-details/${person.PersonID}`)}>Show Details</button>
             </td>
           </tr>
         ))}
@@ -92,5 +72,4 @@ return (
   </div>
 );
 }
-
 export default ListPersons;

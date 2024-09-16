@@ -19,7 +19,7 @@ namespace Server.ApiControllerLayer
         public ActionResult<IEnumerable<PersonDTO>>GetAllPeople()
         {
           try{
-            List<PersonDTO> allPeople= PersonsBusiness.GetAllPeople();
+            var allPeople= PersonsBusiness.GetAllPeople();
             
            
             if(allPeople.Count==0)
@@ -35,14 +35,14 @@ namespace Server.ApiControllerLayer
 
           }
         }
-        [HttpGet("one", Name ="GetOnePerson")] 
+        [HttpGet("one/{id:int}", Name ="GetOnePersonByID")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<PersonDTO>GetOnePerson(int id)
+        public ActionResult<PersonDTO>GetOnePersonByID(int id)
         {
-            PersonsBusiness? person=PersonsBusiness.GetOnePerson(id);
+            PersonsBusiness? person=PersonsBusiness.GetOnePersonByID(id);
           try{
           if(person==null){
             return NotFound("the person not found error your id");
@@ -54,17 +54,19 @@ namespace Server.ApiControllerLayer
           catch(Exception ex)
           {
             Console.WriteLine(ex.Message);
-         return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
 
           }
         }
-         [HttpGet("Add", Name ="AddPerson")] 
-        [ProducesResponseType(StatusCodes.Status200OK)]
+         [HttpPost("Add", Name ="AddPerson")] 
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<PersonDTO>AddPerson(PersonDTO person)
         {
+               
+
            
            try
             {
@@ -72,11 +74,13 @@ namespace Server.ApiControllerLayer
                 {
                     return BadRequest("Invalid person data");
                 }
-
+                
                 PersonsBusiness personBusiness = new (person);
                 if (personBusiness.Save())
                 {
-                    return Ok("Person added successfully");
+                    person.PersonID=personBusiness.PersonID;
+
+                    return CreatedAtRoute("GetOnePersonByID",new {id= person.PersonID},person );
                 }
                 else
                 {
@@ -86,28 +90,40 @@ namespace Server.ApiControllerLayer
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding the person.");
+                return StatusCode(500, "An error occurred while adding the person.");
             }
         }
-          [HttpPut("Update", Name = "UpdatePerson")]
+          [HttpPut("Update/{personID:int}", Name = "UpdatePerson")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult UpdatePerson([FromBody] PersonDTO person)
+        public ActionResult UpdatePerson( int PersonID,PersonDTO person)
         {
             try
             {
-                PersonsBusiness? existingPersonBusiness = PersonsBusiness.GetOnePerson(person.PersonID);
-                if (existingPersonBusiness == null)
+                PersonsBusiness? existingPersonToUpdate = PersonsBusiness.GetOnePersonByID(PersonID);
+                if (existingPersonToUpdate == null)
                 {
                     return NotFound("Person not found for the provided ID");
                 }
+                existingPersonToUpdate.FirstName = person.FirstName;
+                existingPersonToUpdate.SecondName = person.SecondName;
+                existingPersonToUpdate.ThirdName = person.ThirdName;
+                existingPersonToUpdate.LastName = person.LastName;
+                existingPersonToUpdate.NationalNo = person.NationalNo;
+                existingPersonToUpdate.DateOfBirth = person.DateOfBirth;
+                existingPersonToUpdate.Gendor = person.Gendor;
+                existingPersonToUpdate.Address = person.Address;
+                existingPersonToUpdate.Phone = person.Phone;
+                existingPersonToUpdate.Email = person.Email;
+                existingPersonToUpdate.NationalityCountryID = person.NationalityCountryID;
+                existingPersonToUpdate.ImagePath = person.ImagePath;
 
                
-                if (existingPersonBusiness.Save())
+                if (existingPersonToUpdate.Save())
                 {
-                    return Ok("Person updated successfully");
+                    return Ok(existingPersonToUpdate.PersonBusinessDTO);
                 }
                 else
                 {
@@ -117,7 +133,7 @@ namespace Server.ApiControllerLayer
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating the person.");
+                return StatusCode(500, "An error occurred while updating the person.");
             }
         }
                 [HttpDelete("Delete/{id:int}", Name = "DeletePerson")]
@@ -128,22 +144,21 @@ namespace Server.ApiControllerLayer
         {
             try
             {
-                bool deleted = PersonsBusiness.DeletePerson(id);
-                if (deleted)
-                {
-                    return Ok("Person deleted successfully");
-                }
-                else
+                PersonsBusiness? person=PersonsBusiness.GetOnePersonByID(id);
+                
+                if (person==null)
                 {
                     return NotFound("Person not found for the provided ID");
                 }
+                UsersBusiness.DeleteUsersOfPerson(id);
+                PersonsBusiness.DeletePerson(id);
+                return Ok($"person with {id} deleted");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the person.");
             }
-
         }
 
 

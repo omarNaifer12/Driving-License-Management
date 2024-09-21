@@ -1,86 +1,132 @@
-import React, { useContext,useState,useEffect } from 'react'
+import React, { useContext,useState,useEffect, useMemo } from 'react'
 import "./Add_Edit_Person.css"
 import { useParams, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../../context/storeContext';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPersonAction, editPersonAction, getOnePersonAction } from '../../../Redux/Actions/peopleAction';
+import { BASE_URL } from '../../../utils/config';
+import { getDataAPI, postDataAPI, putDataAPI } from '../../../utils/fetchData';
 const Add_Edit_Person = () => {
   const {id}=useParams();
   const navigate=useNavigate();
- 
-  const{getPersonById,person,setPerson}=useContext(StoreContext);
+  const personOfRedux=useSelector((state)=>state.Persons.Person);
+  const dispatch=useDispatch();
+  const [person,setPerson]=useState({
+    PersonID:0,
+    FirstName: '',
+    SecondName: '',
+    ThirdName: '',
+    LastName: '',
+    NationalNo: '',
+    DateOfBirth: '',
+    Gendor: 0,
+    Address: '',
+    Phone: '',
+    Email: '',
+    NationalityCountryID: 0,
+    ImagePath: '',
+    CountryName:'',
+    GendorCaption:'',
+  });
+  const [countries,setCountries]=useState([]);
+
   useEffect(() => {
-    
-      
-    
     const fetchPerson = async () => {
-      setPerson({
-        FirstName: '',
-        SecondName: '',
-        ThirdName: '',
-        LastName: '',
-        NationalNo: '',
-        DateOfBirth: '',
-        Gendor: '',
-        Address: '',
-        Phone: '',
-        Email: '',
-        NationalityCountryID: '',
-        ImagePath: ''
-      });
     if(id!==undefined){ 
-   await getPersonById(id);
+    dispatch(getOnePersonAction(id));
   }
- 
   };
+  
     fetchPerson();
-  }, [id]);
+  },[id,dispatch]);
+  useEffect(()=>{
+    if(id!==undefined&&personOfRedux){
+     
+      console.log("person of redux is ",personOfRedux);
+      
+      setPerson(personOfRedux);
+    }
+    fetchCountries();
+  },[id,personOfRedux])
+  const fetchCountries=async()=>{
+    try{
+      const result=await getDataAPI("Countries/All");
+      setCountries(result.data);
+      console.log("data countries is ",result.data);
+    
+    }
+    catch(ex){
+      console.log("error get country catch ",ex);
+      
+    }
+
+  }
   const handleChange = (e) => {
-    const { name, value,files } = e.target;
-    if (name === "ImagePath" &&files.length > 0) {
+  const { name,value,files } = e.target;
+    if  (name === "ImagePath" &&files.length > 0) {
         const reader = new FileReader();
         reader.onloadend = () => {
-          setPerson({ ...person, [name]: reader.result });
+        setPerson({ ...person, [name]: reader.result });
         };
         reader.readAsDataURL(files[0]);
       }
-    else{
+    else if(name !== "ImagePath"){
     setPerson({ ...person, [name]: value });
-    }  
+    }
 };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("add personredux",personOfRedux,id);
+    
     try{
       let response;
-      if(id) {
-        response = await axios.put(`http://localhost:3000/people/${id}`, person);
+      console.log("data person  ",person);
+     if(id&&personOfRedux) {
+         response = await putDataAPI(`Persons/Update/${id}`,person)
         console.log("response edit is ", response);
         alert("Edit successful");
+        dispatch(editPersonAction(response.data));
       } else {
-        response = await axios.post(`http://localhost:3000/people`, person);
-        console.log("response add is ", response);
-        alert("Added successfully");
        
+        console.log('reach add person');
+        
+        response = await postDataAPI("Persons/Add",person);
+        console.log("response add is ", response);
+
+        alert("Added successfully");
+        dispatch(addPersonAction(response.data));
       }
-      setPerson({
-        FirstName: '',
-        SecondName: '',
-        ThirdName: '',
-        LastName: '',
-        NationalNo: '',
-        DateOfBirth: '',
-        Gendor: '',
-        Address: '',
-        Phone: '',
-        Email: '',
-        NationalityCountryID: '',
-        ImagePath: ''
-      });
     } catch (error) {
       console.log("Error saving person data:", error);
       alert("There was an error saving the data. Please try again.");
     }
     }
-   
+    const countryNameMapping=useMemo(()=>{
+      let mapping={};
+      countries.forEach((country)=>{
+        mapping[country.CountryID]=country.CountyName;
+      })
+      return mapping;
+
+    },[countries])
+    const handleCountryChange=(e)=>{
+      const value=e.target.value;
+      setPerson((prevPerson)=>({
+        ...prevPerson,
+        NationalityCountryID:value,
+        CountryName:countryNameMapping[value]
+      }))
+    }
+    const handleGendorChange=(e)=>{
+      const value = e.target.value;
+      const genderCaption = value === 0 ? "Male" : "Female"; 
+      setPerson((prevPerson)=> ({
+    ...prevPerson,
+    Gendor: value, 
+    GendorCaption: genderCaption,
+  }));
+    }
 
   return (
     <div className="form-container" >
@@ -122,11 +168,10 @@ const Add_Edit_Person = () => {
         </div>
         <div className="form-group">
           <label htmlFor="gender">Gender</label>
-          <select id="gender" name="Gendor" value={person.Gendor} onChange={handleChange} required>
+          <select id="gender" name="Gendor" value={person.Gendor} onChange={handleGendorChange} required>
             <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="other">Other</option>
+            <option value={0}>Male</option>
+            <option value={1}>Female</option>
           </select>
         </div>
         <div className="form-group full-width">
@@ -146,15 +191,31 @@ const Add_Edit_Person = () => {
         <div className="form-row">
           <div className="form-group">
             <label htmlFor="country">Country</label>
-            <input type="text" id="country" name="NationalityCountryID" value={person.NationalityCountryID} onChange={handleChange} required />
+          <select  name="NationalityCountryID" value={person.NationalityCountryID} onChange={handleCountryChange}>
+          <option value="" disabled>
+          -- Choose a country --
+          </option>
+          {
+          
+            
+            countries.map((country)=>{
+             return <option value={country.CountryID} key={country.CountryID}>{country.CountyName}</option>
+              
+             
+            })
+          }
+
+          </select>
+          
+          
           </div>
           <div className="form-group">
             <label htmlFor="countryImage">Person Image</label>
-            <input type="file" id="countryImage" name="ImagePath"   onChange={handleChange}/>
+            <input type="file" id="countryImage" name="ImagePath" onChange={handleChange}/>
           </div>
         </div>
         <div className="form-group">
-          <button   type="submit">{id ? 'Update' : 'Add'} Person</button>
+          <button type="submit">{id&&personOfRedux ? 'Update' : 'Add'} Person</button>
         </div>
       </form>
     </div>

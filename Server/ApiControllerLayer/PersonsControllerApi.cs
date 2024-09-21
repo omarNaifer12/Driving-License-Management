@@ -18,6 +18,7 @@ namespace Server.ApiControllerLayer
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<IEnumerable<PersonDTO>>GetAllPeople()
         {
+            Console.WriteLine("reach all people");
           try{
             var allPeople= PersonsBusiness.GetAllPeople();
             
@@ -66,8 +67,7 @@ namespace Server.ApiControllerLayer
         public ActionResult<PersonDTO>AddPerson(PersonDTO person)
         {
                
-
-           
+            Console.WriteLine("reach before try add save");
            try
             {
                 if (person == null)
@@ -76,11 +76,14 @@ namespace Server.ApiControllerLayer
                 }
                 
                 PersonsBusiness personBusiness = new (person);
+                Console.WriteLine("reach before add save");
                 if (personBusiness.Save())
                 {
+                    Console.WriteLine("reach in  save");
                     person.PersonID=personBusiness.PersonID;
 
-                    return CreatedAtRoute("GetOnePersonByID",new {id= person.PersonID},person );
+
+                    return CreatedAtRoute("GetOnePersonByID",new {id = person.PersonID}, person );
                 }
                 else
                 {

@@ -2,7 +2,7 @@ import React, { useContext,useEffect } from 'react'
 import "./CptPersonInformation.css"
 import { StoreContext } from '../../../context/storeContext';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOnePerson } from '../../../Redux/Actions/peopleAction';
+import { getOnePersonAction } from '../../../Redux/Actions/peopleAction';
 const CptPersonInformation = ({id}) => {
     const person=useSelector((state)=>state.Persons.Person);
     const dispatch=useDispatch();
@@ -11,7 +11,7 @@ const CptPersonInformation = ({id}) => {
           console.log("id person is",id);
             
     if(id){ 
-   dispatch(getOnePerson(id));
+   dispatch(getOnePersonAction(id));
     }
    
     };

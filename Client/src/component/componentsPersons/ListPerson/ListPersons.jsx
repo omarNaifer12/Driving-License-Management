@@ -1,23 +1,32 @@
 import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios';
 import "./people.css"
 import { useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../../context/storeContext';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllPeople } from '../../../Redux/Actions/peopleAction';
+import { deletePersonAction, getAllPeopleAction } from '../../../Redux/Actions/peopleAction';
+import axios from 'axios';
+import { deleteDataAPI } from '../../../utils/fetchData';
 function ListPersons() {
 
 const navigate=useNavigate();
 const dispatch=useDispatch();
 const persons=useSelector((state)=>state.Persons.People);
 useEffect(()=>{
-   dispatch(getAllPeople());
-   
-   
-},[dispatch])
-
+   dispatch(getAllPeopleAction());
+  },[dispatch])
+const deletePerson=async(PersonID)=>{
+  console.log("person id for delete ",PersonID);
+  
+  try{
+    await deleteDataAPI(`Persons/Delete/${PersonID}`);
+    dispatch(deletePersonAction(PersonID));
+  }
+  catch(error){
+      console.log("error delete person",error);
+  }
+}
 console.log("persons is ",persons);
-return (
+return(
   <div className="person-list">
     <h1>Manage People</h1>
     <button onClick={()=>navigate('/all-users')}>users</button>
@@ -62,7 +71,7 @@ return (
             <td>
               <p>{console.log("id",person.PersonID)}</p>
               <button className="edit-button" onClick={() => navigate(`/edit-Person/${person.PersonID}`)}>Edit</button>
-              <button className="delete-button" >Delete</button>
+              <button className="delete-button" onClick={()=>deletePerson(person.PersonID)}>Delete</button>
               <button className="delete-button"  onClick={()=>navigate(`/Person-details/${person.PersonID}`)}>Show Details</button>
             </td>
           </tr>

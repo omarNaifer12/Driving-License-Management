@@ -28,19 +28,19 @@ const CptPersonInformation = ({id}) => {
       />
     </div>
     <div className="person-text">
-      <h2>{person.PersonID ? `${person.FirstName} ${person.SecondName} ${person.ThirdName} ${person.LastName}` : '????'}</h2>
-      <p><strong>Person ID:</strong> {person.PersonID ? person.PersonID : '????'}</p>
-      <p><strong>First Name:</strong> {person.PersonID ? person.FirstName : '????'}</p>
-      <p><strong>Second Name:</strong> {person.PersonID ? person.SecondName : '????'}</p>
-      <p><strong>Third Name:</strong> {person.PersonID ? person.ThirdName : '????'}</p>
-      <p><strong>Last Name:</strong> {person.PersonID ? person.LastName : '????'}</p>
-      <p><strong>National No:</strong> {person.PersonID ? person.NationalNo : '????'}</p>
-      <p><strong>Date of Birth:</strong> {person.PersonID ? person.DateOfBirth : '????'}</p>
-      <p><strong>Gender:</strong> {person.PersonID ? person.GendorCaption : '????'}</p>
-      <p><strong>Address:</strong> {person.PersonID ? person.Address : '????'}</p>
-      <p><strong>Phone:</strong> {person.PersonID ? person.Phone : '????'}</p>
-      <p><strong>Email:</strong> {person.PersonID ? person.Email : '????'}</p>
-      <p><strong>Nationality:</strong> {person.PersonID ? person.CountryName : '????'}</p>
+      <h2>{person.PersonID&&id ? `${person.FirstName} ${person.SecondName} ${person.ThirdName} ${person.LastName}` : '????'}</h2>
+      <p><strong>Person ID:</strong> {person.PersonID&&id ? person.PersonID : '????'}</p>
+      <p><strong>First Name:</strong> {person.PersonID&&id ? person.FirstName : '????'}</p>
+      <p><strong>Second Name:</strong> {person.PersonID&&id ? person.SecondName : '????'}</p>
+      <p><strong>Third Name:</strong> {person.PersonID&&id ? person.ThirdName : '????'}</p>
+      <p><strong>Last Name:</strong> {person.PersonID&&id ? person.LastName : '????'}</p>
+      <p><strong>National No:</strong> {person.PersonID&&id ? person.NationalNo : '????'}</p>
+      <p><strong>Date of Birth:</strong> {person.PersonID&&id ? person.DateOfBirth : '????'}</p>
+      <p><strong>Gender:</strong> {person.PersonID&&id ? person.GendorCaption : '????'}</p>
+      <p><strong>Address:</strong> {person.PersonID&&id ? person.Address : '????'}</p>
+      <p><strong>Phone:</strong> {person.PersonID&&id ? person.Phone : '????'}</p>
+      <p><strong>Email:</strong> {person.PersonID&&id ? person.Email : '????'}</p>
+      <p><strong>Nationality:</strong> {person.PersonID&&id ? person.CountryName : '????'}</p>
     </div>
   </div>
   )

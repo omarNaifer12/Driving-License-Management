@@ -67,6 +67,7 @@ namespace Server.ApiControllerLayer
         public ActionResult<PersonDTO>AddPerson(PersonDTO person)
         {
                
+
             Console.WriteLine("reach before try add save");
            try
             {
@@ -153,7 +154,7 @@ namespace Server.ApiControllerLayer
                 {
                     return NotFound("Person not found for the provided ID");
                 }
-                UsersBusiness.DeleteUsersOfPerson(id);
+                UsersBusiness.DeleteUserOfPerson(id);
                 PersonsBusiness.DeletePerson(id);
                 return Ok($"person with {id} deleted");
             }

@@ -60,12 +60,12 @@ namespace Server.ApiControllerLayer
 
           }
         }
-         [HttpPost("Add", Name ="AddPerson")] 
+         [HttpPost("Add", Name ="AddUser")] 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<PersonDTO>AddPerson(UserDTO user)
+        public ActionResult<PersonDTO>AddUser(UserDTO user)
         {
                
 
@@ -159,6 +159,7 @@ namespace Server.ApiControllerLayer
          [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public ActionResult LoginUser(string Username,string password)
         {
            try{
@@ -166,6 +167,9 @@ namespace Server.ApiControllerLayer
             if (user==null)
             {
                 return NotFound("user email or password not found");
+            }
+            if(user.IsActive==false){
+                return StatusCode(StatusCodes.Status403Forbidden, "User account is inactive.");
             }
             return Ok(user.UserBusinessDTO);
            }
@@ -179,8 +183,8 @@ namespace Server.ApiControllerLayer
 
 
         }
-         [HttpPost("checkPersonAcc", Name = "checkPersonHaveUserAcc")]
-         [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPost("checkPersonAcc", Name = "checkPersonHaveUserAcc")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CheckPersonHaveUserAcc(int personID)

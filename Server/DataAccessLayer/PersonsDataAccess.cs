@@ -106,7 +106,7 @@ namespace Server.DataAccessLayer
                 
                     ));
                     }
-                    reader.Close();
+                    
                     
                 }
                 catch(Exception ex){

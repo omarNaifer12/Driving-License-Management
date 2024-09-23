@@ -4,7 +4,9 @@ export const people={
     GET_ONE_PERSON:"GET_ONE_PERSON",
     ADD_PERSON:"ADD_PERSON",
     EDIT_PERSON:"EDIT_PERSON",
-    DELETE_PERSON:"DELETE_PERSON"
+    DELETE_PERSON:"DELETE_PERSON",
+    RESET_PERSON_DATA:"RESET_PERSON_DATA"
+
 };
 import { ALERT } from "../../utils/config";
 export const getAllPeopleAction=()=>async(dispatch)=>{
@@ -25,7 +27,7 @@ export const getAllPeopleAction=()=>async(dispatch)=>{
 };
 export const getOnePersonAction=(perosnID)=>async(dispatch)=>{
     try{
-        const person=await getDataAPI(`persons/one/${perosnID}`);
+        const person=await getDataAPI(`Persons/one/${perosnID}`);
             dispatch({
                 type:people.GET_ONE_PERSON,
                 payload:person.data
@@ -56,4 +58,26 @@ export const deletePersonAction=(PersonID)=>async(dispatch)=>{
         type:people.DELETE_PERSON,
         payload:PersonID
     });
+}
+export const ResetPersonData=()=>(dispatch)=>{
+    dispatch({
+        type:people.RESET_PERSON_DATA,
+        payload:{
+            PersonID:'',
+            FirstName: '',
+            SecondName: '',
+            ThirdName: '',
+            LastName: '',
+            NationalNo: '',
+            DateOfBirth: '',
+            Gendor: '',
+            Address: '',
+            Phone: '',
+            Email: '',
+            NationalityCountryID: '',
+            ImagePath: '',
+            CountryName:'',
+            GendorCaption:'',
+          }
+    })
 }

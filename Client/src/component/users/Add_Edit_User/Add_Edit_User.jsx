@@ -4,22 +4,19 @@ import CptSearchForPerson from '../../componentsPersons/CptSearchForPerson/CptSe
 import LoginInfo from './LoginInfo';
 import { StoreContext } from '../../../context/storeContext';
 import "./Add_Edit_User.css"
+import { useSelector } from 'react-redux';
 const Add_Edit_User = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('personal-info');
-    const {person}=useContext(StoreContext);
+    const person=useSelector((state)=>state.Persons.Person)
     const handleTabChange = (tab) => {
       setActiveTab(tab);
-     
     };  
-
-    
-    
     return(
       <div className="add-edit-user-container">
       <h1>Add/Edit User</h1>
-      {activeTab === 'personal-info' && <CptSearchForPerson />}
-      {person.id && (
+      {activeTab==='personal-info' && <CptSearchForPerson />}
+      {person.PersonID && (
         <button className="next-button" onClick={() => navigate('/add-users-login')}>
           Next
         </button>

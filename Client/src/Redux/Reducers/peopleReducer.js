@@ -20,7 +20,7 @@ const initialState={
       }
 }
 const peopleReducer=(state=initialState,action)=>{
-    switch(action.type){
+      switch(action.type){
         case people.GET_ALL_PEOPLE :
             return {
                 ...state,People:action.payload
@@ -42,7 +42,13 @@ const peopleReducer=(state=initialState,action)=>{
         case people.DELETE_PERSON :
             return{
                 ...state,People:state.People.filter((person)=>person.PersonID!==action.payload)
-            };            
+            };  
+            case people.RESET_PERSON_DATA:
+                {
+                    return {
+                        ...state,Person:action.payload
+                    }
+                }          
             default:
             return state;    
     }

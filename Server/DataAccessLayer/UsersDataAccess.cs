@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Server.DataAccessLayer;
 
 namespace Server.DataAccessLayer
 {
@@ -25,7 +26,6 @@ namespace Server.DataAccessLayer
             this.UserName = Username;
             this.Password = Password;
             this.IsActive = IsActive;
-
            this.FullName = FullName;
         }
 
@@ -76,10 +76,10 @@ namespace Server.DataAccessLayer
                 while(reader.Read())
                 {
                     AllUsers.Add(
-                        new UserDTO(   (int)reader["UserID"],
+                     new UserDTO(   (int)reader["UserID"],
                      (int)reader["PersonID"],
                      (string)reader["UserName"],
-                     (string)reader["Password"],
+                     "",
                      (bool)reader["IsActive"],
                      (string)reader["FullName"])
                     );
@@ -88,7 +88,7 @@ namespace Server.DataAccessLayer
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Error: " + ex);
             }
             return AllUsers;
         }
@@ -186,10 +186,10 @@ namespace Server.DataAccessLayer
             int rowsAffected;
             using   SqlConnection connection=new (DataAccessSettings.ConnectionString);
             string query=@"Delete users 
-                                where UsersID = @UsersID";
+                                where UserID = @UserID";
 
             using  SqlCommand command = new (query, connection);
-            command.Parameters.AddWithValue("@UsersID",UserID);
+            command.Parameters.AddWithValue("@UserID",UserID);
             try{
                 connection.Open();
                 rowsAffected=command.ExecuteNonQuery();

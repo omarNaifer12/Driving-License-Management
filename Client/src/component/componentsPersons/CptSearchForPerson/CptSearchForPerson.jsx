@@ -6,7 +6,7 @@ import "./CptSearchForPerson.css"
 
 const CptSearchForPerson = () => {
   const [inputId, setInputId] = useState('');
-  const { searchId,setSearchId } = useContext(StoreContext);
+  const [ searchId,setSearchId] = useState('');
 
   const handleSearch = () => {
     setSearchId(inputId);

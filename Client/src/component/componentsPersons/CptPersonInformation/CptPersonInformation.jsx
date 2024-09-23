@@ -2,15 +2,17 @@ import React, { useContext,useEffect } from 'react'
 import "./CptPersonInformation.css"
 import { StoreContext } from '../../../context/storeContext';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOnePersonAction } from '../../../Redux/Actions/peopleAction';
+import { getOnePersonAction, ResetPersonData } from '../../../Redux/Actions/peopleAction';
 const CptPersonInformation = ({id}) => {
     const person=useSelector((state)=>state.Persons.Person);
     const dispatch=useDispatch();
     useEffect(()=>{
-        const fetchPerson=async()=>{    
+        const fetchPerson=async()=>{  
+          dispatch(ResetPersonData());  
           console.log("id person is",id);
             
     if(id){ 
+
    dispatch(getOnePersonAction(id));
     }
    
@@ -23,8 +25,8 @@ const CptPersonInformation = ({id}) => {
     <br />
     <div className="person-image">
       <img
-        src={person ? person.ImagePath : 'placeholder.jpg'}
-        alt={`${person ? `${person.FirstName} ${person.LastName}` : '????'}`}
+        src={person.PersonID&&id ? person.ImagePath : 'placeholder.jpg'}
+        alt={`${person.PersonID&&id ? `${person.FirstName} ${person.LastName}` : '????'}`}
       />
     </div>
     <div className="person-text">

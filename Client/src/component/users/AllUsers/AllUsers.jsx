@@ -3,19 +3,27 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './AllUsers.css';
 import { StoreContext } from '../../../context/storeContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteUserAction, GetAllUsersAction } from '../../../Redux/Actions/UsersAction';
+import { deleteDataAPI } from '../../../utils/fetchData';
 
 const AllUsers = () => {
-  const {users, setUsers} = useContext(StoreContext);
+const dispatch=useDispatch();
   const navigate = useNavigate();
+  const users=useSelector((state)=>state.Users.users);
+  useEffect(()=>{
+    dispatch(GetAllUsersAction());
+
+  },[dispatch])
 
   const handleDelete = async (UserID) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
        
-        setUsers(users.filter(user => user.id !== UserID))
+       
        
       try {
-      const response=  await axios.delete(`http://localhost:3000/users/${UserID}`);
-      
+      const response=  await deleteDataAPI(`Users/Delete/${UserID}`);
+      dispatch(deleteUserAction(UserID))
         
         alert('User deleted successfully');
       } catch (error) {
@@ -49,12 +57,12 @@ const AllUsers = () => {
               <td>{user.PersonID}</td>
               <td>{user.FullName}</td>
               <td>{user.UserName}</td>
-              <td>{user.isActive ? '✅' : '❌'}</td>
+              <td>{user.IsActive ? '✅' : '❌'}</td>
               <td>
-                <button className="edit-button" onClick={() => navigate(`/edit-user/${user.id}`)}>Edit</button>
-                <button className="delete-button" onClick={() => handleDelete(user.id)}>Delete</button>
-                <button className="details-button" onClick={() => navigate(`/user-details/${user.id}`)}>Details</button>
-                <button onClick={()=>navigate(`/change-password/${user.id}`)}>change password</button>
+                <button className="edit-button" onClick={() => navigate(`/edit-user/${user.UserID}`)}>Edit</button>
+                <button className="delete-button" onClick={() => handleDelete(user.UserID)}>Delete</button>
+                <button className="details-button" onClick={() => navigate(`/user-details/${user.UserID}`)}>Details</button>
+                <button onClick={()=>navigate(`/change-password/${user.UserID}`)}>change password</button>
               </td>
             </tr>
           ))}

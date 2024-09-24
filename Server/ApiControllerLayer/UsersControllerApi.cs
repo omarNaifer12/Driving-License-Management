@@ -183,7 +183,7 @@ namespace Server.ApiControllerLayer
 
 
         }
-        [HttpPost("checkPersonAcc", Name = "checkPersonHaveUserAcc")]
+        [HttpGet("checkPersonAcc/{personID:int}", Name = "checkPersonHaveUserAcc")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -205,9 +205,39 @@ namespace Server.ApiControllerLayer
            {
              Console.WriteLine(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while check person have users acc.");
-  
+          }
+           }
+        [HttpPost("ChangePassword", Name = "ChangeUserPassword")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult ChangeUserPassword(int UserID,[FromBody]string password){
+            Console.WriteLine("first enter change password");
+            try
+            {
+                UsersBusiness? user = UsersBusiness.FindUserByID(UserID);
+                if (user == null)
+                {
+                    return NotFound("user not found for the provided ID");
+                }
+            bool result=  UsersBusiness.ChangePassword(UserID, password);
 
-           }
-           }
+               Console.WriteLine("reach here to change password ");
+                if (result)
+                {
+                    return Ok("the password is changed");
+                }
+                else
+                {
+                    return BadRequest("Failed to change the password");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "An error occurred while updating the password.");
+            }
+        }
+
     }
 }

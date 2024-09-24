@@ -293,10 +293,7 @@ namespace Server.DataAccessLayer
                 Console.WriteLine("Error: " + ex.Message);
                 return false;
             }
-
-           
-
-            return rowsAffected > 0;
+            return rowsAffected >0;
         }
         public static bool IsPersonHaveUserAcc(int PersonID)
         {

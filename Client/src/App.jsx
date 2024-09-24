@@ -32,6 +32,8 @@ const App=() => {
  <Route path='/loginForm' element={<LoginForm />} />   
  <Route path='/Application-type' element={<ApplicationType />} />   
  <Route path='/Test-type' element={<TestType />}/>
+ <Route path='/edit-users/:id' element={<LoginInfo />} />     
+
         </Routes>
     </div>
   )

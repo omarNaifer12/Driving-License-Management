@@ -3,47 +3,37 @@ import "./CptUserInformation.css"
 import { StoreContext } from '../../../context/storeContext'
 import CptPersonInformation from '../../componentsPersons/CptPersonInformation/CptPersonInformation';
 import { useParams } from 'react-router-dom';
-const CptUserInformation = ({userID}) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneUserAction, ResetUserData } from '../../../Redux/Actions/UsersAction';
+const CptUserInformation = () => {
    const {id}=useParams();
-
-    const{user,setUser,getUserById}=useContext(StoreContext);
+   const dispatch=useDispatch();
+   const user =useSelector((state)=>state.Users.user);
     useEffect(()=>{
-        const fetchUser=async()=>{
-          
-            setUser({
-                PersonID: "",
-                Password: "",
-                FullName: "John Doe",
-                UserName: "",
-                isActive: false
-            });
-         const ID=userID?userID:id; 
-    if(ID){ 
-    const respnse= await getUserById(ID);
-    console.log("resonseda",respnse);
-    if(!respnse){
-      alert(" error user id ");
+    const fetchUser=()=>{    
+    if(id){ 
+    dispatch(ResetUserData());
+    dispatch(getOneUserAction(id));
     }
-    }
-   
     };
     fetchUser();
-    },[userID,id]);
+    },[id,dispatch]);
   return (
-    <div className="user-info-container">
+    user.UserID&&user&& (<div className="user-info-container">
       <CptPersonInformation id={user.PersonID} />
       <div className="user-details">
         <div className="user-detail">
-          <strong>User ID:</strong> {user.id ? user.id : '????'}
+          <strong>User ID:</strong> {user&&user.UserID ? user.UserID : '????'}
         </div>
         <div className="user-detail">
-          <strong>Username:</strong> {user.id ? user.UserName : '????'}
+          <strong>Username:</strong> {user&&user.UserID ? user.UserName : '????'}
         </div>
         <div className="user-detail">
-          <strong>Active Status:</strong> {user.id?user.isActive ? 'true' : 'false':'????'}
+          <strong>Active Status:</strong> {user&&user.UserID?user.IsActive ? 'true' : 'false':'????'}
         </div>
       </div>
-    </div>
+    </div>)
+   
   )
 }
 

@@ -59,7 +59,7 @@ const dispatch=useDispatch();
               <td>{user.UserName}</td>
               <td>{user.IsActive ? '✅' : '❌'}</td>
               <td>
-                <button className="edit-button" onClick={() => navigate(`/edit-user/${user.UserID}`)}>Edit</button>
+                <button className="edit-button" onClick={() => navigate(`/edit-users/${user.UserID}`)}>Edit</button>
                 <button className="delete-button" onClick={() => handleDelete(user.UserID)}>Delete</button>
                 <button className="details-button" onClick={() => navigate(`/user-details/${user.UserID}`)}>Details</button>
                 <button onClick={()=>navigate(`/change-password/${user.UserID}`)}>change password</button>

@@ -28,6 +28,7 @@ const deletePerson=async(PersonID)=>{
 console.log("persons is ",persons);
 return(
   <div className="person-list">
+    <button onClick={()=>navigate("/loginForm")}> go login </button>
     <h1>Manage People</h1>
     <button onClick={()=>navigate('/all-users')}>users</button>
     <button className="add-button" onClick={() => navigate("/add-Person")}>Add Person</button>

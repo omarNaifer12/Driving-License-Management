@@ -2,50 +2,70 @@ import React,{useContext, useEffect, useState} from 'react'
 import "./LoginForm.css"
 import { StoreContext } from '../../context/storeContext';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneUserAction } from '../../Redux/Actions/UsersAction';
+import axios from 'axios';
+import { postDataAPI } from '../../utils/fetchData';
+import { BASE_URL } from '../../utils/config';
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
-   
-  const{users,getUserById}=useContext(StoreContext);
+   const user=useSelector((state)=>state.Users.user);
+const dispatch=useDispatch();  
   const navigate=useNavigate();
   useEffect(()=>{
 const setInputs= async ()=>{
-    if(localStorage.getItem("userid")){
-        const userid=localStorage.getItem("userid");
+    if(localStorage.getItem("UserIDToRemember")){
+        const userid=localStorage.getItem("UserIDToRemember");
         console.log("useris",userid);
-    const response= await getUserById(userid);
-   
-   
-    if(response){
-        setUsername(response.UserName);
-        setPassword(response.Password);
-        setRememberMe(true);
-    }
+    dispatch(getOneUserAction(userid));
     }
 }
 setInputs();
-  },[])
-  const handleClickLogin=(e)=>{
+  },[dispatch])
+  useEffect(()=>{
+if(user&&user.UserID){
+  setPassword(user.Password);
+  setRememberMe(true);
+  setUsername(user.UserName);
+}
+  },[user])
+  const handleClickLogin=async(e)=>{
     e.preventDefault();
-    let CheckLogin=false;
-users.map(user => {
-    if(user.UserName===username&&user.Password===password){
-        CheckLogin=true;
-    localStorage.removeItem("userid");
-    localStorage.removeItem("id");
-        if(rememberMe){
-        localStorage.setItem("userid",user.id);
+    
+    
+try{
+  const loginData = {
+    Username: username,  
+    password: password,
+  };
+  const response= await axios.post(`${BASE_URL}/api/Users/Login?Username=${username}&password=${password}`);
+  if(response.status===404){
+    alert("incorrect email or password");
+  }
+  else if(response.status===403){
+    alert("your account not active");
+  }
+  else if(response.status===200){
+    localStorage.setItem("UserID",response.data.UserID);
+    console.log("the user id is after login correct",response.data.UserID);
+    alert("you can enter ");
+    if(rememberMe){
+      localStorage.setItem("UserIDToRemember",response.data.UserID);
     }
-localStorage.setItem("id",user.id);
-       
-        navigate("/Home");
-        return ;
+    else{
+      localStorage.removeItem("UserIDToRemember");
     }
-});
-if(!CheckLogin){
-    alert("error username or password");
-}  
+  }
+
+}
+catch(error){
+console.log("error",error);
+
+}
+
+  
 }
    
   

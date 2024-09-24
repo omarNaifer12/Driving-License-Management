@@ -26,6 +26,10 @@ export const UsersReducer=(state=initialState,action)=>{
             return{
                 ...state,users:state.users.filter((user)=>user.UserID!==action.payload)
             };
+        case usersAction.RESET_USER_DATA:
+            return {
+                ...state,user:action.payload
+            };
             default:
                 return state;
 

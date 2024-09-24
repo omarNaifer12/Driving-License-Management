@@ -4,16 +4,26 @@ import axios from "axios"
 import { useNavigate,useParams } from 'react-router-dom'
 import CptUserInformation from '../CptUserInformation/CptUserInformation'
 import { StoreContext } from '../../../context/storeContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { getOneUserAction } from '../../../Redux/Actions/UsersAction'
+import { postDataAPI } from '../../../utils/fetchData'
+import { BASE_URL } from '../../../utils/config'
 const ChangePassword = () => {
     const { id } = useParams();
-    const { user, setUser } = useContext(StoreContext);
-    const [currentPassword, setCurrentPassword] = useState('');
+    const user=useSelector((state)=>state.Users.user);
+    const [currentPassword,setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPassword,setConfirmPassword] = useState('');
     const navigate = useNavigate();
-  
+    const dispatch=useDispatch();
+    useEffect(()=>{
+      if(id){
+        dispatch(getOneUserAction(id));
+      }
+
+    },[id,dispatch]);
     const handleChangePassword = async () => {
-      if (currentPassword !== user.Password) {
+      if (currentPassword!== user.Password){
         alert('Current password is incorrect');
         return;
       }
@@ -21,17 +31,17 @@ const ChangePassword = () => {
         alert('New password and confirm password do not match');
         return;
       }
-  
       try {
-        const response = await axios.put(`http://localhost:3000/users/${user.id}`, {
-          ...user,
-          Password: newPassword
-        });
-  
-      
-          setUser({ ...user, Password: newPassword });
-          alert('Password changed successfully');
+        console.log("before add try this pass and id user",user.UserID,newPassword);
         
+        const response= await axios.post(`${BASE_URL}/api/Users/ChangePassword?UserID=${user.UserID}&password=${newPassword}`);
+        console.log("response of change password is ",response);
+        
+          if(response.status===200){
+          alert('Password changed successfully');
+          }
+          else 
+          alert('error change password');
         
       } catch (error) {
         console.log('Error changing password:', error);
@@ -41,7 +51,7 @@ const ChangePassword = () => {
   
     return (
       <div className="change-password-container">
-        <CptUserInformation userID={id} />
+        <CptUserInformation />
         <div className="password-change-form">
           <h2>Change Password</h2>
           <div className="form-group">

@@ -13,6 +13,7 @@ import Navbar from './component/Navbar/Navbar ';
 import LoginForm from './component/LoginForm/LoginForm';
 import ApplicationType from './component/ApplicationType/ApplicationType';
 import TestType from './component/TestType/TestType';
+import AllLocalDrivingApplication from './component/LocalDrivingApplication/AllLocalDrivingApplication';
 const App=() => {
   return (
     <div>
@@ -32,7 +33,9 @@ const App=() => {
  <Route path='/loginForm' element={<LoginForm />} />   
  <Route path='/Application-type' element={<ApplicationType />} />   
  <Route path='/Test-type' element={<TestType />}/>
- <Route path='/edit-users/:id' element={<LoginInfo />} />     
+ <Route path='/edit-users/:id' element={<LoginInfo />} />    
+ <Route path='/AllLocalDrivingLicense' element={<AllLocalDrivingApplication />} />    
+  
 
         </Routes>
     </div>

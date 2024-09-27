@@ -58,9 +58,6 @@ namespace Server.DataAccessLayer
 
                     }
 
-                    
-
-
                 }
 
                 catch (Exception ex)
@@ -70,6 +67,52 @@ namespace Server.DataAccessLayer
                 return licenseClasses;
               
 
+            }
+             public static LicenseClassesDTO? GetLicenseClassByID(int LicenseClassID)
+            {
+                
+
+                using SqlConnection connection = new (DataAccessSettings.ConnectionString);
+
+                string query = "SELECT * FROM LicenseClasses WHERE LicenseClassID = @LicenseClassID";
+
+                using SqlCommand command = new (query, connection);
+
+                command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
+
+                try
+                {
+                    connection.Open();
+                    using SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                       return new LicenseClassesDTO(
+                        (int)reader["LicenseClassID"],
+                             (string)reader["ClassName"],
+                         (string)reader["ClassDescription"],
+                        (byte)reader["MinimumAllowedAge"],
+                        (byte) reader["DefaultValidityLength"],
+                        Convert.ToSingle(reader["ClassFees"])
+                       );
+
+                }
+                    else
+                    {
+                        // The record was not found
+                        return null;
+                    }
+
+                    
+
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                    return null;
+                }
+            
             }
     }
 }

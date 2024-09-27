@@ -13,10 +13,10 @@ namespace Server.DataAccessLayer
         public string NationalNo { get; set; }
         public string FullName { get; set; }
         public DateTime ApplicationDate { get; set; }
-        public short PassedTestCount { get; set; }
+        public int PassedTestCount { get; set; }
         public string Status { get; set; }
          public LocalDrivingLicenseViewDTO(int LocalDrivingLicenseApplicationID,string ClassName,string NationalNo,
-        string FullName,DateTime ApplicationDate,short PassedTestCount,string Status)
+        string FullName,DateTime ApplicationDate,int PassedTestCount,string Status)
         {
             this.LocalDrivingLicenseApplicationID=LocalDrivingLicenseApplicationID;
             this.ClassName=ClassName;
@@ -92,7 +92,7 @@ namespace Server.DataAccessLayer
                             (string)reader["NationalNo"],
                             (string)reader["FullName"],
                             (DateTime)reader["ApplicationDate"],
-                            (short)reader["PassedTestCount"],
+                            (int)reader["PassedTestCount"],
                             (string)reader["Status"]
                         ));
                     }

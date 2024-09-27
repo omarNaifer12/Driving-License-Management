@@ -14,6 +14,7 @@ namespace Server.BusinessLayer
 
         public int LocalDrivingLicenseApplicationID { set; get; }
         public int LicenseClassID { set;get;}
+        public LicenseClassesBusiness? LicensClassInfo; 
 
         public LocalDrivingLicenseBusiness(int LocalDrivingLicenseApplicationID, int ApplicationID, int ApplicantPersonID, 
                 DateTime ApplicationDate, int ApplicationTypeID,
@@ -25,6 +26,7 @@ namespace Server.BusinessLayer
             this.LocalDrivingLicenseApplicationID= LocalDrivingLicenseApplicationID; ;
             this.LicenseClassID = LicenseClassID;
             this.mode=mode;
+            LicensClassInfo=LicenseClassesBusiness.GetLicenseClassByID(LicenseClassID);
             
         }
         public static List<LocalDrivingLicenseViewDTO> GetAllLocalDrivingLicense()
@@ -66,9 +68,32 @@ namespace Server.BusinessLayer
                 case EnMode2.Update:
                     return _UpdateLocalDrivingLicenseApplication();
 
-                  }  
+            }  
                   return false;
             
+        }
+        public static LocalDrivingLicenseBusiness? FindLocalDrivingApplicationByID(int id)
+        {
+            int applicationID=-1;
+            int licenseClassID=-1;
+            bool isFound=
+            LocalDrivingLicenseDataAccess.GetLocalDrivingLicenseApplicationInfoByID(id,ref applicationID,ref licenseClassID);
+            if(isFound){
+                ApplicationDto? application=ApplicationDataAccess.GetApplicationByID(applicationID);
+                if(application!=null){
+                    return new LocalDrivingLicenseBusiness(id,applicationID,application.ApplicantPersonID,
+                    application.ApplicationDate,application.ApplicationTypeID, application.ApplicationStatus,
+                    application.LastStatusDate,application.PaidFees,application.CreatedByUserID,licenseClassID,
+                    EnMode2.Update);
+                }
+                else{
+                    return null;
+                }
+            }
+            else{
+                return null;
+            } 
+
         }
     }
 }

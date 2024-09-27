@@ -1,0 +1,89 @@
+.local-driving-application-list-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .local-driving-application-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto; /* Allow horizontal scrolling */
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f8f8f8;
+  } 
+  .btn-add, .btn-details, .btn-update, .btn-delete {
+    padding: 8px 12px;
+    margin: 4px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-add {
+    background-color: #28a745;
+    color: white;
+  }  
+  .btn-details {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-update {
+    background-color: #ffc107;
+    color: white;
+  }
+  
+  .btn-delete {
+    background-color: #dc3545;
+    color: white;
+  }
+  @media (max-width: 768px) {
+    .local-driving-application-table th,
+    .local-driving-application-table td {
+      padding: 8px;
+      font-size: 14px; /* Smaller font size */
+    }
+  
+    .btn-add, .btn-details, .btn-update, .btn-delete {
+      padding: 6px 10px; /* Smaller button size */
+    }
+  }
+  @media (max-width: 768px) {
+    .local-driving-application-table,
+    .local-driving-application-table thead,
+    .local-driving-application-table tbody,
+    .local-driving-application-table th,
+    .local-driving-application-table td,
+    .local-driving-application-table tr {
+      display: block; /* Stack elements */
+    }
+    
+    .local-driving-application-table th {
+      display: none; /* Hide header */
+    }
+  
+    .local-driving-application-table td {
+      position: relative;
+      padding-left: 50%; /* Space for labels */
+      text-align: left; /* Align text left */
+    }
+  
+    .local-driving-application-table td:before {
+      content: attr(data-label); /* Add label for each cell */
+      position: absolute;
+      left: 0;
+      width: 50%; /* Label width */
+      padding-left: 10px; /* Space from the left */
+      font-weight: bold; /* Bold label */
+    }
+  }
+  

@@ -25,9 +25,13 @@ const deletePerson=async(PersonID)=>{
       console.log("error delete person",error);
   }
 }
+
 console.log("persons is ",persons);
 return(
   <div className="person-list">
+    
+    <button onClick={()=>navigate("/AllLocalDrivingLicense")}> go AllLocalDrivingLicense </button>
+
     <button onClick={()=>navigate("/loginForm")}> go login </button>
     <h1>Manage People</h1>
     <button onClick={()=>navigate('/all-users')}>users</button>

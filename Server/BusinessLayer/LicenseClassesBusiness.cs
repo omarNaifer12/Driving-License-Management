@@ -32,5 +32,18 @@ namespace Server.BusinessLayer
         {
             return LicenseClassesDataAccess.GetAllLicenseClasses();
         }
+        public static LicenseClassesBusiness? GetLicenseClassByID(int licenseClassID)
+        {
+            LicenseClassesDTO? licenseClass=LicenseClassesDataAccess.GetLicenseClassByID(licenseClassID);
+        if(licenseClass!=null)
+        {
+            return new LicenseClassesBusiness(licenseClass.LicenseClassID, licenseClass.ClassName,
+            licenseClass.ClassDescription,licenseClass.MinimumAllowedAge,licenseClass.DefaultValidityLength,
+            licenseClass.ClassFees);
+        }
+        else{
+        return null;
+        }
+        }
     }
 }

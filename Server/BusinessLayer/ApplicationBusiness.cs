@@ -18,6 +18,8 @@ namespace Server.BusinessLayer
         public int ApplicationTypeID { set; get; }
         public EnApplicationStatus ApplicationStatus { set; get; } 
         public EnMode Mode=EnMode.AddNew;
+        public UsersBusiness? CreatedByUserInfo;
+        public ApplicationTypeBusiness? ApplicationTypeInfo;
         public ApplicationDto ApplicationBusinessDTO
         {
             get{
@@ -59,6 +61,8 @@ namespace Server.BusinessLayer
             this.PaidFees = PaidFees;
             this.CreatedByUserID = CreatedByUserID;
             this.Mode = Mode;
+            this.CreatedByUserInfo=UsersBusiness.FindUserByID(CreatedByUserID);
+            this.ApplicationTypeInfo=ApplicationTypeBusiness.GetApplicationTypeInfoByID(ApplicationTypeID);
         }
         private bool _AddNewApplication()
         {

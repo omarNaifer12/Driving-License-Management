@@ -53,7 +53,6 @@ namespace Server.ApiControllerLayer
             var OtherDetails = new
         {
             CreatedByUserName = localDrivingLicense.CreatedByUserInfo?.UserName,
-            ApplicationFees = localDrivingLicense.ApplicationTypeInfo?.ApplicationFees,
             LicenseClassID = localDrivingLicense.LicenseClassID,
             localDrivingLicenseID=id
         };
@@ -84,8 +83,8 @@ namespace Server.ApiControllerLayer
                 {
                     return BadRequest("Invalid  data");
                 }
-                LocalDrivingLicenseBusiness localDrivingLicenseBusiness=new(-1,-1,applicationDto.ApplicantPersonID,applicationDto.ApplicationDate,
-                1,1,applicationDto.LastStatusDate,applicationDto.PaidFees,applicationDto.CreatedByUserID,licenseClassID);
+                LocalDrivingLicenseBusiness localDrivingLicenseBusiness=new(-1,-1,applicationDto.ApplicantPersonID,DateTime.Now,
+                1,1,DateTime.Now,applicationDto.PaidFees,applicationDto.CreatedByUserID,licenseClassID);
                 
                 Console.WriteLine("reach before add save");
                 if (localDrivingLicenseBusiness.Save())
@@ -111,14 +110,14 @@ namespace Server.ApiControllerLayer
                 return StatusCode(500, "An error occurred while adding the person.");
             }
         }
-        [HttpPost("Update{id:int}", Name ="UpdateLocalDrivingLicense")] 
+        [HttpPut("Update/{id:int}", Name ="UpdateLocalDrivingLicense")] 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<object>UpdateLocalDrivingLicense(ApplicationDto applicationDto,int licenseClassID,int id)
         {
-            Console.WriteLine("reach before try add save");
+            Console.WriteLine("reach before try update  save ");
            try
             {
                 if (applicationDto == null||licenseClassID<=0||id<=0)

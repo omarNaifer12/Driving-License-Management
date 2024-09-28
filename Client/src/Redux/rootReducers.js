@@ -6,5 +6,6 @@ const rootReducers=combineReducers({
     Persons:PeopleReducer,
     Users:UsersReducer,
     LocalDrivingLicenses:localDrivingLicenseReducer
+    
 })
 export default rootReducers;

@@ -14,6 +14,8 @@ import LoginForm from './component/LoginForm/LoginForm';
 import ApplicationType from './component/ApplicationType/ApplicationType';
 import TestType from './component/TestType/TestType';
 import AllLocalDrivingApplication from './component/LocalDrivingApplication/AllLocalDrivingApplication';
+import SearchOnPersonAndAddLocalDrivingLicense from './component/LocalDrivingApplication/Add_EditLocalDrivingLicense/SearchOnPersonAndAddLocalDrivingLicense';
+import Add_EditLocalDrivingLicense from './component/LocalDrivingApplication/Add_EditLocalDrivingLicense/Add_EditLocalDrivingLicense';
 const App=() => {
   return (
     <div>
@@ -35,6 +37,8 @@ const App=() => {
  <Route path='/Test-type' element={<TestType />}/>
  <Route path='/edit-users/:id' element={<LoginInfo />} />    
  <Route path='/AllLocalDrivingLicense' element={<AllLocalDrivingApplication />} />    
+ <Route path='/AddLocalDrivingLicense' element={<SearchOnPersonAndAddLocalDrivingLicense/>} />    
+ <Route path='/UpdateLocalDrivingLicense/:id' element={<Add_EditLocalDrivingLicense/>} />    
   
 
         </Routes>

@@ -11,7 +11,6 @@ const initialState={
     PaidFees: '',
     CreatedByUserID: '',
     CreatedByUserName: '',
-    ApplicationFees: '',
     LicenseClassID: '',
     localDrivingLicenseID: ''
   }
@@ -26,5 +25,7 @@ export const  localDrivingLicenseReducer=(state=initialState,action)=>{
                 return {
                     ...state,LocalDrivingLicense:action.payload
                 }
+                default :
+                return state;
     }
 }

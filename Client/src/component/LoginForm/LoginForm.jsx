@@ -15,9 +15,9 @@ const LoginForm = () => {
 const dispatch=useDispatch();  
   const navigate=useNavigate();
   useEffect(()=>{
-const setInputs= async ()=>{
-    if(localStorage.getItem("UserIDToRemember")){
-        const userid=localStorage.getItem("UserIDToRemember");
+const setInputs=  ()=>{
+    if(parseInt(localStorage.getItem("UserIDToRemember"),10)){
+        const userid=parseInt(localStorage.getItem("UserIDToRemember"),10);
         console.log("useris",userid);
     dispatch(getOneUserAction(userid));
     }

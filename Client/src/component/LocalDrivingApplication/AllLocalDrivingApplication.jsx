@@ -3,8 +3,10 @@ import "./AllLocalDrivingApplication.css"
 import axios from 'axios';
 import { getDataAPI } from '../../utils/fetchData';
 import { BASE_URL } from '../../utils/config';
+import { useNavigate } from 'react-router-dom';
 const AllLocalDrivingApplication = () => {
     const [localDrivingApplications,setLocalDrivingApplications]=useState([]);
+    const navigate=useNavigate();
     const fetchData=async()=>{
         try{
         const response=await getDataAPI(`LocalDrivingLicenses/All`);
@@ -39,7 +41,7 @@ const AllLocalDrivingApplication = () => {
         <div className="local-driving-application-list-container">
           <div className="header">
             <h2>Local Driving License Applications</h2>
-            <button className="btn-add" onClick={handleAdd}>Add New Application</button>
+            <button className="btn-add" onClick={()=>navigate('/AddLocalDrivingLicense')}>Add New Application</button>
           </div>
           <table className="local-driving-application-table">
             <thead>
@@ -66,7 +68,8 @@ const AllLocalDrivingApplication = () => {
                   <td data-label="Status">{application.Status}</td>
                   <td>
                     <button className="btn-details" onClick={() => handleDetails(application.LocalDrivingLicenseApplicationID)}>Details</button>
-                    <button className="btn-update" onClick={() => handleUpdate(application.LocalDrivingLicenseApplicationID)}>Update</button>
+                    <button className="btn-update" onClick={() =>navigate(`/UpdateLocalDrivingLicense/
+                    ${application.LocalDrivingLicenseApplicationID}`) }>Update</button>
                     <button className="btn-delete" onClick={() => handleDelete(application.LocalDrivingLicenseApplicationID)}>Delete</button>
                   </td>
                 </tr>

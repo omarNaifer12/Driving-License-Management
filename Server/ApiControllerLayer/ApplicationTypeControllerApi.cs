@@ -24,8 +24,8 @@ namespace Server.ApiControllerLayer
             return NotFound("the ApplicationType not found error your id");
           }
             
-           ApplicationTypeDTO ApplicationTypeResult=ApplicationType.ApplicationTypeDtoBusiness;
-            return Ok(ApplicationTypeResult);
+          
+            return Ok(ApplicationType.ApplicationTypeDtoBusiness);
           }
           catch(Exception ex)
           {

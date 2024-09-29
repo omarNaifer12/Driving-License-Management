@@ -39,6 +39,24 @@ const Add_EditLocalDrivingLicense = () => {
 
     }
   }
+  const CheckPersonHaveSameLocalDrivingLicense=async(ApplicantPersonID,LicenseClassID)=>{
+    try{
+      const response =await getDataAPI(`LocalDrivingLicenses/checkPersonHaveSameLDL?ApplicationTypeID=${1}&ApplicantPersonID=${ApplicantPersonID}&LicenseClassID=${LicenseClassID}`);
+      if(response.data.success){
+        return true;
+      }
+      else {
+        return false;
+      }
+
+    }
+    catch(error){
+      console.log("errro ",error);
+      
+
+    }
+
+  }
   const Save=async(e)=>{
     e.preventDefault();
    
@@ -62,7 +80,10 @@ const Add_EditLocalDrivingLicense = () => {
     try {
       let response;
       if(localDrivingLicense.localDrivingLicenseID===0&&!id){
-        
+        if(CheckPersonHaveSameLocalDrivingLicense(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID)){
+          alert("this person already have active local Driving License");
+          return;
+        }
         response=await postDataAPI(`LocalDrivingLicenses/Add?licenseClassID=${localDrivingLicense.LicenseClassID}`,applicationDto);
         console.log("addedd success",response.data);
         setLocalDrivingLicense({...localDrivingLicense,localDrivingLicenseID:response.data.localDrivingLicenseData
@@ -74,13 +95,9 @@ const Add_EditLocalDrivingLicense = () => {
         alert("data added successfuly");
       }
       else if(localDrivingLicense.localDrivingLicenseID){
-        console.log("applicationdto of update",applicationDto);
-        console.log("applicatiolocaldring of of update",localDrivingLicense);
-        console.log("applicatiolocaldring of redux of update",localDrivingLicenseFromRedux);
 
         
         response=await putDataAPI(`LocalDrivingLicenses/Update/${localDrivingLicense.localDrivingLicenseID}?licenseClassID=${localDrivingLicense.LicenseClassID}`,applicationDto);
-        console.log("updated success",response.data);
         alert("data updated successfuly");
     }
     } catch (error) {
@@ -151,7 +168,6 @@ const Add_EditLocalDrivingLicense = () => {
         <span>{user.UserID?user.UserName:localDrivingLicense.CreatedByUserName}</span>
       </div>
       <button  onClick={(e) => Save(e)}>save</button>
-
     </div>
   );
 }

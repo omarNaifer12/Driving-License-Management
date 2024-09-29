@@ -95,5 +95,11 @@ namespace Server.BusinessLayer
             } 
 
         }
+        public static int IsPersonHaveTheSameLocalDrivingLicense(int ApplicationTypeID,int ApplicantPersonID,int 
+        LicenseClassID)
+        {
+            return LocalDrivingLicenseDataAccess.IsPersonHaveTheSameLocalDrivingLicense(ApplicationTypeID,
+            ApplicantPersonID,LicenseClassID);
+        }
     }
 }

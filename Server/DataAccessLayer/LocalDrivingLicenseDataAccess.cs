@@ -219,5 +219,37 @@ namespace Server.DataAccessLayer
             return rowsAffected > 0;
 
         }
+        public static int IsPersonHaveTheSameLocalDrivingLicense(int ApplicationTypeID,int ApplicantPersonID,int 
+        LicenseClassID)
+        {
+            int LocalDrivingLicenseApplicationID=-1;
+            using SqlConnection connection=new (DataAccessSettings.ConnectionString);
+            string query=@"SELECT l.ApplicationID FROM LocalDrivingLicenseApplications l JOIN Applications a 
+            ON l.ApplicationID=a.ApplicationID WHERE  l.LicenseClassID = @LicenseClassID
+                                          AND a.ApplicantPersonID = @ApplicantPersonID
+                                          AND a.ApplicationStatus = 1
+                                          AND a.ApplicationTypeID = @ApplicationTypeID";
+            SqlCommand command=new (query, connection);
+            command.Parameters.AddWithValue("@ApplicationTypeID", ApplicationTypeID);
+            command.Parameters.AddWithValue("@ApplicantPersonID", ApplicantPersonID);
+            command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
+            try{
+                  connection.Open();
+                 object result = command.ExecuteScalar();
+                 if (result != null && int.TryParse(result.ToString(), out int AppID))
+                 {
+                         LocalDrivingLicenseApplicationID = AppID;
+                 }
+
+            }
+            catch(Exception ex){
+                Console.WriteLine("Error: "+ ex.Message);
+            }
+            return LocalDrivingLicenseApplicationID;
+
+
+        }
+    
+    
     }
 }

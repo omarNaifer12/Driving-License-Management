@@ -163,5 +163,31 @@ namespace Server.ApiControllerLayer
                 return StatusCode(500, "An error occurred while adding the person.");
             }
         }
+        [HttpGet("checkPersonHaveSameLDL", Name ="IsPersonHaveTheSameLocalDrivingLicense")] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        
+        public ActionResult IsPersonHaveTheSameLocalDrivingLicense(int ApplicationTypeID,int ApplicantPersonID,int 
+        LicenseClassID)
+        {
+            try{
+            int result=LocalDrivingLicenseBusiness.IsPersonHaveTheSameLocalDrivingLicense(ApplicationTypeID,
+            ApplicantPersonID,LicenseClassID);
+            if (result==-1)
+        {
+            return Ok(new { message ="No matching license found",success = true,id=result });
+        }
+        else
+        {
+            return Ok(new { message = "License found", success = false,id=result });
+        }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, new { message = "An error occurred", error = ex.Message });
+            }
+        }
     }
 }

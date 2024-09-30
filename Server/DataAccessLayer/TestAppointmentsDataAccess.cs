@@ -76,12 +76,9 @@ order by TestAppointmentID desc;";
             }
             catch (Exception ex)
             {
-                // Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Error: " + ex.Message);
             }
-            finally
-            {
-                connection.Close();
-            }
+          
 
             return data;
         }
@@ -112,12 +109,10 @@ Values (@TestTypeID,@LocalDrivingLicenseApplicationID,@AppointmentDate,@PaidFees
             }
             catch (Exception ex)
             {
+                                Console.WriteLine("Error: " + ex.Message);
 
             }
-            finally
-            {
-            connection.Close();
-            }
+          
             return TestAppointmentID;
         }
         public static bool UpdateTestAppointment(TestAppointmentsDTO testAppointment)
@@ -151,12 +146,10 @@ IsLocked=@IsLocked,
             }
             catch (Exception ex)
             {
+                                Console.WriteLine("Error: " + ex.Message);
             return false;
             }
-            finally
-            {
-connection.Close();
-            }
+        
             return rowsAffected > 0;
         }
          public static bool IsThereAnActiveSheduledTest(int LocalDrivingLicenseApplicationID, int TestTypeID)
@@ -170,7 +163,7 @@ connection.Close();
                             FROM 
                              TestAppointments WHERE
                             LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
-                            AND TestTypeID = @TestTypeI  AND isLocked=0
+                            AND TestTypeID = @TestTypeID  AND isLocked=0
                             ORDER BY TestAppointmentID desc";
 
             using SqlCommand command = new (query, connection);
@@ -194,17 +187,49 @@ connection.Close();
 
             catch (Exception ex)
             {
-                //Console.WriteLine("Error: " + ex.Message);
+                Console.WriteLine("Error: " + ex.Message);
 
             }
 
-            finally
-            {
-                connection.Close();
-            }
 
             return Result;
 
+        }
+        public static TestAppointmentsDTO? GetTestAppointmentInfoByID(int TestAppointmentID)
+            {
+                using SqlConnection connection = new (DataAccessSettings.ConnectionString);
+                string query = "SELECT * FROM TestAppointments WHERE TestAppointmentID = @TestAppointmentID";
+                using SqlCommand command = new (query, connection);
+                command.Parameters.AddWithValue("@TestAppointmentID", TestAppointmentID);
+                try
+                {connection.Open();
+                using SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+return new TestAppointmentsDTO(
+    TestAppointmentID,
+ (int)reader["TestTypeID"],
+  (int)reader["LocalDrivingLicenseApplicationID"],
+ (DateTime)reader["AppointmentDate"],
+ Convert.ToSingle( reader["PaidFees"]),
+  (int)reader["CreatedByUserID"],
+  
+ (bool)reader["IsLocked"],
+ reader["RetakeTestApplicationID"] ==DBNull.Value?-1:(int)reader["RetakeTestApplicationID"]
+);
+}
+                else
+{
+                        // The record was not found
+                        return null;
+}
+                    
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+               return null;
         }
     }
 }

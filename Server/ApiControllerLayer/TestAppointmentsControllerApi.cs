@@ -22,7 +22,7 @@ namespace Server.ApiControllerLayer
             {
                 var testAppointments = TestAppointmentsBusiness.GetTestAppointmentsForTestType(testTypeID, localDrivingLicenseApplicationID);
 
-                if (testAppointments == null || testAppointments.Count == 0)
+                if ( testAppointments.Count == 0)
                 {
                     return NotFound("No test appointments found for the specified TestType and LicenseApplication.");
                 }
@@ -35,7 +35,7 @@ namespace Server.ApiControllerLayer
             }
         }
 
-        // Get a specific test appointment by its ID
+        
         [HttpGet("one/{TestAppointmentID:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

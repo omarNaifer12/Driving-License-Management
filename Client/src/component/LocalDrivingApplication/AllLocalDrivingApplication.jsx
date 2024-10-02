@@ -9,7 +9,7 @@ const AllLocalDrivingApplication = () => {
     const navigate=useNavigate();
     const fetchData=async()=>{
         try{
-        const response=await getDataAPI(`LocalDrivingLicenses/All`);
+          const response=await getDataAPI(`LocalDrivingLicenses/All`);
     setLocalDrivingApplications(response.data);    
     }
         catch(error){

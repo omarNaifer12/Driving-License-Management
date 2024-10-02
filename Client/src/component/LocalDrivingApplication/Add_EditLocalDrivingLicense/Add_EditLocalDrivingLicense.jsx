@@ -6,7 +6,7 @@ import { GetApplicationTypeByID } from '../../../helper/ApplicationType';
 import { getDataAPI, postDataAPI, putDataAPI } from '../../../utils/fetchData';
 import './Add_EditLocalDrivingLicense.css'
 import { useParams } from 'react-router-dom';
-const Add_EditLocalDrivingLicense = () => {
+const Add_EditLocalDrivingLicense = () =>{
     const {id}=useParams();
     const dispatch=useDispatch();
     const localDrivingLicenseFromRedux=useSelector((state)=>state.LocalDrivingLicenses.LocalDrivingLicense);
@@ -59,7 +59,6 @@ const Add_EditLocalDrivingLicense = () => {
   }
   const Save=async(e)=>{
     e.preventDefault();
-   
 
   // Format the time as HH:MM:SS.sss
   const time =new Date().toISOString();

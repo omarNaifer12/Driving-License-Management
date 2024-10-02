@@ -79,7 +79,7 @@ namespace Server.DataAccessLayer
 
                 string query = "SELECT * FROM TestTypes order by TestTypeID";
 
-                using SqlCommand command = new SqlCommand(query, connection);
+                using SqlCommand command = new (query, connection);
 
                 try
                 {

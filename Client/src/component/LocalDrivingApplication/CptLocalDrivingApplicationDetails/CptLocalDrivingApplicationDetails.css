@@ -1,0 +1,36 @@
+.application-info-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+h2, h3 {
+    text-align: center;
+    color: #333;
+}
+
+.info-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+label {
+    font-weight: bold;
+    color: #555;
+    margin-right: 10px;
+}
+
+span {
+    color: #000;
+}
+
+.info-group span {
+    color: #4CAF50; /* Adjust as necessary */
+}

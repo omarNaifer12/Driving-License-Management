@@ -15,7 +15,11 @@ namespace Server.BusinessLayer
            this.NationalNo,this.DateOfBirth,this.Gendor,this.Address,this.Phone,this.Email,this.NationalityCountryID,
            this.ImagePath,this.CountryName,this.GendorCaption);}
         }
-       
+        public string FullName
+        {
+            get { return FirstName + " " + SecondName + " " + ThirdName + " " + LastName; }
+
+        }
 
         public int PersonID { set; get; }
         public string FirstName { set; get; }

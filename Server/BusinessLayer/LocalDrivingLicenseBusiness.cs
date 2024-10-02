@@ -14,6 +14,13 @@ namespace Server.BusinessLayer
 
         public int LocalDrivingLicenseApplicationID { set; get; }
         public int LicenseClassID { set;get;}
+          public string? PersonFullName   
+        {
+            get { 
+                return PersonsBusiness.GetOnePersonByID(ApplicantPersonID)?.FullName; 
+            }   
+            
+        }
         public LicenseClassesBusiness? LicensClassInfo; 
 
         public LocalDrivingLicenseBusiness(int LocalDrivingLicenseApplicationID, int ApplicationID, int ApplicantPersonID, 

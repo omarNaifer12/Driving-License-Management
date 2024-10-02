@@ -94,5 +94,13 @@ namespace Server.BusinessLayer
             return TestsDataAccess.IsTestCompleted(LocalDrivingLicenseApplicationID,TestTypeID);
 
         }
+        public static TestsBusiness? GetTestByTestAppointmentID(int TestAppointmentID)
+        {
+            TestsDTO? test=TestsDataAccess.GetTestByTestAppointemntID(TestAppointmentID);
+        if(test!=null){
+            return new TestsBusiness(test,EnMode.Update);
+        }
+        return null;
+        }
     }
 }

@@ -258,5 +258,41 @@ namespace Server.DataAccessLayer
         return null;
     }
 }
+     public static TestsDTO? GetTestByTestAppointemntID(int TestAppointmentID){
+            using SqlConnection connection = new(DataAccessSettings.ConnectionString);
+
+    string query = "SELECT * FROM Tests WHERE TestAppointmentID = @TestAppointmentID";
+
+    using SqlCommand command = new(query, connection);
+    command.Parameters.AddWithValue("@TestAppointmentID", TestAppointmentID);
+
+    try
+    {
+        connection.Open();
+        using SqlDataReader reader = command.ExecuteReader();
+
+        if (reader.Read())
+        {
+            return new TestsDTO(
+                (int)reader["TestID"],
+                (int)reader["TestAppointmentID"],
+                (bool)reader["TestResult"],
+                reader["Notes"] == DBNull.Value ? "" : (string)reader["Notes"],
+                (int)reader["CreatedByUserID"]
+            );
+        }
+        else
+        {
+            // The record was not found
+            return null;
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        return null;
+    }
+     }
+
     }
 }

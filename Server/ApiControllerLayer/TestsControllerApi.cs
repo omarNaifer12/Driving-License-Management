@@ -9,7 +9,7 @@ using Server.DataAccessLayer;
 namespace Server.ApiControllerLayer
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/Tests")]
     public class TestsControllerApi : ControllerBase
     {
          
@@ -166,8 +166,31 @@ namespace Server.ApiControllerLayer
             }
             catch (Exception ex)
             {
+                
                 Console.WriteLine(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while counting trial tests.");
+            }
+        }
+        [HttpGet("GetByTestAppointmentID/{TestAppointmentID:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<TestAppointmentsDTO> GetTestByTestAppointmentByID(int TestAppointmentID)
+        {
+            try
+            {
+                var test = TestsBusiness.GetTestByTestAppointmentID(TestAppointmentID);
+
+                if (test == null)
+                {
+                    return NotFound($"No test  found with ID {TestAppointmentID}.");
+                }
+                return Ok(test.TestResult);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the test appointment.");
             }
         }
     }

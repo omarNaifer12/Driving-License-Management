@@ -8,7 +8,7 @@ namespace Server.DataAccessLayer
 {
     public class TestAppointmentsDTO
     {
-         public int TestAppointmentID { set; get; }
+        public int TestAppointmentID { set; get; }
         public int  TestTypeID { set; get; }
         public int LocalDrivingLicenseApplicationID { set; get; }
         public DateTime AppointmentDate { set; get; }
@@ -47,8 +47,8 @@ namespace Server.DataAccessLayer
             string query = @"SELECT TestAppointmentID, AppointmentDate,PaidFees, IsLocked
                         FROM TestAppointments
                         WHERE  
-(TestTypeID = @TestTypeID) 
-AND (LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID)
+TestTypeID = @TestTypeID 
+AND LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
 order by TestAppointmentID desc;";
             using SqlCommand command = new (query, connection);
             command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
@@ -59,10 +59,11 @@ order by TestAppointmentID desc;";
                 using SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
+                    Console.WriteLine("reach here get list for apptypes");
                     data.Add(new TestAppointmentsDTO(
                       (int)reader["TestAppointmentID"],
                         -1,
-                      (int)reader["LocalDrivingLicenseApplicationID"],
+                      -1,
                         (DateTime)reader["AppointmentDate"],
                         Convert.ToSingle( reader["PaidFees"]),
                        -1,

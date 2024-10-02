@@ -9,7 +9,6 @@ const initialState={
         IsActive:false,
         UserName:"",
         Password:"",
-
     }
 }
 export const UsersReducer=(state=initialState,action)=>{

@@ -54,7 +54,10 @@ namespace Server.ApiControllerLayer
         {
             CreatedByUserName = localDrivingLicense.CreatedByUserInfo?.UserName,
             LicenseClassID = localDrivingLicense.LicenseClassID,
-            localDrivingLicenseID=id
+            localDrivingLicenseID=id,
+            PersonFullName=localDrivingLicense.PersonFullName,
+            LicenseClassName=localDrivingLicense.LicensClassInfo?.ClassName,
+            ApplicationTypeName=localDrivingLicense.ApplicationTypeInfo?.ApplicationTypeTitle
         };
 
         // Returning a combined result with both `applicationDto` and `OtherDetails`

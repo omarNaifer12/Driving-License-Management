@@ -192,5 +192,35 @@ namespace Server.ApiControllerLayer
                 return StatusCode(500, new { message = "An error occurred", error = ex.Message });
             }
         }
+         [HttpPost("IssueLocalDrivingLicense", Name ="IssueLocalDrivingLicenseFirstTime")] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult IssueLocalDrivingLicenseFirstTime(int createdByUserID,int LocalDrivingLicenseApplicationID
+        ,[FromBody]string Note)
+        {
+           try{
+            LocalDrivingLicenseBusiness? localDrivingLicenseBusiness=LocalDrivingLicenseBusiness.FindLocalDrivingApplicationByID(LocalDrivingLicenseApplicationID);
+            if(localDrivingLicenseBusiness==null)
+            {
+                return NotFound("the id is not found ");
+            }
+            int result=localDrivingLicenseBusiness.IssueLocalDrivingLicenseFirstTime(createdByUserID,Note);
+            if(result!=-1)
+            {
+                return Ok(result);
+            }
+            else{
+                return  BadRequest("an error to create new licese");
+            }
+           }
+           catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, new { message = "An error occurred", error = ex.Message });
+            }
+
+        }
     }
 }

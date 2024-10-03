@@ -156,5 +156,33 @@ namespace Server.DataAccessLayer
                      return null;
                 }
         }
+         public static bool UpdateStatus(int ApplicationID, short NewStatus)
+
+        { int rowsAffected = 0;
+            using SqlConnection connection = new (DataAccessSettings.ConnectionString);
+
+            string query = @"Update  Applications  
+                            set 
+                                ApplicationStatus = @NewStatus, 
+                                LastStatusDate = @LastStatusDate
+            where ApplicationID=@ApplicationID;";           
+            using SqlCommand command = new (query, connection);
+            command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+            command.Parameters.AddWithValue("@NewStatus", NewStatus);
+            command.Parameters.AddWithValue("LastStatusDate", DateTime.Now);
+             try
+            { 
+                connection.Open();
+                rowsAffected = command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+          
+
+            return rowsAffected > 0;
+        }
     }
 }

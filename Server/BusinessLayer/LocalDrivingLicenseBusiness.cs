@@ -108,5 +108,38 @@ namespace Server.BusinessLayer
             return LocalDrivingLicenseDataAccess.IsPersonHaveTheSameLocalDrivingLicense(ApplicationTypeID,
             ApplicantPersonID,LicenseClassID);
         }
+        public  int IssueLocalDrivingLicenseFirstTime(int createdByUserID,string Note)
+        {
+            int driverID=-1;
+            DriverDTO? driver=DriverDataAccess.GetDriverInfoByPersonID(this.ApplicantPersonID);
+            if(driver!=null){
+                driverID=driver.DriverID;
+            }
+            else{
+            
+                DriverBusiness Driver=new (new DriverDTO(-1,this.ApplicantPersonID,createdByUserID,DateTime.Now));
+                if(Driver.Save()){
+                    driverID=Driver.DriverID;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            DateTime newExpirationDate = LicensClassInfo?.DefaultValidityLength != null 
+    ? DateTime.Now.AddYears(LicensClassInfo.DefaultValidityLength)
+    : DateTime.Now;
+            LicenseBusiness license=new(new LicenseDTO(-1,this.ApplicationID,driverID,this.LicenseClassID,
+            DateTime.Now,newExpirationDate,Note,LicensClassInfo.ClassFees,true,1,createdByUserID) );
+            if(license.Save()){
+                this.CompleteApplication();
+                return license.LicenseID;
+            }
+            else
+            return -1;
+
+
+
+        }
     }
 }

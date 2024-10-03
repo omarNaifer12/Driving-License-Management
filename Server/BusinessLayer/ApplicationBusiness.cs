@@ -111,5 +111,10 @@ namespace Server.BusinessLayer
             }
             return false;
         }
+        public  bool CompleteApplication()
+        {
+            return ApplicationDataAccess.UpdateStatus(this.ApplicationID,3);
+
+        }
     }
 }

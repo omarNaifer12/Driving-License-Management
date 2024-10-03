@@ -47,13 +47,11 @@ const TestAppointmentsForTestType = () => {
         else{
           return false;
         }
-
       }
       catch(error){
         console.log("error",error);
         return false;
       }
-
     }
     const checkActiveSheduledTestForValidation=async()=>{
       try{
@@ -64,13 +62,11 @@ const TestAppointmentsForTestType = () => {
         else{
           return false;
         }
-
       }
       catch(error){
         console.log("error",error);
         return false;
       }
-
     }
       const handleAddTestAppointment = (e) => {
         e.preventDefault();

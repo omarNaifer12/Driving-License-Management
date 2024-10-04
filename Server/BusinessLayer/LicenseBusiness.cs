@@ -118,5 +118,9 @@ namespace Server.BusinessLayer
         {
             return LicenseDataAccess.GetLicensesOfPerson(PersonID);
         }
+        public static bool DeactivateLicense (int licenseID)
+        {
+            return LicenseDataAccess.DeactivateLicense(licenseID);
+        }
     }
 }

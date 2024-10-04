@@ -187,7 +187,7 @@ namespace Server.DataAccessLayer
 
             int LicenseID = -1;
 
-            using SqlConnection connection = new SqlConnection(DataAccessSettings.ConnectionString);
+            using SqlConnection connection = new (DataAccessSettings.ConnectionString);
             string query = @"SELECT l.LicenseID FROM Licenses INNER JOIN Drivers d ON l.DriverID=d.DriverID
 
                 WHERE d.PersonID=@PersonID AND l.LicenseClass=@LicenseClassID AND l.IsActive=1";
@@ -259,5 +259,39 @@ namespace Server.DataAccessLayer
 
 
         }
+                public static bool DeactivateLicense(int LicenseID)
+        {
+
+            int rowsAffected = 0;
+            using SqlConnection connection = new (DataAccessSettings.ConnectionString);
+
+            string query = @"UPDATE Licenses
+                           SET 
+                              IsActive = 0
+                             
+                         WHERE LicenseID=@LicenseID";
+
+            using SqlCommand command = new (query, connection);
+
+            command.Parameters.AddWithValue("@LicenseID", LicenseID);
+         
+
+            try
+            {
+                connection.Open();
+                rowsAffected = command.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+            }
+
+           
+
+            return rowsAffected > 0;
+        }
+
     }
 }

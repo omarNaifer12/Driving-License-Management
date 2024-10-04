@@ -34,14 +34,14 @@ namespace Server.ApiControllerLayer
             }
 
         }
-          [HttpGet("one/{id:int}", Name ="GetOnePersonByID")] 
+        [HttpGet("one/{id:int}",Name="GetOnePersonByID")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<object>GetOneLicenseByID(int id)
         {
-           
+        
           try{
              LicenseBusiness? license=LicenseBusiness.GetLicenseByID(id);
           if(license==null){
@@ -63,7 +63,6 @@ namespace Server.ApiControllerLayer
           {
             Console.WriteLine(ex.Message);
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
-
           }
         }
     }

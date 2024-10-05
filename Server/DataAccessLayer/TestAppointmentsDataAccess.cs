@@ -87,8 +87,8 @@ order by TestAppointmentID desc;";
         {
         int TestAppointmentID = -1;
         using SqlConnection connection = new (DataAccessSettings.ConnectionString);
-        string query = @"Insert Into TestAppointments (TestTypeID,LocalDrivingLicenseApplicationID,AppointmentDate,PaidFees,CreatedByUserID,IsLocked,RetakeTestApplicationID
-Values (@TestTypeID,@LocalDrivingLicenseApplicationID,@AppointmentDate,@PaidFees,@CreatedByUserID,0,@RetakeTestApplicationID);
+        string query = @"Insert Into TestAppointments (TestTypeID,LocalDrivingLicenseApplicationID,AppointmentDate,PaidFees,CreatedByUserID,IsLocked,RetakeTestApplicationID)
+VALUES(@TestTypeID,@LocalDrivingLicenseApplicationID,@AppointmentDate,@PaidFees,@CreatedByUserID,0,@RetakeTestApplicationID);
             SELECT SCOPE_IDENTITY();";
             using SqlCommand command = new (query, connection);           
             command.Parameters.AddWithValue("@TestTypeID", testAppointment.TestTypeID);
@@ -105,6 +105,7 @@ Values (@TestTypeID,@LocalDrivingLicenseApplicationID,@AppointmentDate,@PaidFees
   object result = command.ExecuteScalar();
   if (result != null && int.TryParse(result.ToString(), out int insertedID))
                 { 
+                    Console.WriteLine("reach testidapointement in object");
                    TestAppointmentID = insertedID;
                 } 
             }

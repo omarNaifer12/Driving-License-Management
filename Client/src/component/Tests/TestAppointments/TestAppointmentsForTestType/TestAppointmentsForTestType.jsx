@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import './TestAppointmentsForTestType.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import CptLocalDrivingApplicationDetails from '../../../LocalDrivingApplication/CptLocalDrivingApplicationDetails/CptLocalDrivingApplicationDetails';
 import { getDataAPI } from '../../../../utils/fetchData';
-import { GetApplicationTypeByIdAction, GetTestTypeByIdAction, TrialTestsAction } from '../../../../Redux/Actions/TestsAction';
-const TestAppointmentsForTestType = () => {
-    
+import {  GetTestTypeByIdAction, PassedTestCountAction, TrialTestsAction } from '../../../../Redux/Actions/TestsAction';
+import { GetLocalDrivingLicenseByIDAction, ResetLocalDrivingLicenseDataAction } from '../../../../Redux/Actions/LocalDrivingLicenseAction';
+const TestAppointmentsForTestType =()=>{  
     const CountPassedTests=useSelector((state)=>state.Tests.PassedTestsCount);
-    const TestTrials=useSelector((state)=>state.Tests.TestTrials);
-    const TestType=useSelector((state)=>state.Tests.TestType);
-    const localDrivingLicenseID=useParams();
+    const navigate=useNavigate();
+   
+    const {localDrivingLicenseID}=useParams();
     const dispatch=useDispatch();
     useEffect(()=>{
-        dispatch(GetLocalDrivingLicenseByIDAction(localDrivingLicenseID));
-        dispatch(PassedTestCountAction(localDrivingLicenseID));
+      
+      dispatch(GetLocalDrivingLicenseByIDAction(localDrivingLicenseID));
+      dispatch(PassedTestCountAction(localDrivingLicenseID));
+console.log("localdribg is",localDrivingLicenseID);
 
     },[CountPassedTests,dispatch,localDrivingLicenseID])
     const [TestAppointmentsForTestType,setTestAppointmentsForTestType]=useState( []);
     const fetchTestAppointmentsForTestType=async()=>{
         try{
         const response=await getDataAPI(`TestAppointments/TestAppointmentsForTestType?testTypeID=${CountPassedTests+1}&localDrivingLicenseApplicationID=${localDrivingLicenseID}`)
-    setTestAppointmentsForTestType(response.data);    
+        if(response.status!==404){
+          setTestAppointmentsForTestType(response.data);
+        }
+    
     }
         catch(error){
             console.log("error",error);
@@ -29,22 +34,28 @@ const TestAppointmentsForTestType = () => {
         }
     }
     useEffect(()=>{
+      console.log(localDrivingLicenseID);
         if(CountPassedTests!==-1||CountPassedTests!==3){
             fetchTestAppointmentsForTestType();
             dispatch(GetTestTypeByIdAction(CountPassedTests+1));
-            dispatch(TrialTestsAction(localDrivingLicenseID,CountPassedTests+1))
+            dispatch(TrialTestsAction(localDrivingLicenseID,CountPassedTests+1));
         }
     },[CountPassedTests,localDrivingLicenseID])
     if(CountPassedTests===3){
-        return <p>u already passed all tests</p>
+    return<p>u already passed all tests</p>
     }
     const checkTestCompletedForValidation=async()=>{
+
+     
       try{
         const response=await getDataAPI(`Tests/TestCompleted?localDrivingLicenseApplicationID=${localDrivingLicenseID}&testTypeID=${CountPassedTests+1}`);
         if(response.data===true){
+          console.log("enter true from complete");
+          
           return true;
         }
         else{
+          console.log("enter false from complete");
           return false;
         }
       }
@@ -68,17 +79,19 @@ const TestAppointmentsForTestType = () => {
         return false;
       }
     }
-      const handleAddTestAppointment = (e) => {
+      const handleAddTestAppointment =async (e) => {
         e.preventDefault();
-        if(checkTestCompletedForValidation()){
+        const checkComplete= await checkTestCompletedForValidation();
+        if(checkComplete){
           alert("is alredy completed the test you cant enter");
           return;
         }
-        if(checkActiveSheduledTestForValidation()){
+        const checkShedule=await checkActiveSheduledTestForValidation();
+        if(checkShedule){
           alert("is already have other sheduled test ");
           return;
         }
-        console.log('Add Test Appointment');
+        navigate("/Add-Test-Appointments");
       };
     
       const handleTakeTest = (TestAppointmentID) => {
@@ -88,9 +101,13 @@ const TestAppointmentsForTestType = () => {
   return (
     
         <div>
+      <h1>{CountPassedTests===0?"vison test":CountPassedTests===1?"written test":"practical test"} </h1>
       <CptLocalDrivingApplicationDetails />
+      
+
 
       <h2>Test Appointments</h2>
+
 
       <div className="test-appointments-list">
         {TestAppointmentsForTestType.length > 0 ? (

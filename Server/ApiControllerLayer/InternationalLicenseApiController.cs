@@ -61,10 +61,9 @@ namespace Server.ApiControllerLayer
                     ExpirationDate,
                     true
                 );
-
                 if (newLicense.Save())
                 {
-                    return CreatedAtAction(nameof(GetInternationalLicenseByID), new { internationalLicenseID = newLicense.InternationalLicenseID }, newLicense.INLbusinessDTO);
+                  return CreatedAtAction(nameof(GetInternationalLicenseByID), new { internationalLicenseID = newLicense.InternationalLicenseID }, newLicense.INLbusinessDTO);
                 }
                 else
                 {
@@ -87,12 +86,10 @@ namespace Server.ApiControllerLayer
             try
             {
                 int licenseID = InterNationalLicenseBusiness.GetActiveInternationalLicenseIDByDriverID(driverID);
-
                 if (licenseID == -1)  // Assuming -1 means no active license found
                 {
                     return NotFound($"No active international license found for Driver ID {driverID}.");
                 }
-
                 return Ok(licenseID);
             }
             catch (Exception ex)
@@ -101,9 +98,8 @@ namespace Server.ApiControllerLayer
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving the active license.");
             }
         }
-
         // GET: api/InternationalLicense/person/{personID}
-        [HttpGet("person/{personID:int}")]
+        [HttpGet("Licensesperson/{personID:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -112,12 +108,10 @@ namespace Server.ApiControllerLayer
             try
             {
                 var licenses = InterNationalLicenseBusiness.GetAllInterNationalLicensesOfPerson(personID);
-
                 if (licenses == null || licenses.Count == 0)
                 {
                     return NotFound($"No international licenses found for Person ID {personID}.");
                 }
-
                 return Ok(licenses);
             }
             catch (Exception ex)

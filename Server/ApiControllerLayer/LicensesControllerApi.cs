@@ -34,7 +34,7 @@ namespace Server.ApiControllerLayer
             }
 
         }
-        [HttpGet("one/{id:int}",Name="GetOnePersonByID")] 
+        [HttpGet("one/{id:int}",Name="GetOneLicenseByID")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

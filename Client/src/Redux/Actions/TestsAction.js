@@ -12,7 +12,6 @@ export const PassedTestCountAction=(localDrivingLicenseID)=>async(dispatch)=>{
             type:TestAction.GET_PASSED_TESTS_COUNT,
             payload:response.data
         });
-
     }
     catch(error){
         dispatch({

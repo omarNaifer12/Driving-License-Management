@@ -1,4 +1,4 @@
-import { PassedTestCount, TestAction } from "../Actions/TestsAction";
+import { TestAction } from "../Actions/TestsAction";
 
 const initialState={
     PassedTestsCount:-1,

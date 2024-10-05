@@ -70,12 +70,12 @@ namespace Server.DataAccessLayer
 
             using SqlConnection connection = new (DataAccessSettings.ConnectionString);
 
-            string query = @" SELECT TOP 1 Found=1
-                            FROM 
-                             Tests INNER JOIN TestAppointments ON Tests.TestAppointmentID = TestAppointments.TestAppointmentID 
+            string query = @"SELECT TOP 1 Found=1
+                            FROM
+                            Tests INNER JOIN TestAppointments ON Tests.TestAppointmentID = TestAppointments.TestAppointmentID 
                               WHERE
-                            LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
-                            AND TestTypeID = @TestTypeID  AND TestResult=1
+                            TestAppointments.LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
+                            AND TestAppointments.TestTypeID = @TestTypeID  AND Tests.TestResult=1
                             ORDER BY TestID desc";
 
             using SqlCommand command = new (query, connection);
@@ -87,7 +87,7 @@ namespace Server.DataAccessLayer
             {
                 connection.Open();
 
-                object result = command.ExecuteScalar();
+                var result = command.ExecuteScalar();
              
 
                if (result != null )

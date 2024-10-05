@@ -4,9 +4,13 @@ import axios from 'axios';
 import { getDataAPI } from '../../utils/fetchData';
 import { BASE_URL } from '../../utils/config';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { GetLocalDrivingLicenseByIDAction, ResetLocalDrivingLicenseDataAction } from '../../Redux/Actions/LocalDrivingLicenseAction';
+import { PassedTestCountAction } from '../../Redux/Actions/TestsAction';
 const AllLocalDrivingApplication = () => {
     const [localDrivingApplications,setLocalDrivingApplications]=useState([]);
     const navigate=useNavigate();
+    const dispatch=useDispatch();
     const fetchData=async()=>{
         try{
           const response=await getDataAPI(`LocalDrivingLicenses/All`);
@@ -14,19 +18,19 @@ const AllLocalDrivingApplication = () => {
     }
         catch(error){
             console.log("error",error);
-            
+           
         }
     }
     useEffect(()=>{
         fetchData();
     },[])
     
-      const handleAdd = () => {
-        console.log('Add new local driving application');
-      };
-    
-      const handleDetails = (id) => {
+      const handleDetails=(id)=>{
         console.log('Show details for local driving application ID:', id);
+        dispatch(ResetLocalDrivingLicenseDataAction());
+        dispatch(GetLocalDrivingLicenseByIDAction(id));
+        dispatch(PassedTestCountAction(id));
+        navigate("/LocalDrivingLicenseDetails");
       };
     
       const handleUpdate = (id) => {
@@ -67,11 +71,13 @@ const AllLocalDrivingApplication = () => {
                   <td data-label="Passed Test Count">{application.PassedTestCount}</td>
                   <td data-label="Status">{application.Status}</td>
                   <td>
-                    <button className="btn-details" onClick={() => handleDetails(application.LocalDrivingLicenseApplicationID)}>Details</button>
-                    <button className="btn-update" onClick={() =>navigate(`/UpdateLocalDrivingLicense/
+                    <button className="btn-details"onClick={() =>handleDetails(application.LocalDrivingLicenseApplicationID)}>Details</button>
+                    <button className="btn-update" onClick={() =>navigate(`/UpdateLocalDrivingLicense
                     ${application.LocalDrivingLicenseApplicationID}`) }>Update</button>
                     <button className="btn-delete" onClick={() => handleDelete(application.LocalDrivingLicenseApplicationID)}>Delete</button>
+                    <button onClick={()=>navigate(`/TestAppointmentsForTestType/${application.LocalDrivingLicenseApplicationID}`)}>go tests</button>
                   </td>
+                 
                 </tr>
               ))}
             </tbody>

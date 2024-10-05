@@ -68,7 +68,8 @@ namespace Server.ApiControllerLayer
         {
             try
             {
-                var newAppointment = new TestAppointmentsBusiness(testAppointmentsDto, TestAppointmentsBusiness.EnMode2.AddNew);
+                var newAppointment = new TestAppointmentsBusiness(testAppointmentsDto);
+                Console.WriteLine("reach to data addd appointment test");
 
                 if (newAppointment.Save())
                 {

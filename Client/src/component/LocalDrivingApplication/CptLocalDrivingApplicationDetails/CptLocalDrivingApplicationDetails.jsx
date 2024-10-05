@@ -23,7 +23,7 @@ const CptLocalDrivingApplicationDetails = () => {
             
             <div className="info-group">
                 <label>Passed Test Count:</label>
-                <span>{CountPassedTests || 'N/A'}</span>
+                <span>{CountPassedTests }</span>
             </div>
 
             <h3>Application Information</h3>

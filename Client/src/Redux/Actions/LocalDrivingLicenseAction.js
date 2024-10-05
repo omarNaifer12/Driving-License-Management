@@ -17,7 +17,7 @@ export const GetLocalDrivingLicenseByIDAction=(id)=>async(dispatch)=>{
         dispatch({
             type:LocalDrivingLicenseAction.GET_ONE_LOCAL_DRIVING_LICENSE,
             payload:combinedData
-        })
+        });
 
     }
     catch(error){

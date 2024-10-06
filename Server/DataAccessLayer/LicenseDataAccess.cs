@@ -188,7 +188,7 @@ namespace Server.DataAccessLayer
             int LicenseID = -1;
 
             using SqlConnection connection = new (DataAccessSettings.ConnectionString);
-            string query = @"SELECT l.LicenseID FROM Licenses INNER JOIN Drivers d ON l.DriverID=d.DriverID
+            string query = @"SELECT l.LicenseID FROM Licenses l  INNER JOIN Drivers d ON l.DriverID=d.DriverID
 
                 WHERE d.PersonID=@PersonID AND l.LicenseClass=@LicenseClassID AND l.IsActive=1";
 

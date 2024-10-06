@@ -45,7 +45,7 @@ namespace Server.ApiControllerLayer
             try
             {
                 var newTest = new TestsBusiness(testsDto, TestsBusiness.EnMode.AddNew);
-
+Console.WriteLine("reach add test ");
                 if (newTest.Save())
                 {
                     return CreatedAtAction(nameof(GetTestByID), new { testID = newTest.TestID }, newTest.TestsBusinessDTO);
@@ -185,7 +185,7 @@ namespace Server.ApiControllerLayer
                 {
                     return NotFound($"No test  found with ID {TestAppointmentID}.");
                 }
-                return Ok(test.TestResult);
+                return Ok(test.TestsBusinessDTO);
             }
             catch (Exception ex)
             {

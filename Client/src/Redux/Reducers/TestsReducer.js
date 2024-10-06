@@ -17,15 +17,14 @@ const TestReducer=(state=initialState,action)=>{
             return {
                ...state,PassedTestsCount:action.payload
             };
-         case TestAction.TRIAL_TESTS:
+        case TestAction.TRIAL_TESTS:
             return{
                 ...state,TestTrials:action.payload
             };
-         case TestAction.TEST_TYPE_EDETAILS:
+        case TestAction.TEST_TYPE_EDETAILS:
             return{
-                ...state,TestType:action.payload
-            }      
-
+         ...state,TestType:action.payload
+            }
             default:
                 return state;
     }

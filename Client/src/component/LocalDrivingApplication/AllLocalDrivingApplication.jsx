@@ -40,7 +40,20 @@ const AllLocalDrivingApplication = () => {
       const handleDelete = (id) => {
         console.log('Delete local driving application ID:', id);
       };
-    
+    const checkPersonHaveLicenseAndnavigate=async(LocalDrivingLicenseID)=>{
+try{
+  const response=await getDataAPI(`Licenses/ActiveLicensePerson?LocalDrivingLicenseID=${LocalDrivingLicenseID}`)
+  if(response.data!=-1){
+    navigate(`/license-details/${response.data}`);
+  }
+
+
+}
+catch(error){
+console.log("error",error);
+
+}
+    }
       return (
         <div className="local-driving-application-list-container">
           <div className="header">
@@ -75,7 +88,16 @@ const AllLocalDrivingApplication = () => {
                     <button className="btn-update" onClick={() =>navigate(`/UpdateLocalDrivingLicense
                     ${application.LocalDrivingLicenseApplicationID}`) }>Update</button>
                     <button className="btn-delete" onClick={() => handleDelete(application.LocalDrivingLicenseApplicationID)}>Delete</button>
-                    <button onClick={()=>navigate(`/TestAppointmentsForTestType/${application.LocalDrivingLicenseApplicationID}`)}>go tests</button>
+                    <button onClick={()=>navigate(`/TestAppointmentsForTestType/${application.LocalDrivingLicenseApplicationID}/${application.PassedTestCount}`)}>go tests</button>
+
+                  </td>
+                  <td> 
+                  {application.Status==="New"&&application.PassedTestCount===3&&<button 
+                  onClick={()=>navigate(`/Issue-Local-Driving-License-FirstTime/${application.LocalDrivingLicenseApplicationID}`)}>
+                    issue First TimeLicense
+                    </button>}
+                   {application.Status==="completed"&& <button onClick={()=>checkPersonHaveLicenseAndnavigate(application.LocalDrivingLicenseApplicationID)}>
+                    check license details</button>}
                   </td>
                  
                 </tr>

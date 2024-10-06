@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\naifer\\Desktop\\fullstack projects\\Driving-License-Management\\Server\\server.csproj": {}
+    "C:\\Users\\naifer\\Desktop\\fullstack projects\\Driving-License-Management\\Server\\server.csproj": {}
   },
   "projects": {
-    "c:\\Users\\naifer\\Desktop\\fullstack projects\\Driving-License-Management\\Server\\server.csproj": {
+    "C:\\Users\\naifer\\Desktop\\fullstack projects\\Driving-License-Management\\Server\\server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\naifer\\Desktop\\fullstack projects\\Driving-License-Management\\Server\\server.csproj",
+        "projectUniqueName": "C:\\Users\\naifer\\Desktop\\fullstack projects\\Driving-License-Management\\Server\\server.csproj",
         "projectName": "server",
-        "projectPath": "c:\\Users\\naifer\\Desktop\\fullstack projects\\Driving-License-Management\\Server\\server.csproj",
+        "projectPath": "C:\\Users\\naifer\\Desktop\\fullstack projects\\Driving-License-Management\\Server\\server.csproj",
         "packagesPath": "C:\\Users\\naifer\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\naifer\\Desktop\\fullstack projects\\Driving-License-Management\\Server\\obj\\",
+        "outputPath": "C:\\Users\\naifer\\Desktop\\fullstack projects\\Driving-License-Management\\Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\naifer\\AppData\\Roaming\\NuGet\\NuGet.Config",

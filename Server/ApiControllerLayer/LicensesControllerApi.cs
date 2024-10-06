@@ -12,20 +12,24 @@ namespace Server.ApiControllerLayer
     [Route("api/Licenses")]
     public class LicensesControllerApi : ControllerBase
     {
-        [HttpGet("ActiveLicensePerson", Name ="GetActiveLicenseIdForPerson")] 
+        [HttpGet("ActiveLicensePerson/{LocalDrivingLicenseID:int}", Name ="GetActiveLicenseIdForPersonsff")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult  GetActiveLicenseIdForPerson(int PersonID,int LicenseClassID)
+        public ActionResult  GetActiveLicenseIdForPersonsff(int LocalDrivingLicenseID)
         {
-            try{
-            int result=LicenseBusiness.GetActiveLicenseIdForPerson(PersonID,LicenseClassID);
+             try{
+              LocalDrivingLicenseBusiness? localDrivinglice=LocalDrivingLicenseBusiness.FindLocalDrivingApplicationByID(LocalDrivingLicenseID);
+              if(localDrivinglice==null){
+                return NotFound("no local driving license found");
+              }
+            int result=LicenseBusiness.GetActiveLicenseIdForPerson(localDrivinglice.ApplicantPersonID,localDrivinglice.LicenseClassID);
             if(result==-1)
             {
                 return NotFound("no active license for this person");
             }
             return Ok(result);
-            }
+             }
          catch(Exception ex)
             {
                   Console.WriteLine(ex.Message);

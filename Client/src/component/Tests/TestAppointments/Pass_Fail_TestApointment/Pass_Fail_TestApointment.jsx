@@ -2,22 +2,27 @@ import React, { useState } from 'react'
 import "./Pass_Fail_TestApointment.css"
 import { useParams } from 'react-router-dom';
 import { postDataAPI } from '../../../../utils/fetchData';
+import { useSelector } from 'react-redux';
 const Pass_Fail_TestApointment = () => {
     const TestTrials=useSelector((state)=>state.Tests.TestTrials);
     const TestType=useSelector((state)=>state.Tests.TestType);
     const LocalDrivingLicense=useSelector((state)=>state.LocalDrivingLicenses.LocalDrivingLicense);
     const [TestID,setTestID]=useState(null);
-    const TestAppointmentID=useParams();
+    const {TestAppointmentID}=useParams();
     const [result,setResult]=useState("pass");
     const [Note,setNote]=useState("");
-    const SaveAndAddTheResult=async()=>{
+    const SaveAndAddTheResult=async(e)=>{
+        e.preventDefault();
         const userID=parseInt(localStorage.getItem("UserID"),10);
         const data={
+            TestID:0,
             TestAppointmentID: TestAppointmentID,
             TestResult: result==='pass',
             Notes: Note,
             CreatedByUserID: userID
         };
+        console.log("data from add test is ",data);
+        
         try{ 
         const response=await postDataAPI("Tests/Add",data);
           console.log("addedd test success ",response.data);
@@ -28,8 +33,6 @@ const Pass_Fail_TestApointment = () => {
             
         }
         }
-
-    
 
   return (
     <div className="pass-fail-test-appointment">
@@ -112,7 +115,7 @@ const Pass_Fail_TestApointment = () => {
 
    
     <div className="button-row">
-        <button onClick={()=>SaveAndAddTheResult()} className="save-button">Save</button>
+        <button onClick={(e)=>SaveAndAddTheResult(e)} className="save-button">Save</button>
     </div>
 </div>
   )

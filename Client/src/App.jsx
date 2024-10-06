@@ -19,6 +19,9 @@ import Add_EditLocalDrivingLicense from './component/LocalDrivingApplication/Add
 import CptLocalDrivingApplicationDetails from './component/LocalDrivingApplication/CptLocalDrivingApplicationDetails/CptLocalDrivingApplicationDetails';
 import TestAppointmentsForTestType from './component/Tests/TestAppointments/TestAppointmentsForTestType/TestAppointmentsForTestType';
 import Add_EditTestAppointments from './component/Tests/TestAppointments/Add_EditTestAppointments/Add_EditTestAppointments';
+import Pass_Fail_TestApointment from './component/Tests/TestAppointments/Pass_Fail_TestApointment/Pass_Fail_TestApointment';
+import IssueLocalDrivingLicenseFirstTime from './component/Licenses/LocalLicenses/IssueLocalDrivingLicenseFirstTime/IssueLocalDrivingLicenseFirstTime';
+import CptLicenseDtails from './component/Licenses/LocalLicenses/CptLicenseDtails/CptLicenseDtails';
 const App=() => {
   return (
     <div>
@@ -44,12 +47,14 @@ const App=() => {
  <Route path='/UpdateLocalDrivingLicense/:id' element={<Add_EditLocalDrivingLicense/>} />
  <Route path='/LocalDrivingLicenseDetails' element={<CptLocalDrivingApplicationDetails/>} />
  
- <Route path='/TestAppointmentsForTestType/:localDrivingLicenseID' element={<TestAppointmentsForTestType/>} />
+ <Route path='/TestAppointmentsForTestType/:localDrivingLicenseID/:CountPassedTest' element={<TestAppointmentsForTestType/>} />
  <Route path='/Add-Test-Appointments' element={<Add_EditTestAppointments/>} />
-   
-  
+ 
+ <Route path='/pass-fail-TestAppointment/:TestAppointmentID' element={<Pass_Fail_TestApointment/>} />
+ <Route path='/Issue-Local-Driving-License-FirstTime/:id' element={<IssueLocalDrivingLicenseFirstTime/>} />
+ <Route path='/license-details/:id' element={<CptLicenseDtails/>} />
 
-        </Routes>
+       </Routes>
     </div>
   )
 }

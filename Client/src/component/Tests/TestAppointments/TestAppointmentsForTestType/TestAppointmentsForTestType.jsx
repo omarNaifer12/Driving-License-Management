@@ -7,17 +7,20 @@ import { getDataAPI } from '../../../../utils/fetchData';
 import {  GetTestTypeByIdAction, PassedTestCountAction, TrialTestsAction } from '../../../../Redux/Actions/TestsAction';
 import { GetLocalDrivingLicenseByIDAction, ResetLocalDrivingLicenseDataAction } from '../../../../Redux/Actions/LocalDrivingLicenseAction';
 const TestAppointmentsForTestType =()=>{  
-    const CountPassedTests=useSelector((state)=>state.Tests.PassedTestsCount);
+    
+    const LocalDrivingLicense=useSelector((state)=>state.LocalDrivingLicenses.LocalDrivingLicense)
     const navigate=useNavigate();
-   
     const {localDrivingLicenseID}=useParams();
+    const {CountPassedTest}=useParams();
+    const CountPassedTests=parseInt(CountPassedTest, 10); 
     const dispatch=useDispatch();
     useEffect(()=>{
+      console.log("countpassed",CountPassedTests,'type',typeof CountPassedTests);
       
       dispatch(GetLocalDrivingLicenseByIDAction(localDrivingLicenseID));
       dispatch(PassedTestCountAction(localDrivingLicenseID));
-console.log("localdribg is",localDrivingLicenseID);
-
+console.log("localdribg is",localDrivingLicenseID,"typelocal",typeof localDrivingLicenseID);
+      
     },[CountPassedTests,dispatch,localDrivingLicenseID])
     const [TestAppointmentsForTestType,setTestAppointmentsForTestType]=useState( []);
     const fetchTestAppointmentsForTestType=async()=>{
@@ -35,11 +38,11 @@ console.log("localdribg is",localDrivingLicenseID);
     }
     useEffect(()=>{
       console.log(localDrivingLicenseID);
-        if(CountPassedTests!==-1||CountPassedTests!==3){
+       
             fetchTestAppointmentsForTestType();
             dispatch(GetTestTypeByIdAction(CountPassedTests+1));
             dispatch(TrialTestsAction(localDrivingLicenseID,CountPassedTests+1));
-        }
+        
     },[CountPassedTests,localDrivingLicenseID])
     if(CountPassedTests===3){
     return<p>u already passed all tests</p>
@@ -66,8 +69,9 @@ console.log("localdribg is",localDrivingLicenseID);
     }
     const checkActiveSheduledTestForValidation=async()=>{
       try{
-        const response=await getDataAPI(`/TestAppointments/ActiveScheduledTest?localDrivingLicenseApplicationID=${localDrivingLicenseID}&testTypeID=${CountPassedTests+1}`);
+        const response=await getDataAPI(`TestAppointments/ActiveScheduledTest?localDrivingLicenseApplicationID=${localDrivingLicenseID}&testTypeID=${CountPassedTests+1}`);
         if(response.data===true){
+          console.log("enter true from active shedule");
           return true;
         }
         else{
@@ -95,17 +99,15 @@ console.log("localdribg is",localDrivingLicenseID);
       };
     
       const handleTakeTest = (TestAppointmentID) => {
-        // Logic for taking the test with TestAppointmentID
-        console.log(`Take test for appointment ID: ${TestAppointmentID}`);
+      navigate(`/pass-fail-TestAppointment/${TestAppointmentID}`);
       };
   return (
     
         <div>
-      <h1>{CountPassedTests===0?"vison test":CountPassedTests===1?"written test":"practical test"} </h1>
+      <h1 onClick={()=>{console.log('passed test count',CountPassedTests,'typeis ',typeof CountPassedTests);
+      }}>{CountPassedTests===0?"vison test":(CountPassedTests===1?"written test":"practical test")} </h1>
       <CptLocalDrivingApplicationDetails />
       
-
-
       <h2>Test Appointments</h2>
 
 

@@ -249,7 +249,10 @@ namespace Server.DataAccessLayer
 
 
         }
-    
+    public static int GetActiveLocalDrivingLicenseId(int classID,int personID)
+    {
+        return 0;
+    }
     
     }
 }

@@ -25,8 +25,7 @@ import CptLicenseDtails from './component/Licenses/LocalLicenses/CptLicenseDtail
 const App=() => {
   return (
     <div>
-
-        <Routes>
+ <Routes>
  <Route path='/all-people' element={<ListPersons />} />     
  <Route path='/add-Person' element={<Add_Edit_Person />} />     
  <Route path='/edit-Person/:id' element={<Add_Edit_Person />} />     
@@ -52,7 +51,7 @@ const App=() => {
  
  <Route path='/pass-fail-TestAppointment/:TestAppointmentID' element={<Pass_Fail_TestApointment/>} />
  <Route path='/Issue-Local-Driving-License-FirstTime/:id' element={<IssueLocalDrivingLicenseFirstTime/>} />
- <Route path='/license-details/:id' element={<CptLicenseDtails/>} />
+ <Route path='/license-details' element={<CptLicenseDtails/>} />
 
        </Routes>
     </div>

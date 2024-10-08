@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { GetLocalDrivingLicenseByIDAction, ResetLocalDrivingLicenseDataAction } from '../../Redux/Actions/LocalDrivingLicenseAction';
 import { PassedTestCountAction } from '../../Redux/Actions/TestsAction';
+import { setLicenseID } from '../../Redux/Actions/LicensesAction';
 const AllLocalDrivingApplication = () => {
     const [localDrivingApplications,setLocalDrivingApplications]=useState([]);
     const navigate=useNavigate();
@@ -42,12 +43,11 @@ const AllLocalDrivingApplication = () => {
       };
     const checkPersonHaveLicenseAndnavigate=async(LocalDrivingLicenseID)=>{
 try{
-  const response=await getDataAPI(`Licenses/ActiveLicensePerson?LocalDrivingLicenseID=${LocalDrivingLicenseID}`)
+  const response=await getDataAPI(`Licenses/ActiveLicensePerson/${LocalDrivingLicenseID}`);
   if(response.data!=-1){
-    navigate(`/license-details/${response.data}`);
+    dispatch(setLicenseID(response.data));
+    navigate(`/license-details`);
   }
-
-
 }
 catch(error){
 console.log("error",error);
@@ -96,7 +96,7 @@ console.log("error",error);
                   onClick={()=>navigate(`/Issue-Local-Driving-License-FirstTime/${application.LocalDrivingLicenseApplicationID}`)}>
                     issue First TimeLicense
                     </button>}
-                   {application.Status==="completed"&& <button onClick={()=>checkPersonHaveLicenseAndnavigate(application.LocalDrivingLicenseApplicationID)}>
+                   {application.Status==="Completed"&& <button onClick={()=>checkPersonHaveLicenseAndnavigate(application.LocalDrivingLicenseApplicationID)}>
                     check license details</button>}
                   </td>
                  

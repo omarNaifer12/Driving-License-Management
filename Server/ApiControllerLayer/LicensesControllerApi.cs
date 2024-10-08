@@ -16,7 +16,7 @@ namespace Server.ApiControllerLayer
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult  GetActiveLicenseIdForPersonsff(int LocalDrivingLicenseID)
+        public ActionResult GetActiveLicenseIdForPersonsff(int LocalDrivingLicenseID)
         {
              try{
               LocalDrivingLicenseBusiness? localDrivinglice=LocalDrivingLicenseBusiness.FindLocalDrivingApplicationByID(LocalDrivingLicenseID);

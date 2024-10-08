@@ -51,12 +51,12 @@ namespace Server.DataAccessLayer
                                       @PaidFees, @CreatedByUserID);
                              SELECT SCOPE_IDENTITY();";
             using SqlCommand command = new (query, connection);
-            command.Parameters.AddWithValue("@ApplicantPersonID", application.ApplicantPersonID);
-            command.Parameters.AddWithValue("@ApplicationDate", application.ApplicationDate);
-            command.Parameters.AddWithValue("@ApplicationTypeID", application.ApplicationTypeID);
-            command.Parameters.AddWithValue("@ApplicationStatus", application.ApplicationStatus);
-            command.Parameters.AddWithValue("@LastStatusDate", application.LastStatusDate);
-            command.Parameters.AddWithValue("@PaidFees", application.PaidFees);
+            command.Parameters.AddWithValue("@ApplicantPersonID",application.ApplicantPersonID);
+            command.Parameters.AddWithValue("@ApplicationDate",application.ApplicationDate);
+            command.Parameters.AddWithValue("@ApplicationTypeID",application.ApplicationTypeID);
+            command.Parameters.AddWithValue("@ApplicationStatus",application.ApplicationStatus);
+            command.Parameters.AddWithValue("@LastStatusDate",application.LastStatusDate);
+            command.Parameters.AddWithValue("@PaidFees",application.PaidFees);
             command.Parameters.AddWithValue("@CreatedByUserID",application.CreatedByUserID);
             try
             {

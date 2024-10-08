@@ -4,11 +4,13 @@ import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { GetOneLicense } from '../../../../Redux/Actions/LicensesAction';
 const CptLicenseDtails = () => {
-    const {id}=useParams();
+    const id=useSelector((state)=>state.LicensesReducer.LicenseID);
   const dispatch=useDispatch();
   const license=useSelector((state)=>state.LicensesReducer.licenseDetails);
     useEffect(()=>{
-        if(!license||license.LicensID!=id)
+        console.log("licesne useeffect",license);
+        
+        if(!license||license.LicensID!=id&&id)
         {
         dispatch(GetOneLicense(id));
         }

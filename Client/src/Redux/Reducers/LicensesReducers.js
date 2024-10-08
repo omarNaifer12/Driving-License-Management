@@ -19,7 +19,8 @@ const initialState={
     Gendor: 0,
     ClassName: "",
     ImagePath: ""
-  }
+  },
+  LicenseID:0
   
 }
 const LicensesReducer=(state=initialState,action)=>{
@@ -28,6 +29,14 @@ switch(action.type){
         return {
            ...state,licenseDetails:action.payload
         }
+    case LicenseAction.LICENSE_ID:
+        return {
+            ...state,licenseID:action.payload
+        }
+    case LicenseAction.RESET_LICENSE_ID:
+        return {
+            ...state,licenseID:action.payload
+        }    
         default:
             return state
 }

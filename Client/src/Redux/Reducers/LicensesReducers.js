@@ -13,6 +13,7 @@ const initialState={
     IsActive: true,
     IssueReason: 1,
     CreatedByUserID: 0,
+    PersonID:0,
     FullName: "",
     NationalNo: "",
     DateOfBirth: "",
@@ -36,7 +37,11 @@ switch(action.type){
     case LicenseAction.RESET_LICENSE_ID:
         return {
             ...state,licenseID:action.payload
-        }    
+        } 
+    case LicenseAction.RESET_LICENSE_DATA:
+      return   {
+            ...state,licenseDetails:action.payload
+        }       
         default:
             return state
 }

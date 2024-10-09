@@ -34,7 +34,28 @@ namespace Server.ApiControllerLayer
 
 
             }
+        }
+         [HttpGet("one/{id:int}", Name ="GetLicenseClassInfo")] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult GetLicenseClassInfo(int id)
+        {
+             LicenseClassesBusiness? licenseClassesBusiness=LicenseClassesBusiness.GetLicenseClassByID(id);
+          try{
+          if(licenseClassesBusiness==null){
+            return NotFound("the license class not found error your id");
+          }
+            
+          
+            return Ok(licenseClassesBusiness.LicenseClassBusinessDTO);
+          }
+          catch(Exception ex)
+          {
+            Console.WriteLine(ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
 
+          }
         }
     }
 }

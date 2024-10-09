@@ -40,25 +40,30 @@ namespace Server.ApiControllerLayer
         [HttpPost("Add")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult AddInternationalLicense([FromBody] ApplicationDto applicationDto,int DriverID,int IssuedUsingLocalLicenseID
-        ,DateTime ExpirationDate,float fees)
+        public ActionResult AddInternationalLicense( ApplicationDto applicationDto,int DriverID,int LicenseClassID)
         {
             try
             {
+                int localDrivingLicenseID=LocalDrivingLicenseBusiness.GetActiveLocalDrivingLicenseIdOfPerson(applicationDto.ApplicantPersonID,LicenseClassID);
+                if(localDrivingLicenseID!=-1){
+                    LocalDrivingLicenseBusiness? localDrivingLicenseBusiness=LocalDrivingLicenseBusiness.FindLocalDrivingApplicationByID(localDrivingLicenseID);
+
+                
                 var newLicense = new InterNationalLicenseBusiness(
                     -1,
                     applicationDto.ApplicantPersonID,
                     DateTime.Now,  
                     ApplicationBusiness.EnApplicationStatus.Completed, 
                     DateTime.Now,  
-                    fees,  
+                    localDrivingLicenseBusiness.LicensClassInfo.ClassFees,  
                     applicationDto.CreatedByUserID,
                     -1,
                     DriverID,
-                    IssuedUsingLocalLicenseID,
+                    localDrivingLicenseBusiness.LocalDrivingLicenseApplicationID,
                     DateTime.Now,
-                    ExpirationDate,
+                    DateTime.Now.AddYears(localDrivingLicenseBusiness.LicensClassInfo.DefaultValidityLength),
                     true
                 );
                 if(newLicense.Save())
@@ -68,6 +73,10 @@ namespace Server.ApiControllerLayer
                 else
                 {
                     return BadRequest("Unable to create the international license.");
+                }
+                }
+                else{
+                    return NotFound("the license not found");
                 }
             }
             catch (Exception ex)

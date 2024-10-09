@@ -15,6 +15,13 @@ namespace Server.BusinessLayer
         public byte MinimumAllowedAge { set; get; }
         public byte DefaultValidityLength { set; get; }
         public float ClassFees { set; get; }
+          public LicenseClassesDTO LicenseClassBusinessDTO
+        {
+            get{
+                return new LicenseClassesDTO(this.LicenseClassID,this.ClassName,this.ClassDescription,
+                this.MinimumAllowedAge,this.DefaultValidityLength,this.ClassFees);
+            }
+        }
       
         public LicenseClassesBusiness(int LicenseClassID, string ClassName,
             string ClassDescription,

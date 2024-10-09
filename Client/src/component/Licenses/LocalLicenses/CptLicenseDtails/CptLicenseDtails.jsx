@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import "./CptLicenseDtails.css"
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
-import { GetOneLicense } from '../../../../Redux/Actions/LicensesAction';
+import { GetOneLicense, ResetLicenseData } from '../../../../Redux/Actions/LicensesAction';
 const CptLicenseDtails = () => {
     const id=useSelector((state)=>state.LicensesReducer.LicenseID);
   const dispatch=useDispatch();
@@ -12,11 +12,11 @@ const CptLicenseDtails = () => {
         
         if(!license||license.LicensID!=id&&id)
         {
-        dispatch(GetOneLicense(id));
+            dispatch(ResetLicenseData());
+            dispatch(GetOneLicense(id));
         }
-
     },[id,dispatch])
-    return (
+    return(
         <div className="license-details">
         <h2>License Details</h2>
         <div className="license-info">

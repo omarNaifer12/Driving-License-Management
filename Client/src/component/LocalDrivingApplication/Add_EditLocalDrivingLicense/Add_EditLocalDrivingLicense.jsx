@@ -115,9 +115,9 @@ const Add_EditLocalDrivingLicense = () =>{
         console.log("userid from add is ",userID);
         
         const ApplicationsType= await GetApplicationTypeByID(1);
-        console.log("applicationtype in add is ",ApplicationsType.data);
+        console.log("applicationtype in add is ",ApplicationsType);
         
-        setLocalDrivingLicense({...localDrivingLicense,PaidFees:ApplicationsType.data.ApplicationFees});
+        setLocalDrivingLicense({...localDrivingLicense,PaidFees:ApplicationsType.ApplicationFees});
     }
     }
     loadData();

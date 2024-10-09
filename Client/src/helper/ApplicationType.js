@@ -5,7 +5,7 @@ export const GetApplicationTypeByID=async(id)=>{
         const response=await getDataAPI(`ApplicationType/one/${id}`);
    
         
-        return response;
+        return response.data;
 
     }
     catch(error){

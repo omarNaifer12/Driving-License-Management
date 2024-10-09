@@ -249,10 +249,34 @@ namespace Server.DataAccessLayer
 
 
         }
-    public static int GetActiveLocalDrivingLicenseId(int classID,int personID)
+    public static int GetActiveLocalDrivingLicenseIdOfPerson(int LicenseClassID,int ApplicantPersonID)
     {
-        return 0;
-    }
-    
+        int id=-1;
+        using SqlConnection connection=new(DataAccessSettings.ConnectionString);
+
+            string query=@"select locallicenid=l.LocalDrivingLicenseApplicationID from LocalDrivingLicenseApplications l INNER JOIN 
+            Applications a ON l.ApplicationID=a.ApplicationID WHERE a.ApplicantPersonID=@ApplicantPersonID
+            AND a.ApplicationStatus=3 AND l.LicenseClassID=@LicenseClassID";
+              using SqlCommand command = new (query, connection);
+            
+                command.Parameters.AddWithValue("@ApplicantPersonID", ApplicantPersonID);
+                command.Parameters.AddWithValue("@LicenseClassID", LicenseClassID);
+        try{
+            connection.Open();
+            
+                object result = command.ExecuteScalar();
+                 if (result != null && int.TryParse(result.ToString(), out int AppID))
+                 {
+                         id =AppID;
+                 }
+            
+
+
+        }
+         catch(Exception ex){
+                Console.WriteLine("Error: "+ ex.Message);
+            }
+        return id;
+    }    
     }
 }

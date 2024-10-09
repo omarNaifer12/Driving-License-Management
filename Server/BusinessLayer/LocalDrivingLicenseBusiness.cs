@@ -137,9 +137,10 @@ namespace Server.BusinessLayer
             }
             else
             return -1;
-
-
-
         }
+       public static int GetActiveLocalDrivingLicenseIdOfPerson(int LicenseClassID,int ApplicantPersonID)
+       {
+        return LocalDrivingLicenseDataAccess.GetActiveLocalDrivingLicenseIdOfPerson(LicenseClassID,ApplicantPersonID);
+       }
     }
 }

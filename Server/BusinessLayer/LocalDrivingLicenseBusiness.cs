@@ -119,7 +119,7 @@ namespace Server.BusinessLayer
             
                 DriverBusiness Driver=new (new DriverDTO(-1,this.ApplicantPersonID,createdByUserID,DateTime.Now));
                 if(Driver.Save()){
-                    driverID=Driver.DriverID;
+                driverID=Driver.DriverID;
                 }
                 else
                 {

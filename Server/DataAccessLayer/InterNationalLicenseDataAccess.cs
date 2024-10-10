@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 namespace Server.DataAccessLayer
 {
     public class InterNationalLicenseDTO{
- 
         public int InternationalLicenseID { set; get; }  
         public int DriverID { set; get; }
         public int IssuedUsingLocalLicenseID { set; get; }   

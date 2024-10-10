@@ -4,7 +4,11 @@ export const LicenseAction={
    RESET_LICENSE_DATA:"RESET_LICENSE_DATA",
    LICENSE_ID:"LICENSE_ID",
    RESET_LICENSE_ID:"RESET_LICENSE_ID",
-   ALERT:"ALERT"
+   GET_ONE_INETRNATIONAL_LICENSE:"GET_ONE_INETRNATIONAL_LICENSE",
+   SET_LICENSEID_FOR_CHANGE_LICENSE:"SET_LICENSEID_FOR_CHANGE_LICENSE",
+   SET_APPLICATIONID_FOR_CHANGE_LICENSE:"SET_APPLICATION_FOR_CHANGE_LICENSE",
+   RESET_LICENSEID_FOR_CHANGE_LICENSE:"SET_LICENSEID_FOR_CHANGE_LICENSE",
+   RESET_APPLICATIONID_FOR_CHANGE_LICENSE:"SET_APPLICATION_FOR_CHANGE_LICENSE"
 
 };
 import { ALERT } from "../../utils/config"
@@ -65,3 +69,49 @@ export const GetOneLicense=(id)=>async(dispatch)=>{
               }
         })
     }
+export const GetOneInetnationalLicense=(id)=>async(dispatch)=>{
+    try{
+        const response=await getDataAPI(`InternationalLicenses/one/${id}`);
+        const { INLbusinessDTO, OtherDetails } = response.data;
+        const combinedData = { ...INLbusinessDTO, ...OtherDetails };
+        console.log("combine data",combinedData);        
+        dispatch({
+            type:LicenseAction.GET_ONE_INETRNATIONAL_LICENSE,
+            payload:combinedData
+        });
+    }
+    catch(error){
+        dispatch({
+            type:ALERT,
+            payload:error
+        })
+    }
+    }
+    export const setLicenseIdForChangeLicense = (licenseId) => (dispatch) => {
+        dispatch({
+          type: LicenseAction.SET_LICENSEID_FOR_CHANGE_LICENSE,
+          payload: licenseId,
+        });
+      };
+      
+     
+      export const setApplicationIdForChangeLicense = (applicationId) => (dispatch) => {
+        dispatch({
+          type: LicenseAction.SET_APPLICATIONID_FOR_CHANGE_LICENSE,
+          payload: applicationId,
+        });
+      };
+      
+     
+      export const resetLicenseIdForChangeLicense = () => (dispatch) => {
+        dispatch({
+          type: LicenseAction.RESET_LICENSEID_FOR_CHANGE_LICENSE,
+        });
+      };
+      
+      
+      export const resetApplicationIdForChangeLicense = () => (dispatch) => {
+        dispatch({
+          type: LicenseAction.RESET_APPLICATIONID_FOR_CHANGE_LICENSE,
+        });
+      };

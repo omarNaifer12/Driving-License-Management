@@ -26,8 +26,18 @@ namespace Server.ApiControllerLayer
                 {
                     return NotFound($"No international license found with ID {internationalLicenseID}.");
                 }
+                 PersonDTO person=license.DriverInfo.personInfo.PersonBusinessDTO;
+               var OtherDetails=new {
+              PersonID=person.PersonID,
+              
+               NationalNo=person.NationalNo, 
+               DateOfBirth = person.DateOfBirth,
+               Gendor = person.Gendor,
+               LicenseID=license.LicenseID,
+               ImagePath = person.ImagePath
+            };
 
-                return Ok(license.INLbusinessDTO);
+                return Ok(new {license.INLbusinessDTO,OtherDetails});
             }
             catch (Exception ex)
             {

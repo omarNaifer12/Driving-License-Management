@@ -17,7 +17,8 @@ namespace Server.BusinessLayer
         public int IssuedUsingLocalLicenseID { set; get; }   
         public DateTime IssueDate { set; get; }
         public DateTime ExpirationDate { set; get; }    
-        public bool IsActive { set; get; }
+        public bool IsActive { set; get;}
+        public int LicenseID {set; get;}
         public InterNationalLicenseBusiness(int ApplicationID, int ApplicantPersonID,
             DateTime ApplicationDate,
             EnApplicationStatus ApplicationStatus, DateTime LastStatusDate,
@@ -36,6 +37,7 @@ namespace Server.BusinessLayer
             this.IsActive = IsActive;
             this.CreatedByUserID = CreatedByUserID;
             this.DriverInfo = DriverBusiness.GetDriverByID(this.DriverID);
+            this.LicenseID=LicenseBusiness.GetActiveLicenseIdForPerson(ApplicantPersonID,3);
             mode = Mode;
         }
         public InterNationalLicenseDTO INLbusinessDTO{

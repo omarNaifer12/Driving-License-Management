@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom'
 import { getOneUserAction, ResetUserData } from '../../../Redux/Actions/UsersAction'
 const LoginInfo = () => {
   const person=useSelector((state)=>state.Persons.Person);
-  const User=useSelector((state)=>state.Users.user)
+  const User=useSelector((state)=>state.Users.user);
   const dispatch=useDispatch();  
   const [confirmPassword, setConfirmPassword] = useState('');
   const [user,setUser]=useState({

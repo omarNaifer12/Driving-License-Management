@@ -22,6 +22,8 @@ import Add_EditTestAppointments from './component/Tests/TestAppointments/Add_Edi
 import Pass_Fail_TestApointment from './component/Tests/TestAppointments/Pass_Fail_TestApointment/Pass_Fail_TestApointment';
 import IssueLocalDrivingLicenseFirstTime from './component/Licenses/LocalLicenses/IssueLocalDrivingLicenseFirstTime/IssueLocalDrivingLicenseFirstTime';
 import CptLicenseDtails from './component/Licenses/LocalLicenses/CptLicenseDtails/CptLicenseDtails';
+import InternationalLicenseDetails from './component/Licenses/InternationalLicenses/InternationalLicenseDetails/InternationalLicenseDetails';
+import AddInternationalLicense from './component/Licenses/InternationalLicenses/AddInternationalLicense/AddInternationalLicense';
 const App=() => {
   return (
     <div>
@@ -51,8 +53,9 @@ const App=() => {
  
  <Route path='/pass-fail-TestAppointment/:TestAppointmentID' element={<Pass_Fail_TestApointment/>} />
  <Route path='/Issue-Local-Driving-License-FirstTime/:id' element={<IssueLocalDrivingLicenseFirstTime/>} />
- <Route path='/license-details' element={<CptLicenseDtails/>} />
-
+ <Route path='/license-details' element={<CptLicenseDtails/>}/>
+ <Route path='/International-license-details/:InaternationalLicenseID' element={<InternationalLicenseDetails/>} />
+ <Route path='/issue-International-license/' element={<AddInternationalLicense/>}/>
        </Routes>
     </div>
   )

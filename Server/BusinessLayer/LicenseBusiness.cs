@@ -120,7 +120,7 @@ namespace Server.BusinessLayer
         }
         public static bool DeactivateLicense (int licenseID)
         {
-            return LicenseDataAccess.DeactivateLicense(licenseID);
+        return LicenseDataAccess.DeactivateLicense(licenseID);
         }
     }
 }

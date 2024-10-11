@@ -45,6 +45,7 @@ const AllLocalDrivingApplication = () => {
 try{
   const response=await getDataAPI(`Licenses/ActiveLicensePerson/${LocalDrivingLicenseID}`);
   if(response.data!=-1){
+    console.log("data licese from all local ",response.data);
     dispatch(setLicenseID(response.data));
     navigate(`/license-details`);
   }

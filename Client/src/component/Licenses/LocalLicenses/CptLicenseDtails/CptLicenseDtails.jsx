@@ -9,13 +9,14 @@ const CptLicenseDtails = () => {
   const license=useSelector((state)=>state.LicensesReducer.licenseDetails);
     useEffect(()=>{
         console.log("licesne useeffect",license);
-        
-        if(!license||license.LicensID!=id&&id)
+        console.log("licesneid from  useeffect",id);
+        dispatch(ResetLicenseData());
+        if(id)
         {
-            dispatch(ResetLicenseData());
+           
             dispatch(GetOneLicense(id));
         }
-    },[id,dispatch])
+    },[id])
     return(
         <div className="license-details">
         <h2>License Details</h2>

@@ -52,11 +52,11 @@ switch(action.type){
         }
     case LicenseAction.LICENSE_ID:
         return {
-            ...state,licenseID:action.payload
+            ...state,LicenseID:action.payload
         }
     case LicenseAction.RESET_LICENSE_ID:
         return {
-            ...state,licenseID:action.payload
+            ...state,LicenseID:action.payload
         } 
     case LicenseAction.RESET_LICENSE_DATA:
       return   {

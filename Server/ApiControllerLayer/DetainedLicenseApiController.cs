@@ -26,7 +26,13 @@ namespace Server.ApiControllerLayer
                 {
                     return NotFound("Detained license not found.");
                 }
-                return Ok(detainedLicense);
+                var detainLicenseData=new {
+                    LicenseID=detainedLicense.LicenseID,
+                    CreatedByUserID=detainedLicense.CreatedByUserID,
+                    FineFees=detainedLicense.FineFees,
+                  DetainDate=  detainedLicense.DetainDate
+                };
+                return Ok(detainLicenseData);
             }
             catch (Exception ex)
             {
@@ -34,7 +40,7 @@ namespace Server.ApiControllerLayer
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
-          [HttpPost("release")]
+          [HttpPost("release/{detainId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -56,7 +62,7 @@ namespace Server.ApiControllerLayer
                 if (detainedLicense.ReleaseDetainedLicense(applicationDto.CreatedByUserID
                 ,application.ApplicationID))
                 {
-                        return Ok("Detained license released successfully.");
+                        return Ok(application.ApplicationID);
                 }
             }
                 return BadRequest("Failed to release detained license.");

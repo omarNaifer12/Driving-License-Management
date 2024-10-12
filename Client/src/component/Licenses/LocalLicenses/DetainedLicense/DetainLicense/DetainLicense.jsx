@@ -4,24 +4,26 @@ import CptLicenseDetailsBySearch from '../../CptLicenseDetailsBySearch/CptLicens
 import { postDataAPI } from '../../../../../utils/fetchData';
 import axios from 'axios';
 import { BASE_URL } from '../../../../../utils/config';
-export const DetainLicense = () => {
+import { useDispatch, useSelector } from 'react-redux';
+import { getOneUserAction } from '../../../../../Redux/Actions/UsersAction';
+import { ResetLicenseData } from '../../../../../Redux/Actions/LicensesAction';
+ const DetainLicense = () => {
     const [fineFees,setFineFees]=useState("");
     const [DetainID,setDetainID]=useState(0);
     const userID=parseInt(localStorage.getItem("UserID"),10);
   const license=useSelector((state)=>state.LicensesReducer.licenseDetails);
   const User=useSelector((state)=>state.Users.user);
   const [hideButton,setHideButton]=useState(false);
+  const dispatch=useDispatch();
   useEffect(()=>{
+    dispatch(ResetLicenseData());
     setDetainID(0);
     setFineFees("");
     if(!license.LicenseID){
       setHideButton(false);
     }
-    else if(license.LicenseID&&license.IsDetain){
-        alert("this license is already detained");
-        setHideButton(false);
-    }
-    else{
+    else if(license.LicenseID){
+dispatch(getOneUserAction(userID));
 setHideButton(true);
     }
 
@@ -30,8 +32,8 @@ setHideButton(true);
     e.preventDefault();
     const fees=Number(fineFees);
     try{
-        const response=await axios.post(`${BASE_URL}/DetainedLicenses/DetainLicense?LicenseID=${license.LicenseID}&FineFees=${fees}&CreatedByUserID=${userID}`)
-        setDetainID(response.data.DetainID);
+        const response=await axios.post(`${BASE_URL}/api/DetainedLicenses/DetainLicense?LicenseID=${license.LicenseID}&FineFees=${fineFees}&CreatedByUserID=${userID}`)
+        setDetainID(response.data);
         setHideButton(false);
     }
     catch(err){
@@ -45,6 +47,7 @@ setHideButton(true);
   };
   return (
     <div>
+      <label>detain license</label>
          <CptLicenseDetailsBySearch/>
         <div className="license-details-container">
         <div className="license-details">
@@ -68,10 +71,6 @@ setHideButton(true);
               <span>{license.LicenseID?license.LicenseID:"????"}</span>
             </div>
             <div className="detail">
-              <label>Old License ID:</label>
-              <span>{license.LicenseID?license.LicenseID:'????'}</span>
-            </div>
-            <div className="detail">
               <label>Created By:</label>
               <span>{User.UserName}</span>
             </div>
@@ -91,3 +90,4 @@ setHideButton(true);
     </div>
   )
 }
+export default DetainLicense;

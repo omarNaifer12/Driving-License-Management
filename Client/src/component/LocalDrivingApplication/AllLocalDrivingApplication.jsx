@@ -60,6 +60,13 @@ console.log("error",error);
           <div className="header">
             <h2>Local Driving License Applications</h2>
             <button className="btn-add" onClick={()=>navigate('/AddLocalDrivingLicense')}>Add New Application</button>
+            
+            <button className="btn-add" onClick={()=>navigate('/issue-International-license')}>Add New International license</button>
+            <button className="btn-add" onClick={()=>navigate('/Renew-License')}>renew license</button>
+            <button className="btn-add" onClick={()=>navigate('/replacement-lost-damaged-License')}>replacement lost damaged License</button>
+            <button className="btn-add" onClick={()=>navigate('/detain-License ')}>detain License </button>
+            <button className="btn-add" onClick={()=>navigate('/release-License ')}>release License </button>
+             
           </div>
           <table className="local-driving-application-table">
             <thead>

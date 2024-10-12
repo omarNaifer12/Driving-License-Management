@@ -134,10 +134,11 @@ namespace Server.DataAccessLayer
                     { 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
                       return new ApplicationDto(
+                        ApplicationID,
                        (int)reader["ApplicantPersonID"],
-                       (int)reader["ApplicationTypeID"],
                        (DateTime) reader["ApplicationDate"],
                        (int)reader["ApplicationTypeID"],
+                       
                        (byte)reader["ApplicationStatus"],
                        (DateTime)reader["LastStatusDate"],
                        Convert.ToSingle(reader["PaidFees"]),

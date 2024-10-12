@@ -2,11 +2,16 @@ import React, { useEffect, useState } from 'react'
 import './ReleaseLicense.css'
 import { getDataAPI } from '../../../../../utils/fetchData';
 import { GetApplicationTypeByID } from '../../../../../helper/ApplicationType';
+import { useDispatch, useSelector } from 'react-redux';
+import CptLicenseDetailsBySearch from '../../CptLicenseDetailsBySearch/CptLicenseDetailsBySearch';
+import { ResetLicenseData } from '../../../../../Redux/Actions/LicensesAction';
+import axios from 'axios';
+import { BASE_URL } from '../../../../../utils/config';
 const ReleaseLicense = () => {
     const [ApplicationReleaseID,setApplicationReleasedID]=useState(0);
     const [LicenseID,setLicenseID]=useState(0);
     const userID=parseInt(localStorage.getItem("UserID"),10);
-
+const dispatch=useDispatch();
   const license=useSelector((state)=>state.LicensesReducer.licenseDetails);
   const [applicationTypeReleased,setNewApplicationTypeReleased]=useState({});
   const User=useSelector((state)=>state.Users.user);
@@ -15,7 +20,9 @@ const ReleaseLicense = () => {
   const GetDetainLicenseData=async()=>{
 
     try{
-        const response=await getDataAPI(`DetainedLicense/ByLicenseID/${license.LicenseID}`);
+        const response=await getDataAPI(`DetainedLicenses/ByLicenseID/${license.LicenseID}`);
+        console.log("response detain daata",response.data);
+        
         setDetainLicenseData(response.data);
     }
     catch(err){
@@ -24,6 +31,7 @@ console.log("error",err);
     }
   }
   useEffect(()=>{
+    dispatch(ResetLicenseData());
 const fetchApplicationType=async()=>{
     const res=await GetApplicationTypeByID(5);
     setNewApplicationTypeReleased(res);
@@ -36,11 +44,7 @@ fetchApplicationType();
         if(!license.LicenseID){
             setHideButton(false);
         }
-        else if(license.LicenseID&&!license.IsDetain){
-            alert("this license is not detained u cant release it");
-            setHideButton(false);
-        }
-        else{
+        else if(license.LicenseID){
             setHideButton(true);
            await GetDetainLicenseData();
         }
@@ -63,17 +67,18 @@ fetchApplicationType();
 }
     
     try{
-        const response=await axios.post(`${BASE_URL}/DetainedLicenses/Release/${DetainLicenseData.DetainID}`)
+        const response=await axios.post(`${BASE_URL}/api/DetainedLicenses/Release/${DetainLicenseData.DetainID}`,applicationDto)
         setApplicationReleasedID(response.data);
         setHideButton(false);
     }
     catch(err){
-        console.log("errro");
+        console.log("errro",err);
         
     }
   }
   return (
     <>
+    <label>release license</label>
      <CptLicenseDetailsBySearch/>
         <div className="license-details-container">
         <div className="license-details">
@@ -96,19 +101,23 @@ fetchApplicationType();
           <div className="right-section">
             <div className="detail">
               <label> License ID:</label>
-              <span>{license.LicenseID&&license.IsDetain?license.LicenseID:'????'}</span>
+              <span>{license.LicenseID?license.LicenseID:'????'}</span>
             </div>
             <div className="detail">
               <label>Created by:</label>
-              <span>{license.LicenseID&&!license.IsDetain?DetainLicenseData.CreatedByUserID:'????'}</span>
+              <span>{DetainLicenseData.DetainID?DetainLicenseData.CreatedByUserID:'????'}</span>
             </div>
             <div className="detail">
               <label>Total Fees:</label>
-              <span>{license.LicenseID&&!license.IsDetain?applicationTypeReleased.ApplicationFees+DetainLicenseData.FineFees:"????"}</span>
+              <span>{DetainLicenseData.DetainID?applicationTypeReleased.ApplicationFees+DetainLicenseData.FineFees:"????"}</span>
+            </div>
+            <div className="detail">
+              <label>Application ReleaseID</label>
+              <span>{ApplicationReleaseID?ApplicationReleaseID:"????"}</span>
             </div>
           </div>
         </div>
-       {hideButton&&<button className="renew-button" onClick={()=>handleReleaseLicense(e)}>Renew</button>}
+       {hideButton&&<button className="renew-button" onClick={(e)=>handleReleaseLicense(e)}>Renew</button>}
       </div>
       </>
   )

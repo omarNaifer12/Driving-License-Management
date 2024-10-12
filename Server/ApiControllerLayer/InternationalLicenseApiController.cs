@@ -47,33 +47,34 @@ namespace Server.ApiControllerLayer
         }
 
         // POST: api/InternationalLicense/Add
-        [HttpPost("Add")]
+        [HttpPost("Add",Name ="AddInternationalLicense")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult AddInternationalLicense( ApplicationDto applicationDto,int DriverID,int LicenseClassID)
+        public ActionResult AddInternationalLicense(int CreatedByUserID,int LicenseID)
         {
+            Console.WriteLine("reach add international license");
             try
             {
-                int localDrivingLicenseID=LocalDrivingLicenseBusiness.GetActiveLocalDrivingLicenseIdOfPerson(applicationDto.ApplicantPersonID,LicenseClassID);
-                if(localDrivingLicenseID!=-1){
-                    LocalDrivingLicenseBusiness? localDrivingLicenseBusiness=LocalDrivingLicenseBusiness.FindLocalDrivingApplicationByID(localDrivingLicenseID);
+                LicenseBusiness? licenseBusiness=LicenseBusiness.GetLicenseByID(LicenseID);
+               if(licenseBusiness!=null){
+                    
 
                 
                 var newLicense = new InterNationalLicenseBusiness(
                     -1,
-                    applicationDto.ApplicantPersonID,
+                    licenseBusiness.DriverInfo.PersonID,
                     DateTime.Now,  
                     ApplicationBusiness.EnApplicationStatus.Completed, 
                     DateTime.Now,  
-                    localDrivingLicenseBusiness.LicensClassInfo.ClassFees,  
-                    applicationDto.CreatedByUserID,
+                    licenseBusiness.licenseClassInfo.ClassFees,  
+                    CreatedByUserID,
                     -1,
-                    DriverID,
-                    localDrivingLicenseBusiness.LocalDrivingLicenseApplicationID,
+                    licenseBusiness.DriverID,
+                    LicenseID,
                     DateTime.Now,
-                    DateTime.Now.AddYears(localDrivingLicenseBusiness.LicensClassInfo.DefaultValidityLength),
+                    DateTime.Now.AddYears(licenseBusiness.licenseClassInfo.DefaultValidityLength),
                     true
                 );
                 if(newLicense.Save())
@@ -84,10 +85,12 @@ namespace Server.ApiControllerLayer
                 {
                     return BadRequest("Unable to create the international license.");
                 }
-                }
-                else{
-                    return NotFound("the license not found");
-                }
+               }
+               else{
+                return NotFound("the licenseId not found ");
+               }
+                
+                
             }
             catch (Exception ex)
             {
@@ -100,12 +103,12 @@ namespace Server.ApiControllerLayer
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<int> GetActiveLicenseIDByDriverID(int driverID)
+        public ActionResult<int> CheckActiveInternationalLicenseIDByDriverID(int driverID)
         {
             try
             {
                 int licenseID = InterNationalLicenseBusiness.GetActiveInternationalLicenseIDByDriverID(driverID);
-                if (licenseID == -1)  // Assuming -1 means no active license found
+                if (licenseID == -1)  
                 {
                     return NotFound($"No active international license found for Driver ID {driverID}.");
                 }
@@ -122,7 +125,7 @@ namespace Server.ApiControllerLayer
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<List<InterNationalLicenseDTO>> GetAllLicensesByPersonID(int personID)
+        public ActionResult<List<InterNationalLicenseDTO>> GetAllInterNationalLicensesOfPerson(int personID)
         {
             try
             {

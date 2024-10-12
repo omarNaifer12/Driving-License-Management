@@ -27,6 +27,7 @@ namespace Server.ApiControllerLayer
                     return NotFound("Detained license not found.");
                 }
                 var detainLicenseData=new {
+                    DetainID=detainedLicense.DetainID,
                     LicenseID=detainedLicense.LicenseID,
                     CreatedByUserID=detainedLicense.CreatedByUserID,
                     FineFees=detainedLicense.FineFees,
@@ -90,11 +91,11 @@ namespace Server.ApiControllerLayer
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
-          [HttpPost("DetainLicense")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+          [HttpPost("DetainLicense",Name ="DetainThisLicense")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult ReleaseDetainedLicense(int LicenseID,float FineFees,int CreatedByUserID)
+        public ActionResult DetainThisLicense(int LicenseID,float FineFees,int CreatedByUserID)
         {
             var detainedLicense=new DetainedLicenseBusiness();
 
@@ -107,8 +108,9 @@ namespace Server.ApiControllerLayer
                 
            
             if(detainedLicense.Save()){ 
-                        return CreatedAtAction(nameof(GetDetainedLicenseByDetainId), new { id = detainedLicense.DetainID }, detainedLicense.DetainID);         
+                        return Ok(detainedLicense.DetainID);
             }
+            else
                 return BadRequest("Failed to release detained license.");
             }
             catch (Exception ex)

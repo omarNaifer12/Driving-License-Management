@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import './RenewLocalLicense.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { getOneUserAction, ResetUserData } from '../../../Redux/Actions/UsersAction'
 import { GetApplicationTypeByID } from '../../../../helper/ApplicationType';
 import axios from 'axios';
 import { BASE_URL } from '../../../../utils/config';
 import CptLicenseDetailsBySearch from "../CptLicenseDetailsBySearch/CptLicenseDetailsBySearch"
+import { getOneUserAction } from '../../../../Redux/Actions/UsersAction';
 const RenewLocalLicense = () => {
-    const [note, setNote] = useState('');
+    const [note, setNote] = useState("");
     const [NewApplicationID,setNewApplicationID]=useState(0);
     const [NewLicenseID,setNewLicenseID]=useState(0);
     const userID=parseInt(localStorage.getItem("UserID"),10);
@@ -35,23 +35,28 @@ const RenewLocalLicense = () => {
 }
 loadData();
 
-  },[])
+  },[license.LicenseID])
   const handleRenew = async() => {
-
-    const requestBody = {
-      existLicenseID: license.LicenseID, 
-      createdBy: userID, 
+    const data = {
+      CreatedBy: userID, 
       Note: note, 
       ApplicationTypeID: 2, 
       IssueReason: 2 
     };
   
     try {
-      const response = await axios.post(BASE_URL+'/license/Change', {
-        params: requestBody
-      });
+
+
+
+      const response = await axios.post(BASE_URL+`/api/licenses/Change?existLicenseID=${license.LicenseID}&createdBy=${userID}&ApplicationTypeID=${2}&IssueReason=${2}`, note,{
+        headers: {
+          'Content-Type': 'application/json',  
+        },
+      }
+    );
   setNewApplicationID(response.data.ApplicationID);
   setNewLicenseID(response.data.LicenseID);
+  setHideButton(false);
       console.log('License renewed successfully:', response.data);
    
     } catch (err) {
@@ -61,7 +66,9 @@ loadData();
   };
     return (
       <>
+<label>Renew License</label>
      <CptLicenseDetailsBySearch/>
+     
         <div className="license-details-container">
         <div className="license-details">
         

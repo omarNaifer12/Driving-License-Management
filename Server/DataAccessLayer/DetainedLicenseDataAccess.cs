@@ -112,7 +112,8 @@ namespace Server.DataAccessLayer
             string query = @"UPDATE dbo.DetainedLicenses
                               SET IsReleased = 1, 
                               ReleaseDate = @ReleaseDate, 
-                              ReleaseApplicationID = @ReleaseApplicationID   
+                              ReleaseApplicationID = @ReleaseApplicationID,
+                              ReleasedByUserID=@ReleasedByUserID
                               WHERE DetainID=@DetainID;";
 
             using SqlCommand command = new (query, connection);

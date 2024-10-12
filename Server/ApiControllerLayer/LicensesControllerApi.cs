@@ -105,7 +105,7 @@ namespace Server.ApiControllerLayer
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         
-        public ActionResult ChangeLicenseAndDeactivateTheOld(int existLicenseID,int createdBy,string Note,int ApplicationTypeID,byte IssueReason)
+        public ActionResult ChangeLicenseAndDeactivateTheOld(int existLicenseID,int createdBy,[FromBody]string Note,int ApplicationTypeID,byte IssueReason)
         {
           try{
              LicenseBusiness? Oldlicense=LicenseBusiness.GetLicenseByID(existLicenseID);

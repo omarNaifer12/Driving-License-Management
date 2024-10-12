@@ -5,7 +5,9 @@ import { getDataAPI, postDataAPI } from '../../../../utils/fetchData';
 import { getOneUserAction } from '../../../../Redux/Actions/UsersAction';
 import { GetApplicationTypeByID } from '../../../../helper/ApplicationType';
 import CptLicenseDetailsBySearch from '../../LocalLicenses/CptLicenseDetailsBySearch/CptLicenseDetailsBySearch';
-const AddInternationalLicense = () => {
+import axios from 'axios';
+import { BASE_URL } from '../../../../utils/config';
+const AddInternationalLicense = () =>{
     const user =useSelector((state)=>state.Users.user);
     const userID=parseInt(localStorage.getItem("UserID"),10);
     const dispatch=useDispatch();
@@ -28,7 +30,9 @@ setLicenseClassDetails(response.data);
 }
 const checkPersonHaveInternationalLicense=async()=>{
     try{
-const response = await getDataAPI(`International/active/${license.DriverID}`);
+const response = await getDataAPI(`InternationalLicenses/active/${license.DriverID}`);
+
+
 if(response.status===200){
 return false;
 }
@@ -41,13 +45,20 @@ return true;
     }    
 }
 useEffect(()=>{
+
+  
     fetchLicenseClassDetails();
-    dispatch(getOneUserAction());
+    dispatch(getOneUserAction(userID));
+  
 },[])
 useEffect(()=>{
+const loadData=async()=>{
 
-if(LicenseID&&license.LicenseID===LicenseID&&license.IsActive){
-    if(checkPersonHaveInternationalLicense()){
+if(license.LicenseID&&license.IsActive){
+  const res=await checkPersonHaveInternationalLicense();
+
+  
+    if(!res){
         alert("you already have other international license");
         setHideButton(false);
     }
@@ -61,27 +72,19 @@ else{
     }
 }
 
-    },[LicenseID,license])
-    const IssueInternationalLicense=async()=>{
+}
+loadData();
+    },[license.LicenseID])
+    const IssueInternationalLicense=async(e)=>{
         e.preventDefault();
-        const applicationDto={
-           
-            ApplicationID: 0,
-            ApplicantPersonID: license.PersonID,
-            ApplicationDate: Date.now(),
-            ApplicationTypeID: 6,
-            ApplicationStatus: 3,
-            LastStatusDate: Date.now(),
-            PaidFees: ApplicationsType.ApplicationFees,
-            CreatedByUserID: userID,
-  }
+       
+       
   try{
-  const response=await postDataAPI(`InternationalLicense/Add?DriverID=${license.DriverID}/licenseClassID=${license.LicenseClassID}`,applicationDto);
+  const response=await axios.post(`${BASE_URL}/api/InternationalLicenses/Add?CreatedByUserID=${userID}&LicenseID=${license.LicenseID}`);
   console.log("response add international license");
   setInternationalLicenseID(response.data.InternationalLicenseID);
   setApplicationID(response.data.ApplicationID);
-  
-  
+  setHideButton(false);
 }
   catch(err){
     console.log("error",err);
@@ -118,7 +121,7 @@ else{
             </div>
             <div className="detail">
               <label>Local License ID:</label>
-              <span>{LicenseID?LicenseID:"????"}</span>
+              <span>{license.LicenseID?license.LicenseID:"????"}</span>
             </div>
             <div className="detail">
               <label>Expiration Date:</label>

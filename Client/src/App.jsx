@@ -24,6 +24,10 @@ import IssueLocalDrivingLicenseFirstTime from './component/Licenses/LocalLicense
 import CptLicenseDtails from './component/Licenses/LocalLicenses/CptLicenseDtails/CptLicenseDtails';
 import InternationalLicenseDetails from './component/Licenses/InternationalLicenses/InternationalLicenseDetails/InternationalLicenseDetails';
 import AddInternationalLicense from './component/Licenses/InternationalLicenses/AddInternationalLicense/AddInternationalLicense';
+import RenewLocalLicense from './component/Licenses/LocalLicenses/RenewLocalLicense/RenewLocalLicense';
+import ReplacemenetDamagedOrLostLicense from './component/Licenses/ReplacemenetDamagedOrLostLicense/ReplacemenetDamagedOrLostLicense';
+import ReleaseLicense from './component/Licenses/LocalLicenses/DetainedLicense/ReleaseLicense/ReleaseLicense';
+import DetainLicense from './component/Licenses/LocalLicenses/DetainedLicense/DetainLicense/DetainLicense';
 const App=() => {
   return (
     <div>
@@ -55,7 +59,12 @@ const App=() => {
  <Route path='/Issue-Local-Driving-License-FirstTime/:id' element={<IssueLocalDrivingLicenseFirstTime/>} />
  <Route path='/license-details' element={<CptLicenseDtails/>}/>
  <Route path='/International-license-details/:InaternationalLicenseID' element={<InternationalLicenseDetails/>} />
- <Route path='/issue-International-license/' element={<AddInternationalLicense/>}/>
+ <Route path='/issue-International-license' element={<AddInternationalLicense/>}/>
+ <Route path='/Renew-License' element={<RenewLocalLicense />}/>
+ <Route path='/replacement-lost-damaged-License' element={<ReplacemenetDamagedOrLostLicense />}/>
+ <Route path='/release-License' element={<ReleaseLicense />}/>
+ <Route path='/detain-License' element={<DetainLicense />}/>
+
        </Routes>
     </div>
   )

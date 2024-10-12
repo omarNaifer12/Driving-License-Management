@@ -27,6 +27,7 @@ export const GetAllUsersAction=()=>async(dispatch)=>{
 export const getOneUserAction=(UserID)=>async(dispatch)=>{
     try{
         const user=await getDataAPI(`Users/one/${UserID}`);
+        
             dispatch({
                 type:usersAction.GET_ONE_USER,
                 payload:user.data

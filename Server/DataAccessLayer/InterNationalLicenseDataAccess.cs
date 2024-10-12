@@ -153,7 +153,9 @@ namespace Server.DataAccessLayer
     }
     
             }
-             public static int AddNewInternationalLicense( InterNationalLicenseDTO interNationalLicenseDTO)
+             public static int 
+             
+             AddNewInternationalLicense( InterNationalLicenseDTO interNationalLicenseDTO)
         {
             int InternationalLicenseID = -1;
 
@@ -193,9 +195,6 @@ namespace Server.DataAccessLayer
 
             command.Parameters.AddWithValue("@IsActive", interNationalLicenseDTO.IsActive);
             command.Parameters.AddWithValue("@CreatedByUserID", interNationalLicenseDTO.CreatedByUserID);
-           
-
-
             try
             {
                 connection.Open();
@@ -212,11 +211,6 @@ namespace Server.DataAccessLayer
             {
                 Console.WriteLine("Error: " + ex.Message);
 
-            }
-
-            finally
-            {
-                connection.Close();
             }
 
 

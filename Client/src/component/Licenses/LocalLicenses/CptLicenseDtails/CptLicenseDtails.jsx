@@ -13,7 +13,6 @@ const CptLicenseDtails = () => {
         dispatch(ResetLicenseData());
         if(id)
         {
-           
             dispatch(GetOneLicense(id));
         }
     },[id])

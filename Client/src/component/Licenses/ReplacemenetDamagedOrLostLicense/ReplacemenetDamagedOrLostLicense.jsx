@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./ReplacemenetDamagedOrLostLicense.css"
 import { useDispatch, useSelector } from 'react-redux';
 import { GetApplicationTypeByID } from '../../../helper/ApplicationType';
 import { BASE_URL } from '../../../utils/config';
 import CptLicenseDetailsBySearch from '../LocalLicenses/CptLicenseDetailsBySearch/CptLicenseDetailsBySearch';
+import { getOneUserAction } from '../../../Redux/Actions/UsersAction';
+import axios from 'axios';
 const ReplacemenetDamagedOrLostLicense = () => {
     const [NewApplicationID,setNewApplicationID]=useState(0);
     const [NewLicenseID,setNewLicenseID]=useState(0);
@@ -22,6 +24,10 @@ const ReplacemenetDamagedOrLostLicense = () => {
         if(!license.LicenseID){
             setHideButton(false);
         }
+        else if(license.LicenseID&&!license.IsActive){
+          alert("this license is not active so cant replace");
+          setHideButton(false);
+        }
      else if(license.LicenseID){
       const responseDamaged= GetApplicationTypeByID(4);  
       const responseLost= GetApplicationTypeByID(3);  
@@ -36,21 +42,22 @@ loadData();
   },[license.LicenseID])
   const handleReplacement = async() => {
 
-    const requestBody = {
-      existLicenseID: license.LicenseID, 
-      createdBy: userID, 
-      Note: "", 
-      ApplicationTypeID: typeOfReplacemenet==="lost"?applicationTypeLost.ApplicationTypeID:applicationTypeDamaged.ApplicationTypeID, 
-      IssueReason: typeOfReplacemenet==="lost"?applicationTypeLost.ApplicationTypeID:applicationTypeDamaged.ApplicationTypeID
-    };
+  
+     const ApplicationTypeID=typeOfReplacemenet==="lost"?applicationTypeLost.ApplicationTypeID:applicationTypeDamaged.ApplicationTypeID;
+     
+    
   
     try {
-      const response = await axios.post(BASE_URL+'/license/Change', {
-        params: requestBody
-      });
+      const response = await  axios.post(BASE_URL+`/api/licenses/Change?existLicenseID=${license.LicenseID}&createdBy=${userID}&ApplicationTypeID=${ApplicationTypeID}&IssueReason=${ApplicationTypeID}`, "",{
+        headers: {
+          'Content-Type': 'application/json',  
+        },
+      }
+    );
   setNewApplicationID(response.data.ApplicationID);
   setNewLicenseID(response.data.LicenseID);
       console.log('License renewed successfully:', response.data);
+      setHideButton(false)
    
     } catch (err) {
       console.error('Failed to renew license:', err);

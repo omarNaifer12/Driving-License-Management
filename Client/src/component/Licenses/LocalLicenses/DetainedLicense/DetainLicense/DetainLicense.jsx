@@ -22,6 +22,10 @@ import { ResetLicenseData } from '../../../../../Redux/Actions/LicensesAction';
     if(!license.LicenseID){
       setHideButton(false);
     }
+    else if(license.LicenseID&&license.IsDetained){
+      alert("this license is already detained");
+      setHideButton(false);
+    }
     else if(license.LicenseID){
 dispatch(getOneUserAction(userID));
 setHideButton(true);

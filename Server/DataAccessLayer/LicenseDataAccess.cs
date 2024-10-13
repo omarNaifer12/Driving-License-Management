@@ -232,17 +232,16 @@ namespace Server.DataAccessLayer
                 connection.Open();
 
                 using SqlDataReader reader = command.ExecuteReader();
-
   while (reader.Read()) 
         {
         
             LicensesPersonDTO license = new (
-                reader.GetInt32(reader.GetOrdinal("LicenseID")),
-                reader.GetInt32(reader.GetOrdinal("ApplicationID")),
-                reader.GetDateTime(reader.GetOrdinal("IssueDate")),
-                reader.GetDateTime(reader.GetOrdinal("ExpirationDate")),
-                reader.GetBoolean(reader.GetOrdinal("IsActive")),
-                reader.GetString(reader.GetOrdinal("ClassName"))
+               (int)reader["LicenseID"],
+    (int)reader["ApplicationID"],
+    (DateTime)reader["IssueDate"],
+    (DateTime)reader["ExpirationDate"],
+    (bool)reader["IsActive"],
+    (string)reader["ClassName"]
             );
 
             // Add the object to the list

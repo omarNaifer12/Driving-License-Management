@@ -26,7 +26,7 @@ namespace Server.ApiControllerLayer
             int result=LicenseBusiness.GetActiveLicenseIdForPerson(localDrivinglice.ApplicantPersonID,localDrivinglice.LicenseClassID);
             if(result==-1)
             {
-                return NotFound("no active license for this person");
+              return NotFound("no active license for this person");
             }
             return Ok(result);
              }
@@ -52,6 +52,7 @@ namespace Server.ApiControllerLayer
             return NotFound("the license not found error your id");
           }
           PersonDTO person=license.DriverInfo.personInfo.PersonBusinessDTO;
+          bool isDetained=DetainedLicenseBusiness.IsLicenseDetained(id);
             var OtherDetails=new {
               PersonID=person.PersonID,
                FullName= person.FirstName+person.SecondName+person.ThirdName+person.LastName,
@@ -61,7 +62,8 @@ namespace Server.ApiControllerLayer
                ClassName= license.licenseClassInfo.ClassName,
                ClassFees=license.licenseClassInfo.ClassFees,
                DefaultValidityLength=license.licenseClassInfo.DefaultValidityLength,
-               ImagePath = person.ImagePath
+               ImagePath = person.ImagePath,
+               IsDetained=isDetained
             };
            LicenseDTO licenseDTO=license.ToDTO();
             return Ok(new {licenseDTO,OtherDetails});
@@ -132,5 +134,53 @@ namespace Server.ApiControllerLayer
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
           }
         }
+         [HttpGet("LicensesOfPerson", Name ="GetAllLicensesOfPersonController")] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<IEnumerable<LicensesPersonDTO>>GetAllLicensesOfPersonController(int PersonID)
+        {
+            Console.WriteLine("reach all LocalDrivingLicenseViewDTO");
+        try{
+             List<LicensesPersonDTO> licensesPersonDTOs= LicenseBusiness.GetLicensesOfPerson(PersonID);
+            
+           
+            if(licensesPersonDTOs.Count==0)
+            {
+                return NotFound("no data found");
+            }
+            return Ok(licensesPersonDTOs);
+        }
+          catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+         return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+
+        }
+        }
+        [HttpGet("IsHaveLicenseForLicenseClass", Name ="CheckPersonHaveLicenseForLicenseClassID")] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult CheckPersonHaveLicenseForLicenseClassID(int PersonID,int LicenseClassID)
+        {
+             try{
+            
+            int result=LicenseBusiness.GetActiveLicenseIdForPerson(PersonID,LicenseClassID);
+            if(result==-1)
+            {
+              return NotFound("no active license for this person");
+            }
+            return Ok(result);
+             }
+         catch(Exception ex)
+            {
+                  Console.WriteLine(ex.Message);
+                  return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+
+            }
+
+        }
+      
     }
 }

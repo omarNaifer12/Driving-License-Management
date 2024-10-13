@@ -140,5 +140,27 @@ namespace Server.ApiControllerLayer
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
             }
         }
+          [HttpGet("All",Name = "GetAllDetainedLicensesController")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public ActionResult<List<dtoDetainedLicense>> GetAllDetainedLicensesController()
+    {
+        try
+        {
+            List<dtoDetainedLicense> detainedLicenses = DetainedLicenseBusiness.GetAllDetainedLicenses();
+
+            if (detainedLicenses == null || detainedLicenses.Count == 0)
+            {
+                return NotFound("No detained licenses found.");
+            }
+
+            return Ok(detainedLicenses);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Error retrieving data: {ex.Message}");
+        }
+    }
     }
 }

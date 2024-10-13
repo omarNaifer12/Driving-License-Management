@@ -1,0 +1,75 @@
+/* Container styling */
+.all-drivers-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* Heading style */
+.heading {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Styling for the drivers list */
+.drivers-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 0;
+}
+
+/* Styling for each driver card */
+.driver-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.driver-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Styling for driver name */
+.driver-name {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #007bff;
+    text-transform: uppercase;
+}
+
+/* Styling for driver details */
+.driver-details {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.driver-details strong {
+    color: #333;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+    .heading {
+        font-size: 2rem;
+    }
+
+    .driver-card {
+        padding: 15px;
+    }
+
+    .driver-name {
+        font-size: 1.3rem;
+    }
+
+    .driver-details {
+        font-size: 0.9rem;
+    }
+}

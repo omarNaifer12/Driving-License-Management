@@ -22,6 +22,26 @@ namespace Server.DataAccessLayer
         CreatedDate = createdDate;
     }
 }
+public class dtoViewDriver
+{
+    public int DriverID { get; set; }
+    public int PersonID { get; set; }
+    public string NationalNo { get; set; }
+    public string FullName { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public int NumberOfActiveLicenses { get; set; }
+
+    // Constructor
+    public dtoViewDriver(int driverID, int personID, string nationalNo, string fullName, DateTime createdDate, int numberOfActiveLicenses)
+    {
+        DriverID = driverID;
+        PersonID = personID;
+        NationalNo = nationalNo;
+        FullName = fullName;
+        CreatedDate = createdDate;
+        NumberOfActiveLicenses = numberOfActiveLicenses;
+    }
+}
 
     public class DriverDataAccess
     {
@@ -161,5 +181,48 @@ public static bool UpdateDriver(DriverDTO driver)
 
     return rowsAffected > 0;
 }
+public static List<dtoViewDriver> GetAllDrivers()
+{
+ var drivers = new List<dtoViewDriver>();
+    using SqlConnection connection = new (DataAccessSettings.ConnectionString);
+
+    string query = "SELECT DriverID, PersonID, NationalNo, FullName, CreatedDate, NumberOfActiveLicenses FROM Drivers_View ORDER BY FullName";
+
+    using SqlCommand command = new (query, connection);
+
+    try
+    {
+        connection.Open();
+        using SqlDataReader reader = command.ExecuteReader();
+
+       
+        
+            while (reader.Read())
+            {
+              
+                dtoViewDriver driver = new (
+        (int)reader["DriverID"],              // DriverID
+        (int)reader["PersonID"],              // PersonID
+        (string)reader["NationalNo"],     // NationalNo
+        (string)reader["FullName"],        // FullName
+        (DateTime)reader["CreatedDate"],      // CreatedDate
+        (int)reader["NumberOfActiveLicenses"] // NumberOfActiveLicenses
+    );
+
+    drivers.Add(driver);
+            }
+        
+
+     
+    }
+    catch (Exception ex)
+    {
+        
+        Console.WriteLine("Error: " + ex.Message);
+    }
+    
+
+    return drivers;
+           }
     }
 }

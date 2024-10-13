@@ -14,7 +14,7 @@ const Add_EditLocalDrivingLicense = () =>{
     const personFromRedux=useSelector((state)=>state.Persons.Person);
     const [dataApplicationType,setDataApplicationType]=useState({});
   const [localDrivingLicense,setLocalDrivingLicense]=useState({
-    ApplicationID: 0,
+    ApplicationID:0,
     ApplicantPersonID: 0,
     ApplicationDate: new Date().toISOString().split("T")[0],
     ApplicationTypeID: 1,
@@ -57,6 +57,23 @@ const Add_EditLocalDrivingLicense = () =>{
     }
 
   }
+  const CheckPersonHaveLicenseForLicenseClass=async(ApplicantPersonID,LicenseClassID)=>{
+    try{
+      const response =await getDataAPI(`LocalDrivingLicenses/IsHaveLicenseForLicenseClass?PersonID=${ApplicantPersonID}&LicenseClassID=${LicenseClassID}`);
+     if(response.status===404){
+      return false;
+     }
+     else if(response.status===200){
+      return true;
+     }
+
+    }
+    catch(error){
+      console.log("errro ",error);
+    
+    }
+
+  }
   const Save=async(e)=>{
     e.preventDefault();
 
@@ -77,12 +94,18 @@ const Add_EditLocalDrivingLicense = () =>{
     
     
     try {
+      
       let response;
       if(localDrivingLicense.localDrivingLicenseID===0&&!id){
+        if(CheckPersonHaveLicenseForLicenseClass(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID)){
+          alert("this person is already have an license issued");
+          return;
+        }
         if(CheckPersonHaveSameLocalDrivingLicense(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID)){
           alert("this person already have active local Driving License");
           return;
         }
+        
         response=await postDataAPI(`LocalDrivingLicenses/Add?licenseClassID=${localDrivingLicense.LicenseClassID}`,applicationDto);
         console.log("addedd success",response.data);
         setLocalDrivingLicense({...localDrivingLicense,localDrivingLicenseID:response.data.localDrivingLicenseData
@@ -90,12 +113,9 @@ const Add_EditLocalDrivingLicense = () =>{
         });
         dispatch(GetLocalDrivingLicenseByIDAction(response.data.localDrivingLicenseData
             .LocalDrivingLicenseApplicationID));
-        
         alert("data added successfuly");
       }
       else if(localDrivingLicense.localDrivingLicenseID){
-
-        
         response=await putDataAPI(`LocalDrivingLicenses/Update/${localDrivingLicense.localDrivingLicenseID}?licenseClassID=${localDrivingLicense.LicenseClassID}`,applicationDto);
         alert("data updated successfuly");
     }

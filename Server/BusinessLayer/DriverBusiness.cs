@@ -90,5 +90,10 @@ namespace Server.BusinessLayer
         }
         return null;
     }
+     public static List<dtoViewDriver> GetDriversList()
+    {
+        
+        return DriverDataAccess.GetAllDrivers();
+    }
     }
 }

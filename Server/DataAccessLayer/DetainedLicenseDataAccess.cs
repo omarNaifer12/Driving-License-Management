@@ -6,6 +6,39 @@ using System.Threading.Tasks;
 
 namespace Server.DataAccessLayer
 {
+    public class dtoDetainedLicense
+{
+    public int PersonID { get; set; }
+    public string NationalNo { get; set; }
+    public string FullName { get; set; }
+    public int DetainID { get; set; }
+    public int LicenseID { get; set; }
+    public DateTime DetainDate { get; set; }
+    public decimal FineFees { get; set; }
+    public int CreatedByUserID { get; set; }
+    public bool IsReleased { get; set; }
+    public DateTime? ReleaseDate { get; set; }
+    public int ReleasedByUserID { get; set; }
+    public int ReleaseApplicationID { get; set; }
+
+    public dtoDetainedLicense(int personID, string nationalNo, string fullName, int detainID, int licenseID, 
+                              DateTime detainDate, decimal fineFees, int createdByUserID, bool isReleased, 
+                              DateTime? releaseDate, int releasedByUserID, int releaseApplicationID)
+    {
+        PersonID = personID;
+        NationalNo = nationalNo;
+        FullName = fullName;
+        DetainID = detainID;
+        LicenseID = licenseID;
+        DetainDate = detainDate;
+        FineFees = fineFees;
+        CreatedByUserID = createdByUserID;
+        IsReleased = isReleased;
+        ReleaseDate = releaseDate;
+        ReleasedByUserID = releasedByUserID;
+        ReleaseApplicationID = releaseApplicationID;
+    }
+}
     public class DetainedLicenseDataAccess
     {
            public static int AddNewDetainedLicense(
@@ -312,6 +345,60 @@ namespace Server.DataAccessLayer
             }
 
             return isFound;
-        } 
+        }
+      public static List<dtoDetainedLicense> GetAllDetainedLicenses()
+{
+    var detainedLicenses = new List<dtoDetainedLicense>();
+    string query = @"SELECT p.PersonID, p.NationalNo, FullName = p.FirstName + ' ' + p.SecondName + ' ' +
+        CASE 
+            WHEN p.ThirdName IS NULL OR p.ThirdName = '' THEN ''
+            ELSE p.ThirdName + ' '
+        END + p.LastName, dt.DetainID, dt.LicenseID, dt.DetainDate, dt.FineFees, dt.CreatedByUserID, dt.IsReleased, 
+        dt.ReleaseDate, dt.ReleasedByUserID, dt.ReleaseApplicationID 
+        FROM DetainedLicenses dt 
+        INNER JOIN Licenses l ON dt.LicenseID = l.LicenseID 
+        INNER JOIN Drivers d ON d.DriverID = l.DriverID 
+        INNER JOIN People p ON p.PersonID = d.PersonID;";
+
+    using SqlConnection connection = new (DataAccessSettings.ConnectionString);
+    
+        using SqlCommand command = new SqlCommand(query, connection);
+        
+        try
+        {
+            connection.Open();
+            using SqlDataReader reader = command.ExecuteReader();
+            
+            while (reader.Read())
+            {
+                dtoDetainedLicense license = new dtoDetainedLicense(
+                    (int)reader["PersonID"],
+                    (string)reader["NationalNo"],
+                    (string)reader["FullName"],
+                    (int)reader["DetainID"],
+                    (int)reader["LicenseID"],
+                    (DateTime)reader["DetainDate"],
+                    (decimal)reader["FineFees"],
+                    (int)reader["CreatedByUserID"],
+                    (bool)reader["IsReleased"],
+                    reader.IsDBNull(reader.GetOrdinal("ReleaseDate")) ? (DateTime?)null : (DateTime)reader["ReleaseDate"],
+                    (int)reader["ReleasedByUserID"],
+                    (int)reader["ReleaseApplicationID"]
+                );
+
+                detainedLicenses.Add(license);
+            }
+
+           
+        }
+        catch (Exception ex)
+        {
+            // Handle or log the error
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    
+
+    return detainedLicenses;
+}
     }
 }

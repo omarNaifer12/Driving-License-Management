@@ -6,6 +6,7 @@ import { BASE_URL } from '../../../utils/config';
 import CptLicenseDetailsBySearch from '../LocalLicenses/CptLicenseDetailsBySearch/CptLicenseDetailsBySearch';
 import { getOneUserAction } from '../../../Redux/Actions/UsersAction';
 import axios from 'axios';
+import { ResetLicenseData } from '../../../Redux/Actions/LicensesAction';
 const ReplacemenetDamagedOrLostLicense = () => {
     const [NewApplicationID,setNewApplicationID]=useState(0);
     const [NewLicenseID,setNewLicenseID]=useState(0);
@@ -20,6 +21,9 @@ const ReplacemenetDamagedOrLostLicense = () => {
 
   const dispatch=useDispatch();
   useEffect(()=>{
+    dispatch(ResetLicenseData());
+  },[])
+  useEffect(()=>{
     const loadData=async()=>{
         if(!license.LicenseID){
             setHideButton(false);
@@ -27,6 +31,10 @@ const ReplacemenetDamagedOrLostLicense = () => {
         else if(license.LicenseID&&!license.IsActive){
           alert("this license is not active so cant replace");
           setHideButton(false);
+        }
+        else if(license.LicenseID&&license.IsDetained){
+        alert("this license detained u cant replace it right now ");
+        setHideButton(false);
         }
      else if(license.LicenseID){
       const responseDamaged= GetApplicationTypeByID(4);  

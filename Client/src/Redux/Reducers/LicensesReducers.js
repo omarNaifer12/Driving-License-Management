@@ -21,7 +21,8 @@ const initialState={
     ClassName: "",
     ImagePath: "",
     DefaultValidityLength:0,
-    ClassFees:0
+    ClassFees:0,
+    IsDetained:false
   },
   LicenseID:0,
   InaternationalLicenseDetails:{

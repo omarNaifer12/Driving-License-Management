@@ -16,6 +16,9 @@ const CptLicenseDtails = () => {
             dispatch(GetOneLicense(id));
         }
     },[id])
+    if(!license.LicenseID){
+        alert("this id is invalid");
+    }
     return(
         <div className="license-details">
         <h2>License Details</h2>
@@ -35,6 +38,7 @@ const CptLicenseDtails = () => {
             <p><strong>Date of Birth:</strong> {license.DateOfBirth}</p>
             <p><strong>Gender:</strong> {license.Gendor === 1 ? 'Male' : 'Female'}</p>
             <p><strong>Class Name:</strong> {license.ClassName}</p>
+            <p><strong>Is Detained:</strong> {license.IsDetained?"yes":"no"}</p>
             {license.ImagePath && (
                 <div className="license-image">
                     <img src={license.ImagePath} alt="License" />

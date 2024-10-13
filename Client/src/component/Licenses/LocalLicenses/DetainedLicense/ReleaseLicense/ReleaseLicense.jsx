@@ -44,7 +44,11 @@ fetchApplicationType();
         if(!license.LicenseID){
             setHideButton(false);
         }
-        else if(license.LicenseID){
+        else if(license.LicenseID&&!license.IsDetained){
+          alert("this license is not detained so you cant release it ");
+          setHideButton(false);
+        }
+        else if(license.LicenseID&&license.IsDetained){
             setHideButton(true);
            await GetDetainLicenseData();
         }

@@ -6,6 +6,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../../../utils/config';
 import CptLicenseDetailsBySearch from "../CptLicenseDetailsBySearch/CptLicenseDetailsBySearch"
 import { getOneUserAction } from '../../../../Redux/Actions/UsersAction';
+import { ResetLicenseData } from '../../../../Redux/Actions/LicensesAction';
 const RenewLocalLicense = () => {
     const [note, setNote] = useState("");
     const [NewApplicationID,setNewApplicationID]=useState(0);
@@ -18,6 +19,9 @@ const RenewLocalLicense = () => {
   const [hideButton,setHideButton]=useState(false);
 
   const dispatch=useDispatch();
+  useEffect(()=>{
+    dispatch(ResetLicenseData());
+  },[])
   useEffect(()=>{
     const loadData=async()=>{
     if(license.LicenseID&&license.ExpirationDate>Date.now())

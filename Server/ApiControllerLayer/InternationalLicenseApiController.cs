@@ -121,7 +121,7 @@ namespace Server.ApiControllerLayer
             }
         }
         // GET: api/InternationalLicense/person/{personID}
-        [HttpGet("Licensesperson/{personID:int}")]
+        [HttpGet("InternationalLicensesperson/{personID:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

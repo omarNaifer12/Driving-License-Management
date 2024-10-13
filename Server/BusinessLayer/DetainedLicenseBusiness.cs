@@ -150,5 +150,10 @@ namespace Server.BusinessLayer
             else
                 return null;
         }
+   
+        public static List<dtoDetainedLicense> GetAllDetainedLicenses(){
+            return DetainedLicenseDataAccess.GetAllDetainedLicenses();
+        }
     }
+
 }

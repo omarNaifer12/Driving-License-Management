@@ -15,8 +15,8 @@ const InternationalLicenseDetails = () => {
     <div className="license-details">
     <h2>International License Details</h2>
     <div className="detail">
-      <label>Person ID:</label>
-      <span>{internationalLicenseDetails.PersonID}</span>
+      <label>Driver ID:</label>
+      <span>{internationalLicenseDetails.DriverID}</span>
     </div>
     <div className="detail">
       <label>National No:</label>
@@ -53,10 +53,6 @@ const InternationalLicenseDetails = () => {
     <div className="detail">
       <label>Is Active:</label>
       <span>{internationalLicenseDetails.IsActive ? "Active" : "Inactive"}</span>
-    </div>
-    <div className="detail">
-      <label>Created By User ID:</label>
-      <span>{internationalLicenseDetails.CreatedByUserID}</span>
     </div>
     <div className="detail">
       <label>Application ID:</label>

@@ -114,5 +114,11 @@ namespace Server.BusinessLayer
         {
             return PersonsDataAccess.DeletePerson(personID);
         }
+        public static List<PersonDTO> GetPaginatedPeople(int pageNumber,int rowPerPage){
+            return PersonsDataAccess.GetPaginatedPeople( pageNumber, rowPerPage);
+        }
+        public static int GetCountPeople(){
+            return PersonsDataAccess.GetCountPeople();
+        }
     }
 }

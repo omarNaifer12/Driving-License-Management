@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import "./PersonLicensesHistory.css"
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getDataAPI } from '../../../utils/fetchData';
+import CptPersonInformation from '../../componentsPersons/CptPersonInformation/CptPersonInformation';
+import { setLicenseID } from '../../../Redux/Actions/LicensesAction';
+import { useDispatch } from 'react-redux';
+import { legacy_createStore } from 'redux';
 const PersonLicensesHistory = () => {
   const [LocalLicensesOfPerson,setLocalLicensesOfPerson]=useState([]); 
   const [InternationalLicensesOfPerson,setInternationalLicensesOfPerson]=useState([]); 
   const [TypeTableList,setTypeTableList]=("Local");  
+  const navigate=useNavigate();
   const {PersonID}=useParams();
-
+const dispatch=useDispatch();
     const getInternationalLicenses=async()=>{
         try{
             const response=await getDataAPI(`InternationalLicenses/Licensesperson/${PersonID}`)
@@ -33,11 +38,14 @@ const PersonLicensesHistory = () => {
     useEffect(()=>{
         getLocalLicenses();
         getInternationalLicenses();
-    },[PersonID])
+    },[PersonID]);
     const handleLocalClick = () => {
         setTypeTableList("Local");
       };
-    
+      const navigateLicenseDetails=(LicenseID)=>{
+        dispatch(setLicenseID(LicenseID));
+        navigate("/license-details");
+      }
       const handleInternationalClick = () => {
         setTypeTableList("International");
       };
@@ -51,6 +59,7 @@ const PersonLicensesHistory = () => {
           <p>Expiration Date: {license.ExpirationDate}</p>
           <p>Is Active: {license.IsActive ? "Yes" : "No"}</p>
           <p>Class Name: {license.ClassName}</p>
+          <button onClick={()=>navigateLicenseDetails(license.LicenseID)}>show license info</button>
           <hr />
         </div>
       ));
@@ -65,17 +74,17 @@ const PersonLicensesHistory = () => {
           <p>Is Active: {license.IsActive ? "Yes" : "No"}</p>
           <p>Created By User ID: {license.CreatedByUserID}</p>
           <p>Application ID: {license.ApplicationID}</p>
+          <button onClick={()=>navigate(`/International-license-details/${license.InternationalLicenseID}`)}>show international license info</button>
           <hr />
         </div>
       ));
     }
   };
-
-  return (
+  return(
     <div>
+      <CptPersonInformation id={PersonID}/>
       <button onClick={handleLocalClick}>Show Local Licenses</button>
       <button onClick={handleInternationalClick}>Show International Licenses</button>
-
       <h2>{TypeTableList} Licenses</h2>
       {renderLicenses()}
     </div>

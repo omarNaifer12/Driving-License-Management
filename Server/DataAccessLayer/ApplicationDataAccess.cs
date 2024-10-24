@@ -185,5 +185,23 @@ namespace Server.DataAccessLayer
 
             return rowsAffected > 0;
         }
+          public static bool DeleteApplication(int ApplicationID)
+{ int rowsAffected = 0;
+  using SqlConnection connection = new (DataAccessSettings.ConnectionString);
+  string query = @"Delete Applications 
+                      where ApplicationID = @ApplicationID";
+  using SqlCommand command = new (query, connection);
+  command.Parameters.AddWithValue("@ApplicationID", ApplicationID);
+  try
+  {
+      connection.Open();
+      rowsAffected = command.ExecuteNonQuery();
+  }
+  catch (Exception ex)
+  {
+      Console.WriteLine("Error: " + ex.Message);
+  }
+  return rowsAffected > 0;
+} 
     }
 }

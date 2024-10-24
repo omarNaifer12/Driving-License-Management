@@ -4,7 +4,7 @@ import { getDataAPI } from '../../../../../utils/fetchData';
 import { GetApplicationTypeByID } from '../../../../../helper/ApplicationType';
 import { useDispatch, useSelector } from 'react-redux';
 import CptLicenseDetailsBySearch from '../../CptLicenseDetailsBySearch/CptLicenseDetailsBySearch';
-import { ResetLicenseData } from '../../../../../Redux/Actions/LicensesAction';
+import { ResetLicenseData, ResetLicenseID } from '../../../../../Redux/Actions/LicensesAction';
 import axios from 'axios';
 import { BASE_URL } from '../../../../../utils/config';
 const ReleaseLicense = () => {
@@ -30,8 +30,9 @@ console.log("error",err);
 
     }
   }
+  
   useEffect(()=>{
-    dispatch(ResetLicenseData());
+      
 const fetchApplicationType=async()=>{
     const res=await GetApplicationTypeByID(5);
     setNewApplicationTypeReleased(res);
@@ -121,7 +122,7 @@ fetchApplicationType();
             </div>
           </div>
         </div>
-       {hideButton&&<button className="renew-button" onClick={(e)=>handleReleaseLicense(e)}>Renew</button>}
+       {hideButton&&<button className="renew-button" onClick={(e)=>handleReleaseLicense(e)}>Release</button>}
       </div>
       </>
   )

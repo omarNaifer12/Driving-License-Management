@@ -33,7 +33,6 @@ namespace Server.ApiControllerLayer
                NationalNo=person.NationalNo, 
                DateOfBirth = person.DateOfBirth,
                Gendor = person.Gendor,
-               LicenseID=license.LicenseID,
                ImagePath = person.ImagePath
             };
 

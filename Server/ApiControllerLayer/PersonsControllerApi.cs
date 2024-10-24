@@ -165,6 +165,52 @@ namespace Server.ApiControllerLayer
             }
         }
 
+ [HttpGet("Paginated", Name ="GetPaginatedPeopleController")] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<IEnumerable<PersonDTO>>GetPaginatedPeopleController(int pageNumber)
+        {
 
+          try{
+            var allPaginedPeople= PersonsBusiness.GetPaginatedPeople(pageNumber,1);
+            
+           
+            if(allPaginedPeople.Count==0)
+            {
+                return NotFound("no data found");
+            }
+            return Ok(allPaginedPeople);
+          }
+          catch(Exception ex)
+          {
+          Console.WriteLine(ex.Message);
+          return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+          }
+        }
+        [HttpGet("count", Name ="GetPeopleCountController")] 
+          [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult GetPeopleCountController()
+        {
+
+          try{
+            int  count=PersonsBusiness.GetCountPeople();
+            
+           
+            if(count==0)
+            {
+                return NotFound("no data found");
+            }
+            int CountAllPages=(int)Math.Ceiling((double)count/1);
+            return Ok(CountAllPages);
+          }
+          catch(Exception ex)
+          {
+          Console.WriteLine(ex.Message);
+          return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+          }
+        }
     }
 }

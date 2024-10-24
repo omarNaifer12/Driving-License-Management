@@ -6,7 +6,8 @@ import axios from 'axios';
 import { BASE_URL } from '../../../../utils/config';
 import CptLicenseDetailsBySearch from "../CptLicenseDetailsBySearch/CptLicenseDetailsBySearch"
 import { getOneUserAction } from '../../../../Redux/Actions/UsersAction';
-import { ResetLicenseData } from '../../../../Redux/Actions/LicensesAction';
+import { ResetLicenseData, ResetLicenseID, setLicenseID } from '../../../../Redux/Actions/LicensesAction';
+import { useNavigate } from 'react-router-dom';
 const RenewLocalLicense = () => {
     const [note, setNote] = useState("");
     const [NewApplicationID,setNewApplicationID]=useState(0);
@@ -17,11 +18,12 @@ const RenewLocalLicense = () => {
   const [applicationType,setNewApplicationType]=useState({});
   const User=useSelector((state)=>state.Users.user);
   const [hideButton,setHideButton]=useState(false);
-
+const navigate=useNavigate();
   const dispatch=useDispatch();
   useEffect(()=>{
     dispatch(ResetLicenseData());
-  },[])
+    dispatch(ResetLicenseID());
+    },[])
   useEffect(()=>{
     const loadData=async()=>{
     if(license.LicenseID&&license.ExpirationDate>Date.now())
@@ -68,6 +70,10 @@ loadData();
      
     }
   };
+  const navigateLicenseDetails=()=>{
+    dispatch(setLicenseID(NewLicenseID));
+    navigate("/license-details");
+  }
     return (
       <>
 <label>Renew License</label>
@@ -119,7 +125,7 @@ loadData();
             </div>
             <div className="detail">
               <label>Total Fees:</label>
-              <span>{license.LicenseID?license.ClassFees+applicationType.ApplicationFees:"????"}</span>
+              <span>{license.LicenseID?(license.ClassFees+applicationType.ApplicationFees)+"$":"????"}</span>
             </div>
           </div>
         </div>
@@ -132,7 +138,11 @@ loadData();
             placeholder="Write a note here..."
           />
         </div>
-       {hideButton&&<button className="renew-button" onClick={handleRenew}>Renew</button>}
+        /Person-Licenses-History/:PersonID
+        {hideButton&&<button className="renew-button" onClick={handleRenew}>Renew</button>}
+        {license.LicenseID&&<button className="renew-button" onClick={()=>navigate(`/Person-Licenses-History/${license.PersonID}`)}>show person licenses history</button>}
+        {NewLicenseID&&<button className="renew-button" onClick={()=>navigateLicenseDetails()}>show new license details</button>}
+      
       </div>
       </>
 )

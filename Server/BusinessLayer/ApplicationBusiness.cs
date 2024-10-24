@@ -116,5 +116,9 @@ namespace Server.BusinessLayer
             return ApplicationDataAccess.UpdateStatus(this.ApplicationID,3);
 
         }
+        public  bool DeleteApplication()
+        {
+            return ApplicationDataAccess.DeleteApplication(this.ApplicationID); 
+        }
     }
 }

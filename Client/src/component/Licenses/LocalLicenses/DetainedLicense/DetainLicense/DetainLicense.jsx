@@ -6,7 +6,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../../../../utils/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOneUserAction } from '../../../../../Redux/Actions/UsersAction';
-import { ResetLicenseData } from '../../../../../Redux/Actions/LicensesAction';
+import { ResetLicenseData, ResetLicenseID } from '../../../../../Redux/Actions/LicensesAction';
  const DetainLicense = () => {
     const [fineFees,setFineFees]=useState("");
     const [DetainID,setDetainID]=useState(0);
@@ -17,6 +17,10 @@ import { ResetLicenseData } from '../../../../../Redux/Actions/LicensesAction';
   const dispatch=useDispatch();
   useEffect(()=>{
     dispatch(ResetLicenseData());
+    dispatch(ResetLicenseID());
+    },[])
+  useEffect(()=>{
+ 
     setDetainID(0);
     setFineFees("");
     if(!license.LicenseID){
@@ -89,7 +93,7 @@ setHideButton(true);
             </div>
           </div>
         </div>
-       {hideButton&&<button className="renew-button" onClick={(e)=>handleDetainLicense(e)}>Renew</button>}
+       {hideButton&&<button className="renew-button" onClick={(e)=>handleDetainLicense(e)}>Detain</button>}
       </div>
     </div>
   )

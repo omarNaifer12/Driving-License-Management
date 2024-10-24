@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Server.DataAccessLayer;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace Server.DataAccessLayer
 {
@@ -335,6 +336,88 @@ namespace Server.DataAccessLayer
 
             return rowsAffected > 0;
 
+        }
+        public static List<PersonDTO> GetPaginatedPeople(int pageNumber,int rowPerPage)
+        {
+             var peopleList = new List<PersonDTO>();
+
+   
+    using SqlConnection connection = new (DataAccessSettings.ConnectionString);
+
+    
+    using SqlCommand command = new ("[dbo].[SP_GetAllPaginationPeople]", connection);
+   command.CommandType =CommandType.StoredProcedure;
+
+    
+    command.Parameters.AddWithValue("@PageNumber", pageNumber);
+    command.Parameters.AddWithValue("@RowPerPage", rowPerPage);
+
+    try
+    {
+        connection.Open();
+        
+    
+        using SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+          
+            peopleList.Add(new PersonDTO(
+                (int)reader["PersonID"],
+                (string)reader["FirstName"],
+                (string)reader["SecondName"],
+                reader["ThirdName"] != DBNull.Value ? (string)reader["ThirdName"] : "",
+                (string)reader["LastName"],
+                (string)reader["NationalNo"],
+                (DateTime)reader["DateOfBirth"],
+                -1,  
+                (string)reader["Address"],
+                (string)reader["Phone"],
+                reader["Email"] != DBNull.Value ? (string)reader["Email"] : "",
+                -1,
+                reader["ImagePath"] != DBNull.Value ? (string)reader["ImagePath"] : "",
+                (string)reader["CountryName"],
+                (string)reader["GendorCaption"]
+            ));
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+
+    return peopleList;
+        }
+        public static int GetCountPeople()
+        {
+            int count=0;
+  SqlConnection connection = new (DataAccessSettings.ConnectionString);
+
+            string query = @"Select COUNT(*) From People AS count";
+
+            SqlCommand command = new (query, connection);
+
+          
+
+            try
+            {
+                connection.Open();
+
+                var result = command.ExecuteScalar();
+
+                if (result != null && int.TryParse(result.ToString(), out int insertedID))
+                {
+                    count=insertedID;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+
+            }
+
+            return count;
         }    
         }
+
     }

@@ -6,7 +6,7 @@ import { BASE_URL } from '../../../utils/config';
 import CptLicenseDetailsBySearch from '../LocalLicenses/CptLicenseDetailsBySearch/CptLicenseDetailsBySearch';
 import { getOneUserAction } from '../../../Redux/Actions/UsersAction';
 import axios from 'axios';
-import { ResetLicenseData } from '../../../Redux/Actions/LicensesAction';
+import { ResetLicenseData, ResetLicenseID, setLicenseID } from '../../../Redux/Actions/LicensesAction';
 const ReplacemenetDamagedOrLostLicense = () => {
     const [NewApplicationID,setNewApplicationID]=useState(0);
     const [NewLicenseID,setNewLicenseID]=useState(0);
@@ -18,14 +18,18 @@ const ReplacemenetDamagedOrLostLicense = () => {
   const User=useSelector((state)=>state.Users.user);
   const [hideButton,setHideButton]=useState(false);
   const [typeOfReplacemenet,setTypeOfReplacement]=useState("lost");
-
   const dispatch=useDispatch();
   useEffect(()=>{
-    dispatch(ResetLicenseData());
-  },[])
+    console.log("licens id from replcament license useeffcrt",LicenseId);
+    
+dispatch(ResetLicenseData());
+},[LicenseId]);
+
   useEffect(()=>{
     const loadData=async()=>{
-        if(!license.LicenseID){
+      console.log("license data is from replacement is",license);
+    
+      if(!license.LicenseID){
             setHideButton(false);
         }
         else if(license.LicenseID&&!license.IsActive){
@@ -33,21 +37,26 @@ const ReplacemenetDamagedOrLostLicense = () => {
           setHideButton(false);
         }
         else if(license.LicenseID&&license.IsDetained){
+          alert("this license is detained");
+        }
+        else if(license.LicenseID&&license.IsDetained){
         alert("this license detained u cant replace it right now ");
         setHideButton(false);
         }
      else if(license.LicenseID){
-      const responseDamaged= GetApplicationTypeByID(4);  
+      const responseDamaged=GetApplicationTypeByID(4);  
       const responseLost= GetApplicationTypeByID(3);  
       dispatch(getOneUserAction(userID));
         setHideButton(true);
         setNewApplicationTypeLost( await responseLost);
         setNewApplicationTypeDamaged(await responseDamaged);
     }
-}
+   
+  }
 loadData();
 
-  },[license.LicenseID])
+  },[license.LicenseID]);
+ 
   const handleReplacement = async() => {
 
   
@@ -72,9 +81,13 @@ loadData();
      
     }
   };
+  const navigateLicenseDetails=()=>{
+    dispatch(setLicenseID(NewLicenseID));
+    navigate("/license-details");
+  }
     return (
       <>
-     
+      <h3>{typeOfReplacemenet==="lost"?"Lost License":"Damaged License"}</h3>
 
         <div className="license-details-container">
         <CptLicenseDetailsBySearch/>
@@ -134,7 +147,10 @@ loadData();
             </div>
           </div>
         </div>
-       {hideButton&&<button className="renew-button" onClick={handleReplacement}>Renew</button>}
+        {hideButton&&<button className="renew-button" onClick={handleReplacement}>{typeOfReplacemenet==="lost"?"Lost License":"Damaged License"}</button>}
+        {license.LicenseID&&<button className="renew-button" onClick={()=>navigate(`/Person-Licenses-History/${license.PersonID}`)}>show person licenses history</button>}
+        {NewLicenseID&&<button className="renew-button" onClick={()=>navigateLicenseDetails()}>show new license details</button>}
+
       </div>
       </>
 )

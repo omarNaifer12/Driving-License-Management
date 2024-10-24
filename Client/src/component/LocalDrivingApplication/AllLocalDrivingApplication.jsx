@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import "./AllLocalDrivingApplication.css"
 import axios from 'axios';
-import { getDataAPI } from '../../utils/fetchData';
+import { deleteDataAPI, getDataAPI } from '../../utils/fetchData';
 import { BASE_URL } from '../../utils/config';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { GetLocalDrivingLicenseByIDAction, ResetLocalDrivingLicenseDataAction } from '../../Redux/Actions/LocalDrivingLicenseAction';
 import { PassedTestCountAction } from '../../Redux/Actions/TestsAction';
-import { setLicenseID } from '../../Redux/Actions/LicensesAction';
+import { ResetLicenseData, ResetLicenseID, setLicenseID } from '../../Redux/Actions/LicensesAction';
 const AllLocalDrivingApplication = () => {
     const [localDrivingApplications,setLocalDrivingApplications]=useState([]);
     const navigate=useNavigate();
@@ -25,7 +25,16 @@ const AllLocalDrivingApplication = () => {
     useEffect(()=>{
         fetchData();
     },[])
-    
+    const handleDelete=async(id)=>{
+      try{
+        const response=await deleteDataAPI(`LocalDrivingLicenses/Delete/${id}`);
+  setLocalDrivingApplications(localDrivingApplications.filter((local)=>local.LocalDrivingLicenseApplicationID!==id));    
+  }
+      catch(error){
+          console.log("error",error);
+         
+      }
+  }
       const handleDetails=(id)=>{
         console.log('Show details for local driving application ID:', id);
         dispatch(ResetLocalDrivingLicenseDataAction());
@@ -33,14 +42,27 @@ const AllLocalDrivingApplication = () => {
         dispatch(PassedTestCountAction(id));
         navigate("/LocalDrivingLicenseDetails");
       };
-    
-      const handleUpdate = (id) => {
-        console.log('Update local driving application ID:', id);
+ 
+      const resetLicenseBeforeNavigate=(name)=>{
+        dispatch(ResetLicenseData());
+        dispatch(ResetLicenseID());
+        navigate(name);
+      }
+      const handleNavigateReplacementLicense= () => {
+        resetLicenseBeforeNavigate('/replacement-lost-damaged-License');
+      };const handleNavigateDetainLicense= () => {
+        resetLicenseBeforeNavigate('/Detain-License');
+      };const handleNavigateReleaseLicense= () => {
+        resetLicenseBeforeNavigate('/Release-License');
+      };const handleNavigateRenewLicense= () => {
+      
+        resetLicenseBeforeNavigate('/Renew-License');
       };
-    
-      const handleDelete = (id) => {
-        console.log('Delete local driving application ID:', id);
-      };
+      const handleNavigateInternationLicense=()=>{
+resetLicenseBeforeNavigate('/issue-International-license');
+      }
+
+
     const checkPersonHaveLicenseAndnavigate=async(LocalDrivingLicenseID)=>{
 try{
   const response=await getDataAPI(`Licenses/ActiveLicensePerson/${LocalDrivingLicenseID}`);
@@ -60,13 +82,13 @@ console.log("error",error);
           <div className="header">
             <h2>Local Driving License Applications</h2>
             <button className="btn-add" onClick={()=>navigate('/AddLocalDrivingLicense')}>Add New Application</button>
-            
-            <button className="btn-add" onClick={()=>navigate('/issue-International-license')}>Add New International license</button>
-            <button className="btn-add" onClick={()=>navigate('/Renew-License')}>renew license</button>
-            <button className="btn-add" onClick={()=>navigate('/replacement-lost-damaged-License')}>replacement lost damaged License</button>
-            <button className="btn-add" onClick={()=>navigate('/detain-License ')}>detain License </button>
-            <button className="btn-add" onClick={()=>navigate('/release-License ')}>release License </button>
-             
+                 
+            <button className="btn-add" onClick={()=>handleNavigateInternationLicense()}>Add New International license</button>
+            <button className="btn-add" onClick={()=>navigate("/All-Detained-License")}>all detained license</button>
+            <button className="btn-add" onClick={()=>handleNavigateRenewLicense()}>renew license</button>
+            <button className="btn-add" onClick={()=>handleNavigateReplacementLicense()}>replacement lost damaged License</button>
+            <button className="btn-add" onClick={()=>handleNavigateDetainLicense()}>detain License </button>
+            <button className="btn-add" onClick={()=>handleNavigateReleaseLicense()}>release License </button>
           </div>
           <table className="local-driving-application-table">
             <thead>

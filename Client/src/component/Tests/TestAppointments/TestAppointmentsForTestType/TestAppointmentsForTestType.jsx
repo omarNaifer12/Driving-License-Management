@@ -98,7 +98,11 @@ console.log("localdribg is",localDrivingLicenseID,"typelocal",typeof localDrivin
         navigate("/Add-Test-Appointments");
       };
     
-      const handleTakeTest = (TestAppointmentID) => {
+      const handleTakeTest = (TestAppointmentID,locked) => {
+        if(locked){
+          alert(" you already taked this test");
+        }
+        else
       navigate(`/pass-fail-TestAppointment/${TestAppointmentID}`);
       };
   return (
@@ -119,7 +123,7 @@ console.log("localdribg is",localDrivingLicenseID,"typelocal",typeof localDrivin
               <p>Appointment Date: {new Date(appointment.AppointmentDate).toLocaleDateString()}</p>
               <p>Paid Fees: ${appointment.PaidFees.toFixed(2)}</p>
               <p>{appointment.IsLocked ? 'Locked' : 'Unlocked'}</p>
-              <button onClick={() => handleTakeTest(appointment.TestAppointmentID)}>Take Test</button>
+              <button onClick={() => handleTakeTest(appointment.TestAppointmentID,appointment.IsLocked)}>Take Test</button>
             </div>
           ))
         ) : (

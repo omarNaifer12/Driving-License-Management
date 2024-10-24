@@ -18,12 +18,12 @@ namespace Server.DataAccessLayer
     public int CreatedByUserID { get; set; }
     public bool IsReleased { get; set; }
     public DateTime? ReleaseDate { get; set; }
-    public int ReleasedByUserID { get; set; }
-    public int ReleaseApplicationID { get; set; }
+    public int? ReleasedByUserID { get; set; }
+    public int? ReleaseApplicationID { get; set; }
 
     public dtoDetainedLicense(int personID, string nationalNo, string fullName, int detainID, int licenseID, 
                               DateTime detainDate, decimal fineFees, int createdByUserID, bool isReleased, 
-                              DateTime? releaseDate, int releasedByUserID, int releaseApplicationID)
+                              DateTime? releaseDate, int? releasedByUserID, int? releaseApplicationID)
     {
         PersonID = personID;
         NationalNo = nationalNo;
@@ -381,9 +381,9 @@ namespace Server.DataAccessLayer
                     (decimal)reader["FineFees"],
                     (int)reader["CreatedByUserID"],
                     (bool)reader["IsReleased"],
-                    reader.IsDBNull(reader.GetOrdinal("ReleaseDate")) ? (DateTime?)null : (DateTime)reader["ReleaseDate"],
-                    (int)reader["ReleasedByUserID"],
-                    (int)reader["ReleaseApplicationID"]
+                    reader["ReleaseDate"]==DBNull.Value?null:(DateTime)reader["ReleaseDate"],
+                    reader["ReleasedByUserID"]==DBNull.Value?null:(int)reader["ReleasedByUserID"],
+                    reader["ReleaseApplicationID"]==DBNull.Value?null:(int)reader["ReleaseApplicationID"]
                 );
 
                 detainedLicenses.Add(license);

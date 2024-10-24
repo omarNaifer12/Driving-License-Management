@@ -28,11 +28,14 @@ import RenewLocalLicense from './component/Licenses/LocalLicenses/RenewLocalLice
 import ReplacemenetDamagedOrLostLicense from './component/Licenses/ReplacemenetDamagedOrLostLicense/ReplacemenetDamagedOrLostLicense';
 import ReleaseLicense from './component/Licenses/LocalLicenses/DetainedLicense/ReleaseLicense/ReleaseLicense';
 import DetainLicense from './component/Licenses/LocalLicenses/DetainedLicense/DetainLicense/DetainLicense';
+import AllDrivers from './component/Drivers/AllDrivers';
+import AllDetainedLicenses from './component/Licenses/LocalLicenses/DetainedLicense/AllDetainedLicenses/AllDetainedLicenses';
+import PersonLicensesHistory from './component/Licenses/PersonLicensesHistory/PersonLicensesHistory';
 const App=() => {
   return (
     <div>
  <Routes>
- <Route path='/all-people' element={<ListPersons />} />     
+ <Route path='/people/page/:newPage' element={<ListPersons />} />     
  <Route path='/add-Person' element={<Add_Edit_Person />} />     
  <Route path='/edit-Person/:id' element={<Add_Edit_Person />} />     
  <Route path='/Person-details/:id' element={<PersonDetails />} />     
@@ -64,10 +67,12 @@ const App=() => {
  <Route path='/replacement-lost-damaged-License' element={<ReplacemenetDamagedOrLostLicense />}/>
  <Route path='/release-License' element={<ReleaseLicense />}/>
  <Route path='/detain-License' element={<DetainLicense />}/>
-
-       </Routes>
+ <Route path='/drivers' element={<AllDrivers />}/>
+ <Route path='/All-Detained-License' element={<AllDetainedLicenses />}/>
+ <Route path='/Person-Licenses-History/:PersonID' element={<PersonLicensesHistory />}/>
+  </Routes>
     </div>
-  )
+    )
 }
 
 export default App

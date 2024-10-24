@@ -1,19 +1,44 @@
 import React, { useContext, useEffect, useState } from 'react'
 import "./people.css"
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { StoreContext } from '../../../context/storeContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { deletePersonAction, getAllPeopleAction } from '../../../Redux/Actions/peopleAction';
 import axios from 'axios';
-import { deleteDataAPI } from '../../../utils/fetchData';
+import { deleteDataAPI, getDataAPI } from '../../../utils/fetchData';
 function ListPersons() {
 
 const navigate=useNavigate();
 const dispatch=useDispatch();
-const persons=useSelector((state)=>state.Persons.People);
+const [formatedButtons,setFormatedButtons]=useState([]);
+const [highestPageNumber,setHighestPageNumber]=useState(0);
+const [persons,setPersons]=useState([]);
+const {newPage}=useParams();
+const currentPage = newPage?parseInt(newPage, 10):1;
 useEffect(()=>{
-   dispatch(getAllPeopleAction());
-  },[dispatch])
+  const loadData=async()=>{
+    if(highestPageNumber){
+    ManipulateButtonsOfPagination();
+   await getPagintedPeople(currentPage);
+  }
+  }
+  loadData();
+  },[currentPage,highestPageNumber]);
+  useEffect(()=>{
+    getHighestPageNumber();
+  },[])
+  const getHighestPageNumber=async()=>{
+    try {
+      const response=await getDataAPI('Persons/count');
+      console.log("data get highest num",response.data);
+      
+    
+      setHighestPageNumber(response.data);
+    } catch (error) {
+      console.log("erorr",error);
+      
+    }
+  }
 const deletePerson=async(PersonID)=>{
   console.log("person id for delete ",PersonID);
   
@@ -25,12 +50,45 @@ const deletePerson=async(PersonID)=>{
       console.log("error delete person",error);
   }
 }
+const getPagintedPeople=async(pageNumber)=>{
+try{
+const response=await getDataAPI(`Persons/Paginated?pageNumber=${pageNumber}`);
+setPersons(response.data);
 
-console.log("persons is ",persons);
+}
+catch(error){
+  console.log("error");
+  
+}
+}
+const ManipulateButtonsOfPagination=()=>{
+let buttons=[]
+  if(highestPageNumber<=7){
+for(let i=1;i<=highestPageNumber;i++){
+  buttons.push(i);
+}
+}
+else{
+  if(currentPage<=5){
+    buttons=[1,2,3,4,5,6,'...',highestPageNumber];
+  }
+  else if(currentPage>=highestPageNumber-4){
+    buttons=[1,'...',highestPageNumber-5,highestPageNumber-4,highestPageNumber-3,highestPageNumber-2,highestPageNumber-1,highestPageNumber];
+  }
+  else{
+    buttons=[1,'...',currentPage-1,currentPage,currentPage+1,currentPage+2,'...',highestPageNumber];
+  }
+}
+setFormatedButtons(buttons);
+}
+const handlePageChange = (newPage) => {
+  navigate(`/people/page/${newPage}`); 
+};
 return(
   <div className="person-list">
     
     <button onClick={()=>navigate("/AllLocalDrivingLicense")}> go AllLocalDrivingLicense </button>
+
 
     <button onClick={()=>navigate("/loginForm")}> go login </button>
     <h1>Manage People</h1>
@@ -83,6 +141,20 @@ return(
         ))}
       </tbody>
     </table>
+    <div>
+      {
+       formatedButtons.map((button,index)=>{
+        return (
+          <div key={index}>
+          {button==='...'? (<span key={index}>...</span>):
+          (<button onClick={()=>handlePageChange(button)}>{button}</button>)
+          }
+          </div>
+        )
+        })
+      
+      }
+    </div>
   </div>
 );
 }

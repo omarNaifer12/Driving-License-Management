@@ -222,5 +222,27 @@ namespace Server.ApiControllerLayer
             }
 
         }
+                 [HttpDelete("Delete/{id:int}", Name = "DeleteLocalDrivingLicenseController")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult DeleteLocalDrivingLicenseController(int id)
+        {
+            try
+            {
+                LocalDrivingLicenseBusiness? localDrivingLicenseBusiness=LocalDrivingLicenseBusiness.FindLocalDrivingApplicationByID(id);
+                if (localDrivingLicenseBusiness==null)
+                {
+                    return NotFound("user not found for the provided ID");
+                }
+                localDrivingLicenseBusiness.DeleteLocalDrivingLicense();
+                return Ok($"user with {id} deleted");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the user.");
+            }
+        }
     }
 }

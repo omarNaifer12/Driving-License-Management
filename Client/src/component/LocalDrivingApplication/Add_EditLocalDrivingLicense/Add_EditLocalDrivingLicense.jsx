@@ -43,33 +43,34 @@ const Add_EditLocalDrivingLicense = () =>{
     try{
       const response =await getDataAPI(`LocalDrivingLicenses/checkPersonHaveSameLDL?ApplicationTypeID=${1}&ApplicantPersonID=${ApplicantPersonID}&LicenseClassID=${LicenseClassID}`);
       if(response.data.success){
-        return true;
-      }
-      else {
         return false;
       }
-
+      else {
+        return true;
+      }
     }
     catch(error){
       console.log("errro ",error);
-      
-
     }
-
   }
   const CheckPersonHaveLicenseForLicenseClass=async(ApplicantPersonID,LicenseClassID)=>{
     try{
-      const response =await getDataAPI(`LocalDrivingLicenses/IsHaveLicenseForLicenseClass?PersonID=${ApplicantPersonID}&LicenseClassID=${LicenseClassID}`);
-     if(response.status===404){
-      return false;
-     }
-     else if(response.status===200){
+    const response =await getDataAPI(`Licenses/IsHaveLicenseForLicenseClass?PersonID=${ApplicantPersonID}&LicenseClassID=${LicenseClassID}`);
+    console.log("response data of check person have license for class",response.data,"status",response.status);
+    if(response.status==200){
       return true;
      }
 
     }
     catch(error){
-      console.log("errro ",error);
+      if (error.response && error.response.status === 404) {
+       
+        console.log("he is not have license for this class ");
+        return false;
+      } else {
+        console.log("Error occurred", error);
+        return false;  
+      }
     
     }
 
@@ -97,11 +98,14 @@ const Add_EditLocalDrivingLicense = () =>{
       
       let response;
       if(localDrivingLicense.localDrivingLicenseID===0&&!id){
-        if(CheckPersonHaveLicenseForLicenseClass(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID)){
+        const res=await CheckPersonHaveLicenseForLicenseClass(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID);
+        console.log("respose person have licens for this class",res);
+        
+        if(res){
           alert("this person is already have an license issued");
           return;
         }
-        if(CheckPersonHaveSameLocalDrivingLicense(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID)){
+        if(await CheckPersonHaveSameLocalDrivingLicense(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID)){
           alert("this person already have active local Driving License");
           return;
         }
@@ -132,8 +136,7 @@ const Add_EditLocalDrivingLicense = () =>{
     else if(!id){
         const userID=parseInt(localStorage.getItem("UserID"),10);
         dispatch(getOneUserAction(userID));
-        console.log("userid from add is ",userID);
-        
+        console.log("userid from add is ",userID);    
         const ApplicationsType= await GetApplicationTypeByID(1);
         console.log("applicationtype in add is ",ApplicationsType);
         

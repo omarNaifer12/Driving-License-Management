@@ -142,5 +142,19 @@ namespace Server.BusinessLayer
        {
         return LocalDrivingLicenseDataAccess.GetActiveLocalDrivingLicenseIdOfPerson(LicenseClassID,ApplicantPersonID);
        }
+        public  bool DeleteLocalDrivingLicense()
+        {
+            bool IsLocalDrivingApplicationDeleted = false;
+            bool IsBaseApplicationDeleted = false;
+          
+            IsLocalDrivingApplicationDeleted = LocalDrivingLicenseDataAccess.DeleteLocalDrivingLicenseApplication(this.LocalDrivingLicenseApplicationID);
+           
+            if (!IsLocalDrivingApplicationDeleted)
+                return false;
+        
+            IsBaseApplicationDeleted = base.DeleteApplication();
+            return IsBaseApplicationDeleted;
+
+        }
     }
 }

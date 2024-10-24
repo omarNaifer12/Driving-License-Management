@@ -39,7 +39,6 @@ const AllDetainedLicenses = () => {
         <tbody>
           {detainLicenses.map((license) => (
             <tr key={license.DetainID}>
-              <td>{license.PersonID}</td>
               <td>{license.NationalNo}</td>
               <td>{license.FullName}</td>
               <td>{license.DetainID}</td>
@@ -58,5 +57,4 @@ const AllDetainedLicenses = () => {
     </div>
   );
 }
-
 export default AllDetainedLicenses

@@ -1,8 +1,15 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import "./Navbar .css"
+import { useDispatch } from 'react-redux'
 const Navbar =()=>{
+  const dispatch=useDispatch();
+  const resetLicenseBeforeNavigate=()=>{
+    dispatch(ResetLicenseData());
+    dispatch(ResetLicenseID());
    
+  }
+const navigate=useNavigate();
     return (
         <nav className="navbar">
           <ul className="navbar-menu">
@@ -15,7 +22,7 @@ const Navbar =()=>{
               </ul>
             </li>
             <li className="navbar-item"><Link to="/drivers">Drivers</Link></li>
-            <li className="navbar-item"><Link to="/all-people">People</Link></li>
+            <li className="navbar-item" onClick={()=>navigate(`/people/page/${1}`)}>People</li>
             <li className="navbar-item"><Link to="/all-users">Users</Link></li>
             <li className="navbar-item dropdown">
               <span>Applications</span>
@@ -23,25 +30,51 @@ const Navbar =()=>{
                 <li className="dropdown">
                   <span>Driving Licenses Service</span>
                   <ul className="dropdown-menu">
-                    <li><Link to="/manage-applications">Manage Applications</Link></li>
-                    <li><Link to="/detain-licenses">Detain Licenses</Link></li>
-                    <li><Link to="/issue-licenses">Issue Licenses</Link></li>
+                    <li><Link to="/AddLocalDrivingLicense">New Local Driving License</Link></li>
+                    <li>
+        <Link to="/issue-International-license" >
+          New International Driving License
+        </Link>
+      </li>
+      <li>
+        <Link to="/Renew-License" >
+          Renew Driving License
+        </Link>
+      </li>
+      <li>
+        <Link to="/replacement-lost-damaged-License" >
+          Replacement For Lost Or Damaged License
+        </Link>
+      </li>
+      <li>
+        <Link to="/Release-License" >
+          Release Detained License
+        </Link>
+      </li>           <li><Link to="">Retake Test</Link></li>
                   </ul>
                 </li>
                 <li className="dropdown">
                   <span>Manage Application</span>
                   <ul className="dropdown-menu">
-                    <li><Link to="/application-type/driving-license">Driving License</Link></li>
-                    <li><Link to="/application-type/renewal">Renewal</Link></li>
-                    <li><Link to="/application-type/replacement">Replacement</Link></li>
+                  <li><Link to="/AllLocalDrivingLicense">Local Driving Licenses Appication</Link></li>
+                  <li><Link to="/application-type/driving-license">International Licenses Appication</Link></li>
+                  
                   </ul>
                 </li>
                 <li className="dropdown">
                   <span>Detain Licenses</span>
                   <ul className="dropdown-menu">
-                    <li><Link to="/detain-license/theft">Theft</Link></li>
-                    <li><Link to="/detain-license/accident">Accident</Link></li>
-                    <li><Link to="/detain-license/violation">Violation</Link></li>
+                    <li><Link to="/All-Detained-License">Manage Detained Licenses</Link></li>
+                    <li>
+        <Link to="/Detain-License" >
+          Release Detained License
+        </Link>
+      </li>   
+                    <li>
+        <Link to="/Release-License" >
+          Release Detained License
+        </Link>
+      </li>   
                   </ul>
                 </li>
                 <li><Link to="/Application-type">Manage Application Type</Link></li>

@@ -4,21 +4,18 @@ import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { GetOneLicense, ResetLicenseData } from '../../../../Redux/Actions/LicensesAction';
 const CptLicenseDtails = () => {
-    const id=useSelector((state)=>state.LicensesReducer.LicenseID);
+const id=useSelector((state)=>state.LicensesReducer.LicenseID);
   const dispatch=useDispatch();
   const license=useSelector((state)=>state.LicensesReducer.licenseDetails);
     useEffect(()=>{
-        console.log("licesne useeffect",license);
-        console.log("licesneid from  useeffect",id);
+        console.log("license id from licensedetails useeffect",license,id);
+        
         dispatch(ResetLicenseData());
         if(id)
         {
             dispatch(GetOneLicense(id));
         }
     },[id])
-    if(!license.LicenseID){
-        alert("this id is invalid");
-    }
     return(
         <div className="license-details">
         <h2>License Details</h2>

@@ -17,7 +17,7 @@ fetchDrivers();
     },[])
   return (
     <div className="all-drivers-container">
-    <h1 className="heading">All Drivers</h1>
+    <h1  className="heading">All Drivers</h1>
     <div className="drivers-list">
         {Drivers.map((driver) => (
             <div key={driver.DriverID} className="driver-card">

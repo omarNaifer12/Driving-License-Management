@@ -7,6 +7,7 @@ import { GetApplicationTypeByID } from '../../../../helper/ApplicationType';
 import CptLicenseDetailsBySearch from '../../LocalLicenses/CptLicenseDetailsBySearch/CptLicenseDetailsBySearch';
 import axios from 'axios';
 import { BASE_URL } from '../../../../utils/config';
+import { useNavigate } from 'react-router-dom';
 const AddInternationalLicense = () =>{
     const user =useSelector((state)=>state.Users.user);
     const userID=parseInt(localStorage.getItem("UserID"),10);
@@ -18,6 +19,7 @@ const AddInternationalLicense = () =>{
     const ApplicationsType=  GetApplicationTypeByID(6);
     const license=useSelector((state)=>state.LicensesReducer.licenseDetails);
     const [hideButton,setHideButton]=useState(true);
+    const navigate=useNavigate();
     const currentDate = new Date().toLocaleDateString();
 const fetchLicenseClassDetails=async()=>{
 try{
@@ -53,24 +55,27 @@ useEffect(()=>{
 },[])
 useEffect(()=>{
 const loadData=async()=>{
-
-if(license.LicenseID&&license.IsActive){
-  const res=await checkPersonHaveInternationalLicense();
-
+   if(license.LicenseID&&!license.IsActive){
+    alert("this licens is not active");
+    setHideButton(false);
+}
+  else if(license.LicenseID&&license.IsActive&&license.LicenseClass!==3){
+    alert("u should have an license only with   Class 3 - Ordinary driving license");
+    setHideButton(false);
+  }
+  else if(license.LicenseID&&license.IsActive){
+    const res=await checkPersonHaveInternationalLicense();
   
-    if(!res){
-        alert("you already have other international license");
-        setHideButton(false);
-    }
-    else
-setHideButton(true);
-}
-else{
-    if(license.LicenseID&&!license.IsActive){
-        alert("this licens is not active");
-        setHideButton(false);
-    }
-}
+    
+      if(!res){
+          alert("you already have other international license");
+          setHideButton(false);
+      }
+      else{
+        setHideButton(true);
+      }
+  }
+
 
 }
 loadData();
@@ -133,6 +138,7 @@ loadData();
             </div>
           </div>
           {hideButton&&<button onClick={(e)=>IssueInternationalLicense(e)}>save</button>}
+          {InternationalLicenseID&&<button onClick={(e)=>navigate(`/International-license-details/${InternationalLicenseID}`)}>save</button>}
         </div>
         </>
       );

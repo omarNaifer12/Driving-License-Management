@@ -1,3 +1,5 @@
+using Server.BusinessLayer;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
 .AddJsonOptions(options =>
@@ -20,6 +22,8 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+builder.Services.AddMemoryCache(); // Register memory cache
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

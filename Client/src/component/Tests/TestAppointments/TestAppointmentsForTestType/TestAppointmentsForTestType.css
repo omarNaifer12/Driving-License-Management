@@ -1,30 +1,294 @@
+/* ── TestAppointmentsForTestType.css ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+.taft-container {
+  --clr-accent:        #c8a96e;
+  --clr-accent-light:  #f0e8d8;
+  --clr-border:        #e8e2d9;
+  --clr-text:          #1a1a1a;
+  --clr-muted:         #7a7068;
+  --clr-card:          #ffffff;
+  --clr-danger:        #b84040;
+  --clr-danger-light:  #fdf0ee;
+  --clr-success:       #2d7a50;
+  --clr-success-light: #eaf6ef;
+  --clr-blue:          #3a5a9a;
+  --clr-blue-light:    #eef1f8;
+  --clr-purple:        #6b3a9a;
+  --clr-purple-light:  #f3eef8;
+  --clr-teal:          #2a7a72;
+  --clr-teal-light:    #eaf5f4;
+  --radius:            16px;
+  --shadow:            0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+
+  font-family: 'DM Sans', sans-serif;
+  padding: 36px 32px;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Test type hero banner ── */
+.taft-hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: var(--shadow);
+  animation: fadeUp 0.4s ease both;
+}
+
+.taft-hero__icon-wrap {
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  border: 2px solid rgba(200,169,110,0.35);
+  background: rgba(200,169,110,0.12);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.taft-hero__icon-wrap svg {
+  width: 32px; height: 32px;
+  stroke: var(--clr-accent); fill: none;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.taft-hero__text {}
+
+.taft-hero__step {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--clr-accent); margin-bottom: 4px;
+}
+
+.taft-hero__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; font-weight: 700; color: #ffffff; margin: 0;
+}
+
+.taft-hero__sub {
+  font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 4px;
+}
+
+/* ── Section label ── */
+.taft-section-label {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--clr-muted);
+  margin-bottom: -12px;
+}
+
+/* ── Appointments grid ── */
 .test-appointments-list {
-    margin-top: 20px;
-  }
-  
-  .test-appointment-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-  }
-  
-  .test-appointment-item p {
-    margin: 5px 0;
-  }
-  
-  .add-test-appointment-btn {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  
-  .add-test-appointment-btn:hover {
-    background-color: #0056b3;
-  }
-  
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* ── Appointment card ── */
+.test-appointment-item {
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeUp 0.35s ease both;
+}
+
+.test-appointment-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.1);
+}
+
+/* stagger */
+.test-appointment-item:nth-child(1) { animation-delay: 0.05s; }
+.test-appointment-item:nth-child(2) { animation-delay: 0.10s; }
+.test-appointment-item:nth-child(3) { animation-delay: 0.15s; }
+.test-appointment-item:nth-child(4) { animation-delay: 0.20s; }
+
+.taf-card__header {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  padding: 13px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.taf-card__id {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--clr-accent);
+}
+
+.taf-card__lock {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 9px; border-radius: 20px;
+  font-size: 11px; font-weight: 500;
+}
+
+.taf-card__lock--locked   { background: rgba(184,64,64,0.25);  color: #e07070; }
+.taf-card__lock--unlocked { background: rgba(45,122,80,0.25);  color: #5ec990; }
+
+.taf-card__lock svg {
+  width: 11px; height: 11px; stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.taf-card__body {
+  padding: 14px 18px;
+  display: flex; flex-direction: column; gap: 0;
+}
+
+.taf-card__row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--clr-border);
+}
+.taf-card__row:last-child { border-bottom: none; }
+
+.taf-card__key {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--clr-muted);
+}
+
+.taf-card__val { font-size: 13px; color: var(--clr-text); }
+
+.taf-fees-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: 20px;
+  background: var(--clr-accent-light); color: #8a6d3b;
+  font-size: 12px; font-weight: 600;
+}
+
+.taf-card__action {
+  padding: 12px 18px 16px;
+}
+
+.taf-take-btn {
+  width: 100%;
+  padding: 10px;
+  border: none; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.taf-take-btn--active {
+  background: linear-gradient(135deg, #1a1a1a, #2d2620);
+  color: var(--clr-accent);
+}
+
+.taf-take-btn--locked {
+  background: var(--clr-danger-light);
+  color: var(--clr-danger);
+  cursor: not-allowed;
+}
+
+.taf-take-btn--active:hover  { opacity: 0.85; transform: translateY(-1px); }
+.taf-take-btn--active:active { transform: translateY(0); }
+
+.taf-take-btn svg {
+  width: 14px; height: 14px; stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ── Empty state ── */
+.taft-empty {
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--clr-card);
+  border: 1px dashed var(--clr-border);
+  border-radius: var(--radius);
+  color: var(--clr-muted);
+}
+
+.taft-empty svg {
+  width: 40px; height: 40px;
+  stroke: var(--clr-border); fill: none;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+  margin-bottom: 12px;
+}
+
+.taft-empty p { font-size: 14px; margin: 0; }
+
+/* ── All-passed banner ── */
+.taft-all-passed {
+  background: var(--clr-success-light);
+  border: 1px solid rgba(45,122,80,0.25);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  display: flex; align-items: center; gap: 16px;
+  animation: fadeUp 0.4s ease both;
+}
+
+.taft-all-passed__icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--clr-success);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.taft-all-passed__icon svg {
+  width: 24px; height: 24px; stroke: #fff; fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.taft-all-passed__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700; color: var(--clr-success); margin: 0 0 4px;
+}
+
+.taft-all-passed__sub { font-size: 13px; color: var(--clr-muted); }
+
+/* ── Add appointment button ── */
+.add-test-appointment-btn {
+  align-self: flex-end;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  color: var(--clr-accent); border: none; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+}
+.add-test-appointment-btn:hover  { opacity: 0.85; transform: translateY(-1px); }
+.add-test-appointment-btn:active { transform: translateY(0); }
+.add-test-appointment-btn svg {
+  width: 15px; height: 15px; stroke: var(--clr-accent); fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ── Toast ── */
+.taft-toast {
+  position: fixed; bottom: 28px; right: 28px;
+  padding: 13px 20px; border-radius: 12px;
+  font-size: 14px; font-weight: 500; color: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15); z-index: 9999;
+  display: flex; align-items: center; gap: 10px;
+  animation: toastIn 0.3s ease;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.taft-toast--error { background: var(--clr-danger); }
+.taft-toast svg {
+  width: 16px; height: 16px; stroke: #fff; fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .taft-container { padding: 20px 14px; }
+  .taft-hero { padding: 20px; }
+  .taft-hero__title { font-size: 20px; }
+  .taft-hero__icon-wrap { width: 50px; height: 50px; }
+  .taft-hero__icon-wrap svg { width: 24px; height: 24px; }
+}

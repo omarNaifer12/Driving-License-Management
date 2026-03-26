@@ -134,17 +134,21 @@ namespace Server.ApiControllerLayer
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
           }
         }
-         [HttpGet("LicensesOfPerson", Name ="GetAllLicensesOfPersonController")] 
+        [HttpGet("LicensesOfPerson", Name ="GetAllLicensesOfPersonController")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<IEnumerable<LicensesPersonDTO>>GetAllLicensesOfPersonController(int PersonID)
         {
             Console.WriteLine("reach all LocalDrivingLicenseViewDTO");
+            Console.WriteLine(PersonID);
+
+
         try{
              List<LicensesPersonDTO> licensesPersonDTOs= LicenseBusiness.GetLicensesOfPerson(PersonID);
-            
-           
+            Console.WriteLine("reach afer licensesPersonDTOs");
+            Console.WriteLine(licensesPersonDTOs.Count);
+           Console.WriteLine(licensesPersonDTOs);
             if(licensesPersonDTOs.Count==0)
             {
                 return NotFound("no data found");

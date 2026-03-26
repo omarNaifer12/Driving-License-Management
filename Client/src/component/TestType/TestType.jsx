@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './TestType.css';
-
+import { BASE_URL } from '../../utils/config';
 const TestType = () => {
   const [testTypes, setTestTypes] = useState([]);
   const [editingTest, setEditingTest] = useState(null);
@@ -13,7 +13,7 @@ const TestType = () => {
 
   const fetchTestTypes = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/TestType');
+      const response = await axios.get(BASE_URL+'/TestType');
       setTestTypes(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -38,7 +38,7 @@ const TestType = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3000/TestType/${formData.id}`, formData);
+      await axios.put(`${BASE_URL}/TestType/${formData.id}`, formData);
       fetchTestTypes();
       handleCloseClick();
     } catch (error) {

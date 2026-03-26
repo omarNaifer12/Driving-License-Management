@@ -2,17 +2,17 @@ import { LocalDrivingLicenseAction } from "../Actions/LocalDrivingLicenseAction"
 
 const initialState={
   LocalDrivingLicense:{
-    ApplicationID: '',
+    ApplicationID: 0,
     ApplicantPersonID: '',
-    ApplicationDate: '',
-    ApplicationTypeID: '',
+    ApplicationDate: new Date().toISOString().split('T')[0],
+    ApplicationTypeID: 0,
     ApplicationStatus: '',
-    LastStatusDate: '',
-    PaidFees: '',
-    CreatedByUserID: '',
+    LastStatusDate: new Date().toISOString().split('T')[0],
+    PaidFees: 0,
+    CreatedByUserID: 0,
     CreatedByUserName: '',
-    LicenseClassID: '',
-    localDrivingLicenseID: '',
+    LicenseClassID: 0,
+    localDrivingLicenseID: 0,
     PersonFullName:'',
     ApplicationTypeName:'',
     LicenseClassName:''

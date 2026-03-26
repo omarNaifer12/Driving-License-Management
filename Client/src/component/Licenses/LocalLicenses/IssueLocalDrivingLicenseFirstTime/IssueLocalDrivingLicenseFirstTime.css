@@ -1,0 +1,182 @@
+/* ── IssueLocalDrivingLicenseFirstTime.css ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+.issue-ldl-container {
+  --clr-accent:        #c8a96e;
+  --clr-accent-light:  #f0e8d8;
+  --clr-border:        #e8e2d9;
+  --clr-text:          #1a1a1a;
+  --clr-muted:         #7a7068;
+  --clr-card:          #ffffff;
+  --clr-danger:        #b84040;
+  --clr-success:       #2d7a50;
+  --clr-success-light: #eaf6ef;
+  --clr-blue:          #3a5a9a;
+  --clr-blue-light:    #eef1f8;
+  --radius:            16px;
+  --shadow:            0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+
+  font-family: 'DM Sans', sans-serif;
+  padding: 36px 32px;
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.issue-ldl-container h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 700; color: var(--clr-text); margin: 0;
+}
+
+.issue-ldl-container .page-sub {
+  font-size: 13px; color: var(--clr-muted); margin: -16px 0 0;
+}
+
+/* ── Notes card ── */
+.issue-ldl-notes-card {
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.issue-ldl-notes-card__header {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.issue-ldl-notes-card__header-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(200,169,110,0.18);
+  border: 1px solid rgba(200,169,110,0.35);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.issue-ldl-notes-card__header-icon svg {
+  width: 15px; height: 15px; stroke: var(--clr-accent); fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.issue-ldl-notes-card__header-title {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--clr-accent);
+}
+
+.issue-ldl-notes-card__body {
+  padding: 20px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.issue-ldl-notes-label {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--clr-muted);
+}
+
+.issue-ldl-notes-textarea {
+  padding: 12px 14px;
+  border: 1px solid var(--clr-border); border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--clr-text);
+  background: #faf9f7; outline: none; resize: vertical; min-height: 90px;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  box-sizing: border-box; width: 100%;
+}
+
+.issue-ldl-notes-textarea:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(200,169,110,0.15);
+  background: #fff;
+}
+
+.issue-ldl-notes-textarea::placeholder { color: #c0b8af; }
+
+/* ── Success strip ── */
+.issue-ldl-success-strip {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 20px;
+  background: var(--clr-success-light);
+  border: 1px solid rgba(45,122,80,0.25);
+  border-radius: var(--radius);
+  animation: fadeUp 0.3s ease both;
+}
+
+.issue-ldl-success-strip__icon {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--clr-success);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.issue-ldl-success-strip__icon svg {
+  width: 20px; height: 20px; stroke: #fff; fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.issue-ldl-success-strip__text {}
+.issue-ldl-success-strip__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px; font-weight: 700; color: var(--clr-success); margin: 0 0 2px;
+}
+.issue-ldl-success-strip__sub { font-size: 12px; color: var(--clr-muted); }
+
+/* ── Buttons ── */
+.issue-ldl-btn {
+  align-self: flex-end;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px;
+  border: none; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.issue-ldl-btn:hover:not(:disabled)  { opacity: 0.85; transform: translateY(-1px); }
+.issue-ldl-btn:active:not(:disabled) { transform: translateY(0); }
+.issue-ldl-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.issue-ldl-btn--save {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  color: var(--clr-accent);
+}
+
+.issue-ldl-btn--view {
+  background: var(--clr-success-light);
+  color: var(--clr-success);
+}
+
+.issue-ldl-btn svg {
+  width: 15px; height: 15px; stroke: currentColor; fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ── Toast ── */
+.issue-ldl-toast {
+  position: fixed; bottom: 28px; right: 28px;
+  padding: 13px 20px; border-radius: 12px;
+  font-size: 14px; font-weight: 500; color: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15); z-index: 9999;
+  display: flex; align-items: center; gap: 10px;
+  animation: toastIn 0.3s ease;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.issue-ldl-toast--success { background: var(--clr-success); }
+.issue-ldl-toast--error   { background: var(--clr-danger); }
+.issue-ldl-toast svg {
+  width: 16px; height: 16px; stroke: #fff; fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .issue-ldl-container { padding: 20px 14px; }
+}

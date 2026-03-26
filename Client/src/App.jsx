@@ -49,10 +49,11 @@ const App=() => {
  <Route path='/loginForm' element={<LoginForm />} />   
  <Route path='/Application-type' element={<ApplicationType />} />   
  <Route path='/Test-type' element={<TestType />}/>
- <Route path='/edit-users/:id' element={<LoginInfo />} />    
+ <Route path='/edit-users/:UserID/:PersonID' element={<Add_Edit_User />} />    
  <Route path='/AllLocalDrivingLicense' element={<AllLocalDrivingApplication />} />    
- <Route path='/AddLocalDrivingLicense' element={<SearchOnPersonAndAddLocalDrivingLicense/>} />    
- <Route path='/UpdateLocalDrivingLicense/:id' element={<Add_EditLocalDrivingLicense/>} />
+ <Route path='/AddLocalDrivingLicense' element={<SearchOnPersonAndAddLocalDrivingLicense/>} />
+  <Route path='/EditLocalDrivingLicense/:id' element={<SearchOnPersonAndAddLocalDrivingLicense/>} />        
+ {/* <Route path='/UpdateLocalDrivingLicense/:id' element={<Add_EditLocalDrivingLicense/>} /> */}
  <Route path='/LocalDrivingLicenseDetails' element={<CptLocalDrivingApplicationDetails/>} />
  
  <Route path='/TestAppointmentsForTestType/:localDrivingLicenseID/:CountPassedTest' element={<TestAppointmentsForTestType/>} />

@@ -1,78 +1,182 @@
-/* Container for the entire component */
+/* ── CptSearchForPerson ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
 .search-for-person-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 600px;
-    margin: 40px auto;
-  }
-  
-  /* Section for search input and button */
-  .search-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  .search-section h2 {
-    margin-bottom: 20px;
-    color: #333;
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  .search-section input {
-    width: 80%;
-    padding: 10px;
-    border: 2px solid #007bff;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    transition: border-color 0.3s;
-  }
-  
-  .search-section input:focus {
-    border-color: #0056b3;
-    outline: none;
-  }
-  
-  .search-section button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .search-section button:hover {
-    background-color: #0056b3;
-  }
-  
-  .additional-content {
-    margin-top: 20px;
-    width: 100%;
-  }
-  
-  /* For CptPersonInformation component styling */
-  .cpt-person-information {
-    width: 100%;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Media queries for responsiveness */
-  @media (max-width: 768px) {
-    .search-section input,
-    .search-section button {
-      width: 100%;
-    }
-  }
-  
+  --clr-accent:       #c8a96e;
+  --clr-accent-light: #f0e8d8;
+  --clr-border:       #e8e2d9;
+  --clr-text:         #1a1a1a;
+  --clr-muted:        #7a7068;
+  --clr-card:         #ffffff;
+  --radius:           16px;
+  --shadow:           0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Search card ── */
+.search-section {
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.search-section__header {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-section__header-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(200,169,110,0.2);
+  border: 1px solid rgba(200,169,110,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.search-section__header-icon svg {
+  width: 16px; height: 16px;
+  stroke: var(--clr-accent); fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.search-section__header-title {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+}
+
+/* ── Search body ── */
+.search-section__body {
+  padding: 22px 24px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.search-section__field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.search-section__label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+}
+
+.search-section__input {
+  padding: 11px 14px;
+  border: 1px solid var(--clr-border);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--clr-text);
+  background: #faf9f7;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.search-section__input:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(200,169,110,0.15);
+  background: #fff;
+}
+
+.search-section__input:read-only {
+  background: var(--clr-accent-light);
+  color: #8a6d3b;
+  cursor: not-allowed;
+  border-color: rgba(200,169,110,0.4);
+}
+
+.search-section__btn {
+  padding: 11px 24px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  color: var(--clr-accent);
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  /* vertically align with input */
+  height: 42px;
+}
+
+.search-section__btn:hover:not(:disabled)  { opacity: 0.85; transform: translateY(-1px); }
+.search-section__btn:active:not(:disabled) { transform: translateY(0); }
+.search-section__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.search-section__btn svg {
+  width: 15px; height: 15px;
+  stroke: var(--clr-accent); fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* read-only hint badge */
+.search-section__locked {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--clr-accent-light);
+  color: #8a6d3b;
+  font-size: 11px;
+  font-weight: 500;
+  align-self: flex-end;
+  margin-bottom: 2px;
+}
+
+.search-section__locked svg {
+  width: 12px; height: 12px;
+  stroke: #8a6d3b; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ── Responsive ── */
+@media (max-width: 520px) {
+  .search-section__body { flex-direction: column; align-items: stretch; }
+  .search-section__btn  { width: 100%; justify-content: center; }
+}

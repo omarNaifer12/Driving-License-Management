@@ -1,89 +1,130 @@
-import React, { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import "./Navbar .css"
-import { useDispatch } from 'react-redux'
-const Navbar =()=>{
-  const dispatch=useDispatch();
-  const resetLicenseBeforeNavigate=()=>{
-    dispatch(ResetLicenseData());
-    dispatch(ResetLicenseID());
-   
-  }
-const navigate=useNavigate();
-    return (
-        <nav className="navbar">
-          <ul className="navbar-menu">
-            <li className="navbar-item dropdown">
-              <span>Account Settings</span>
-              <ul className="dropdown-menu">
-                <li><Link to={`/user-details/${localStorage.getItem("id")}`}>Current User Info</Link></li>
-                <li><Link to={`/change-password/${localStorage.getItem("id")}`}>Change Password</Link></li>
-                <li><Link to="/logout">Logout</Link></li>
-              </ul>
-            </li>
-            <li className="navbar-item"><Link to="/drivers">Drivers</Link></li>
-            <li className="navbar-item" onClick={()=>navigate(`/people/page/${1}`)}>People</li>
-            <li className="navbar-item"><Link to="/all-users">Users</Link></li>
-            <li className="navbar-item dropdown">
-              <span>Applications</span>
-              <ul className="dropdown-menu">
-                <li className="dropdown">
-                  <span>Driving Licenses Service</span>
-                  <ul className="dropdown-menu">
-                    <li><Link to="/AddLocalDrivingLicense">New Local Driving License</Link></li>
-                    <li>
-        <Link to="/issue-International-license" >
-          New International Driving License
-        </Link>
-      </li>
-      <li>
-        <Link to="/Renew-License" >
-          Renew Driving License
-        </Link>
-      </li>
-      <li>
-        <Link to="/replacement-lost-damaged-License" >
-          Replacement For Lost Or Damaged License
-        </Link>
-      </li>
-      <li>
-        <Link to="/Release-License" >
-          Release Detained License
-        </Link>
-      </li>           <li><Link to="">Retake Test</Link></li>
-                  </ul>
-                </li>
-                <li className="dropdown">
-                  <span>Manage Application</span>
-                  <ul className="dropdown-menu">
-                  <li><Link to="/AllLocalDrivingLicense">Local Driving Licenses Appication</Link></li>
-                  <li><Link to="/application-type/driving-license">International Licenses Appication</Link></li>
-                  
-                  </ul>
-                </li>
-                <li className="dropdown">
-                  <span>Detain Licenses</span>
-                  <ul className="dropdown-menu">
-                    <li><Link to="/All-Detained-License">Manage Detained Licenses</Link></li>
-                    <li>
-        <Link to="/Detain-License" >
-          Release Detained License
-        </Link>
-      </li>   
-                    <li>
-        <Link to="/Release-License" >
-          Release Detained License
-        </Link>
-      </li>   
-                  </ul>
-                </li>
-                <li><Link to="/Application-type">Manage Application Type</Link></li>
-                <li><Link to="/Test-type">Manage Test Types</Link></li>
-              </ul>
-            </li>
-          </ul>
-        </nav>
-      );
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./Navbar .css";
+import { useDispatch } from "react-redux";
+import { ResetPersonData } from "../../Redux/Actions/peopleAction";
+import { ResetLicenseData } from "../../Redux/Actions/LicensesAction";
+import { ResetUserData } from "../../Redux/Actions/UsersAction";
+import { ResetLocalDrivingLicenseDataAction } from "../../Redux/Actions/LocalDrivingLicenseAction";
+
+const Navbar = () => {
+  const userId = localStorage.getItem("UserID");
+  const navigate  = useNavigate();
+const dispatch = useDispatch();
+
+  const resetValues=()=>{
+dispatch(ResetPersonData());
+dispatch(ResetLicenseData());
+dispatch(ResetUserData());
+dispatch(ResetLocalDrivingLicenseDataAction());
+
 }
 
-export default Navbar 
+  const logout=()=>{
+  localStorage.removeItem("UserID");
+  localStorage.removeItem("UserIDToRemember");
+}
+
+  return (
+    <nav className="nav">
+
+      <div className="logo">License System</div>
+
+      <ul className="navbar-links">
+
+        <li className="home">
+          <Link to="/drivers">Drivers</Link>
+        </li>
+
+        <li className="home">
+          <Link to="/people/page/1">People</Link>
+        </li>
+
+        <li className="home">
+          <Link to="/all-users">Users</Link>
+        </li>
+
+        {/* Applications Dropdown */}
+        <li className="html">
+          <Link className="html-link">
+            Applications
+            <i className="fa-solid fa-chevron-down html-chevron"></i>
+          </Link>
+
+          <ul className="html-sub-menu">
+
+            {/* Driving Licenses Service */}
+            <li className="lin">
+              <Link className="html-js-link">
+                Driving Licenses Service
+                <i className="fa-solid fa-chevron-right"></i>
+              </Link>
+
+              <ul className="html-js-sub-menu">
+                <li onClick={resetValues}><Link to="/AddLocalDrivingLicense">New Local Driving License</Link></li>
+                <li onClick={resetValues}><Link to="/issue-International-license">New International License</Link></li>
+                <li onClick={resetValues}><Link to="/Renew-License">Renew Driving License</Link></li>
+                <li onClick={resetValues}><Link to="/replacement-lost-damaged-License">Replacement Lost/Damaged</Link></li>
+                <li onClick={resetValues}><Link to="/Release-License">Release Detained License</Link></li>
+                <li onClick={resetValues}><Link to="">Retake Test</Link></li>
+              </ul>
+            </li>
+
+            {/* Manage Application */}
+            <li className="lin" >
+              <Link className="html-js-link">
+                Manage Application
+                <i className="fa-solid fa-chevron-right"></i>
+              </Link>
+
+              <ul className="html-js-sub-menu">
+                <li onClick={resetValues}><Link to="/AllLocalDrivingLicense">Local Driving Licenses</Link></li>
+                <li onClick={resetValues}><Link to="/application-type/driving-license">International Licenses</Link></li>
+              </ul>
+            </li>
+
+            {/* Detain Licenses */}
+            <li className="lin">
+              <Link className="html-js-link">
+                Detain Licenses
+                <i className="fa-solid fa-chevron-right"></i>
+              </Link>
+
+              <ul className="html-js-sub-menu">
+                <li><Link to="/All-Detained-License">Manage Detained Licenses</Link></li>
+                <li onClick={resetValues}><Link to="/Detain-License">Detain License</Link></li>
+                <li onClick={resetValues}><Link to="/Release-License">Release License</Link></li>
+              </ul>
+            </li>
+
+            <li><Link to="/Application-type">Manage Application Type</Link></li>
+            <li><Link to="/Test-type">Manage Test Types</Link></li>
+
+          </ul>
+        </li>
+
+        {/* Account Dropdown */}
+        <li className="js">
+          <Link className="js-link">
+            Account
+            <i className="fa-solid fa-chevron-down js-chevron"></i>
+          </Link>
+
+          <ul className="js-sub-menu">
+            <li><Link to={`/user-details/${userId}`}>Current User Info</Link></li>
+            <li><Link to={`/change-password/${userId}`}>Change Password</Link></li>
+            <li>
+               <Link to="/loginForm" onClick={logout}>
+    Logout
+  </Link>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+
+    </nav>
+  );
+};
+
+export default Navbar;

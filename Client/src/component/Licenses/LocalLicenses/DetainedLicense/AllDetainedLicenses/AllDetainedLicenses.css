@@ -1,0 +1,109 @@
+/* ── AllDetainedLicenses.css ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+.all-detained-container {
+  --clr-accent:        #c8a96e;
+  --clr-accent-light:  #f0e8d8;
+  --clr-border:        #e8e2d9;
+  --clr-text:          #1a1a1a;
+  --clr-muted:         #7a7068;
+  --clr-card:          #ffffff;
+  --clr-danger:        #b84040;
+  --clr-danger-light:  #fdf0ee;
+  --clr-success:       #2d7a50;
+  --clr-success-light: #eaf6ef;
+  --clr-orange:        #b86030;
+  --clr-orange-light:  #fdf4ee;
+  --radius:            16px;
+  --shadow:            0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+
+  font-family: 'DM Sans', sans-serif;
+  padding: 36px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Top bar ── */
+.all-detained-topbar {
+  display: flex; align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px; gap: 16px; flex-wrap: wrap;
+}
+
+.all-detained-topbar h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 700; color: var(--clr-text); margin: 0 0 4px;
+}
+
+.all-detained-topbar__sub {
+  font-size: 13px; color: var(--clr-muted); margin: 0;
+}
+
+/* ── Table wrapper ── */
+.all-detained-table-wrap {
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+
+/* ── Table ── */
+.detained-licenses-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px; min-width: 1100px;
+}
+
+.detained-licenses-table thead {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+}
+
+.detained-licenses-table thead th {
+  padding: 13px 14px; text-align: left;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--clr-accent); white-space: nowrap;
+}
+
+.detained-licenses-table tbody tr {
+  border-bottom: 1px solid var(--clr-border); transition: background 0.15s;
+}
+.detained-licenses-table tbody tr:last-child { border-bottom: none; }
+.detained-licenses-table tbody tr:hover { background: #faf9f7; }
+
+.detained-licenses-table td {
+  padding: 11px 14px; color: var(--clr-text); vertical-align: middle;
+}
+
+.detained-licenses-table td.muted { color: var(--clr-muted); font-size: 12px; }
+
+/* ── Status pill ── */
+.detained-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px 3px 8px; border-radius: 20px;
+  font-size: 11px; font-weight: 500; white-space: nowrap;
+}
+.detained-pill::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; display: block;
+}
+.detained-pill--active  { background: var(--clr-danger-light); color: var(--clr-danger); }
+.detained-pill--active::before { background: var(--clr-danger); }
+.detained-pill--released { background: var(--clr-success-light); color: var(--clr-success); }
+.detained-pill--released::before { background: var(--clr-success); }
+
+/* fees badge */
+.detained-fees {
+  display: inline-flex; padding: 2px 9px; border-radius: 20px;
+  background: var(--clr-orange-light); color: var(--clr-orange);
+  font-size: 12px; font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .all-detained-container { padding: 24px 16px; }
+  .all-detained-topbar h1 { font-size: 22px; }
+}

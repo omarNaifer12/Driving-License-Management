@@ -1,8 +1,8 @@
-import { legacy_createStore as createStore,applyMiddleware} from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import RootReducers from './rootReducers';
 import {thunk} from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
-export const store=createStore(
-    RootReducers,
-    composeWithDevTools(applyMiddleware(thunk))
-);
+
+export const store = configureStore({
+  reducer: RootReducers,
+  devTools: true,
+})

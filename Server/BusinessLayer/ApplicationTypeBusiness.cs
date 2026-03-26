@@ -31,5 +31,9 @@ namespace Server.BusinessLayer
 
 
         }
+    public static  List<ApplicationTypeDTO> GetApplicationTypesList()
+        {
+            return ApplicationTypeDataAccess.GetAllApplicationTypes();
+        }
     }
 }

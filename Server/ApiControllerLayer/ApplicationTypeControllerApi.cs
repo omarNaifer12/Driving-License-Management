@@ -34,5 +34,28 @@ namespace Server.ApiControllerLayer
 
           }
         }
+         [HttpGet("All", Name ="GetAllicationTypes")] 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult GetAllicationTypes()
+        {
+          Console.WriteLine("reached backend app types get");
+            var ApplicationTypes=ApplicationTypeBusiness.GetApplicationTypesList();
+          try{
+          if(ApplicationTypes==null){
+            return NotFound("the ApplicationType not found error your id");
+          }
+            
+          
+            return Ok(ApplicationTypes);
+          }
+          catch(Exception ex)
+          {
+            Console.WriteLine(ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing your request.");
+
+          }
+        }
     }
 }

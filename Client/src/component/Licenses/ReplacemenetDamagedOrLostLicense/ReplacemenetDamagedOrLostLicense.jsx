@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import "./ReplacemenetDamagedOrLostLicense.css"
+import React, { useEffect, useState } from 'react';
+import './ReplacemenetDamagedOrLostLicense.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetApplicationTypeByID } from '../../../helper/ApplicationType';
 import { BASE_URL } from '../../../utils/config';
@@ -7,153 +7,218 @@ import CptLicenseDetailsBySearch from '../LocalLicenses/CptLicenseDetailsBySearc
 import { getOneUserAction } from '../../../Redux/Actions/UsersAction';
 import axios from 'axios';
 import { ResetLicenseData, ResetLicenseID, setLicenseID } from '../../../Redux/Actions/LicensesAction';
+import { useNavigate } from 'react-router-dom';
+
+/* ── icons ── */
+const SwapIcon = () => (
+  <svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+);
+const AlertIcon = () => (
+  <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+);
+const CheckIcon = () => (
+  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+);
+const XIcon = () => (
+  <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+);
+const ExternalLinkIcon = () => (
+  <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+);
+const HistoryIcon = () => (
+  <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/></svg>
+);
+const SearchIcon = () => (
+  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+);
+const ZapIcon = () => (
+  <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+);
+
+const Toast = ({ message, type }) =>
+  message ? (
+    <div className={`lc-toast lc-toast--${type}`}>
+      {type === 'success' ? <CheckIcon /> : <XIcon />}
+      {message}
+    </div>
+  ) : null;
+
+const Row = ({ label, children, value }) => (
+  <div className="lc-row">
+    <span className="lc-row__key">{label}</span>
+    <span className={`lc-row__val${!value && !children ? ' lc-row__val--empty' : ''}`}>
+      {children || value || '—'}
+    </span>
+  </div>
+);
+
 const ReplacemenetDamagedOrLostLicense = () => {
-    const [NewApplicationID,setNewApplicationID]=useState(0);
-    const [NewLicenseID,setNewLicenseID]=useState(0);
-    const userID=parseInt(localStorage.getItem("UserID"),10);
-    const LicenseId=useSelector((state)=>state.LicensesReducer.LicenseID);
-  const license=useSelector((state)=>state.LicensesReducer.licenseDetails);
-  const [applicationTypeDamaged,setNewApplicationTypeDamaged]=useState({});
-  const [applicationTypeLost,setNewApplicationTypeLost]=useState({});
-  const User=useSelector((state)=>state.Users.user);
-  const [hideButton,setHideButton]=useState(false);
-  const [typeOfReplacemenet,setTypeOfReplacement]=useState("lost");
-  const dispatch=useDispatch();
-  useEffect(()=>{
-    console.log("licens id from replcament license useeffcrt",LicenseId);
-    
-dispatch(ResetLicenseData());
-},[LicenseId]);
+  const dispatch  = useDispatch();
+  const navigate  = useNavigate();
+  const license   = useSelector((s) => s.LicensesReducer.licenseDetails);
+  const user      = useSelector((s) => s.Users.user);
+  const userID    = parseInt(localStorage.getItem('UserID'), 10);
 
-  useEffect(()=>{
-    const loadData=async()=>{
-      console.log("license data is from replacement is",license);
-    
-      if(!license.LicenseID){
-            setHideButton(false);
-        }
-        else if(license.LicenseID&&!license.IsActive){
-          alert("this license is not active so cant replace");
-          setHideButton(false);
-        }
-        else if(license.LicenseID&&license.IsDetained){
-          alert("this license is detained");
-        }
-        else if(license.LicenseID&&license.IsDetained){
-        alert("this license detained u cant replace it right now ");
-        setHideButton(false);
-        }
-     else if(license.LicenseID){
-      const responseDamaged=GetApplicationTypeByID(4);  
-      const responseLost= GetApplicationTypeByID(3);  
+  const [type,               setType]               = useState('lost');
+  const [appTypeDamaged,     setAppTypeDamaged]     = useState({});
+  const [appTypeLost,        setAppTypeLost]        = useState({});
+  const [newApplicationID,   setNewApplicationID]   = useState(0);
+  const [newLicenseID,       setNewLicenseID]       = useState(0);
+  const [canReplace,         setCanReplace]         = useState(false);
+  const [alertMsg,           setAlertMsg]           = useState('');
+  const [saving,             setSaving]             = useState(false);
+  const [toast,              setToast]              = useState({ message: '', type: 'success' });
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast({ message: '', type: 'success' }), 3500);
+  };
+
+  useEffect(() => { dispatch(ResetLicenseData()); }, []);
+
+  useEffect(() => {
+    setAlertMsg(''); setCanReplace(false);
+    if (!license.LicenseID) return;
+    if (!license.IsActive) { setAlertMsg('This license is not active and cannot be replaced.'); return; }
+    if (license.IsDetained) { setAlertMsg('This license is currently detained and cannot be replaced.'); return; }
+
+    const load = async () => {
+      const [lost, damaged] = await Promise.all([GetApplicationTypeByID(3), GetApplicationTypeByID(4)]);
+      setAppTypeLost(lost);
+      setAppTypeDamaged(damaged);
       dispatch(getOneUserAction(userID));
-        setHideButton(true);
-        setNewApplicationTypeLost( await responseLost);
-        setNewApplicationTypeDamaged(await responseDamaged);
-    }
-   
-  }
-loadData();
+      setCanReplace(true);
+    };
+    load();
+  }, [license.LicenseID]);
 
-  },[license.LicenseID]);
- 
-  const handleReplacement = async() => {
-
-  
-     const ApplicationTypeID=typeOfReplacemenet==="lost"?applicationTypeLost.ApplicationTypeID:applicationTypeDamaged.ApplicationTypeID;
-     
-    
-  
+  const handleReplacement = async () => {
+    const appType = type === 'lost' ? appTypeLost : appTypeDamaged;
+    setSaving(true);
     try {
-      const response = await  axios.post(BASE_URL+`/api/licenses/Change?existLicenseID=${license.LicenseID}&createdBy=${userID}&ApplicationTypeID=${ApplicationTypeID}&IssueReason=${ApplicationTypeID}`, "",{
-        headers: {
-          'Content-Type': 'application/json',  
-        },
-      }
-    );
-  setNewApplicationID(response.data.ApplicationID);
-  setNewLicenseID(response.data.LicenseID);
-      console.log('License renewed successfully:', response.data);
-      setHideButton(false)
-   
+      const response = await axios.post(
+        `${BASE_URL}/api/licenses/Change?existLicenseID=${license.LicenseID}&createdBy=${userID}&ApplicationTypeID=${appType.ApplicationTypeID}&IssueReason=${appType.ApplicationTypeID}`,
+        '', { headers: { 'Content-Type': 'application/json' } }
+      );
+      setNewApplicationID(response.data.ApplicationID);
+      setNewLicenseID(response.data.LicenseID);
+      setCanReplace(false);
+      showToast(`${type === 'lost' ? 'Lost' : 'Damaged'} license replaced successfully!`, 'success');
     } catch (err) {
-      console.error('Failed to renew license:', err);
-     
+      console.error('Replacement failed:', err);
+      showToast('Failed to replace license. Please try again.', 'error');
+    } finally {
+      setSaving(false);
     }
   };
-  const navigateLicenseDetails=()=>{
-    dispatch(setLicenseID(NewLicenseID));
-    navigate("/license-details");
-  }
-    return (
-      <>
-      <h3>{typeOfReplacemenet==="lost"?"Lost License":"Damaged License"}</h3>
 
-        <div className="license-details-container">
-        <CptLicenseDetailsBySearch/>
-        <div className="license-replacement-type">
-        <h3>Select Replacement Type:</h3>
+  const currentFees = type === 'lost' ? appTypeLost.ApplicationFees : appTypeDamaged.ApplicationFees;
+  const today = new Date().toLocaleDateString();
+
+  return (
+    <>
+      <div className="lc-container">
         <div>
-          <input
-            type="radio"
-            id="lost"
-            name="replacement"
-            value="lost"
-            checked={typeOfReplacemenet === 'lost'}
-            onChange={(e) => setTypeOfReplacement(e.target.value)}
-          />
-          <label htmlFor="lost">Lost License</label>
-
-          <input
-            type="radio"
-            id="damaged"
-            name="replacement"
-            value="damaged"
-            checked={typeOfReplacemenet === 'damaged'}
-            onChange={(e) => setTypeOfReplacement(e.target.value)}
-          />
-          <label htmlFor="damaged">Damaged License</label>
+          <h1>Replace License</h1>
         </div>
-      </div>
-        <div className="license-details">
-        
-          <div className="left-section">
-            <div className="detail">
-              <label>Application ID:</label>
-              <span>{NewApplicationID?NewApplicationID:"????"}</span>
-            </div>
-            <div className="detail">
-              <label>Application Date:</label>
-              <span>????</span>
-            </div>
-            <div className="detail">
-            <label>Application Fees:</label>
-              <span>{typeOfReplacemenet==="lost"?applicationTypeLost.ApplicationFees:applicationTypeDamaged.ApplicationFees}</span>
-            </div>
+
+        <CptLicenseDetailsBySearch />
+
+        {alertMsg && (
+          <div className="lc-alert lc-alert--error">
+            <AlertIcon /><span className="lc-alert__text">{alertMsg}</span>
           </div>
-  
-          <div className="right-section">
-            <div className="detail">
-              <label>Renewed License ID:</label>
-              <span>{NewLicenseID?NewLicenseID:'????'}</span>
-            </div>
-            <div className="detail">
-              <label>Old License ID:</label>
-              <span>{license.LicenseID?license.LicenseID:'????'}</span>
-            </div>
-            <div className="detail">
-              <label>Created By:</label>
-              <span>{User.UserName}</span>
-            </div>
+        )}
+
+        {/* type selector */}
+        <div className="lc-type-card">
+          <div className="lc-type-card__header">
+            <div className="lc-type-card__header-icon"><SwapIcon /></div>
+            <span className="lc-type-card__header-title">Replacement Type</span>
+          </div>
+          <div className="lc-type-card__body">
+            <label className={`lc-type-option lc-type-option--lost${type === 'lost' ? ' selected' : ''}`}>
+              <input type="radio" value="lost" checked={type === 'lost'} onChange={() => setType('lost')} />
+              <SearchIcon /> Lost License
+            </label>
+            <label className={`lc-type-option lc-type-option--damaged${type === 'damaged' ? ' selected' : ''}`}>
+              <input type="radio" value="damaged" checked={type === 'damaged'} onChange={() => setType('damaged')} />
+              <ZapIcon /> Damaged License
+            </label>
           </div>
         </div>
-        {hideButton&&<button className="renew-button" onClick={handleReplacement}>{typeOfReplacemenet==="lost"?"Lost License":"Damaged License"}</button>}
-        {license.LicenseID&&<button className="renew-button" onClick={()=>navigate(`/Person-Licenses-History/${license.PersonID}`)}>show person licenses history</button>}
-        {NewLicenseID&&<button className="renew-button" onClick={()=>navigateLicenseDetails()}>show new license details</button>}
 
+        {/* success strip */}
+        {newLicenseID > 0 && (
+          <div className="lc-success-strip">
+            <div className="lc-success-strip__icon"><CheckIcon /></div>
+            <div>
+              <div className="lc-success-strip__title">License Replaced — New ID: {newLicenseID}</div>
+              <div className="lc-success-strip__sub">Application ID: {newApplicationID} · Issued on {today}</div>
+            </div>
+          </div>
+        )}
+
+        {/* details card */}
+        {license.LicenseID > 0 && (
+          <div className="lc-card">
+            <div className="lc-card__header">
+              <div className="lc-card__header-icon"><SwapIcon /></div>
+              <div>
+                <div className="lc-card__header-label">
+                  {type === 'lost' ? 'Lost License' : 'Damaged License'} Replacement
+                </div>
+                <div className="lc-card__header-title">License #{license.LicenseID}</div>
+              </div>
+            </div>
+
+            <div className="lc-card__body">
+              <div className="lc-col">
+                <Row label="Application ID">
+                  {newApplicationID ? <span className="lc-badge lc-badge--blue">{newApplicationID}</span> : null}
+                </Row>
+                <Row label="Application Date" value={today} />
+                <Row label="Application Fees">
+                  {currentFees != null
+                    ? <span className="lc-badge lc-badge--gold">${currentFees}</span>
+                    : null}
+                </Row>
+              </div>
+              <div className="lc-col">
+                <Row label="New License ID">
+                  {newLicenseID ? <span className="lc-badge lc-badge--success">{newLicenseID}</span> : null}
+                </Row>
+                <Row label="Old License ID" value={license.LicenseID} />
+                <Row label="Created By" value={user.UserName} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="lc-actions">
+          {license.LicenseID > 0 && (
+            <button className="lc-btn lc-btn--blue"
+              onClick={() => navigate(`/Person-Licenses-History/${license.PersonID}`)}>
+              <HistoryIcon /> License History
+            </button>
+          )}
+          {newLicenseID > 0 && (
+            <button className="lc-btn lc-btn--success"
+              onClick={() => { dispatch(setLicenseID(newLicenseID)); navigate('/license-details'); }}>
+              <ExternalLinkIcon /> View New License
+            </button>
+          )}
+          {canReplace && (
+            <button className="lc-btn lc-btn--primary" onClick={handleReplacement} disabled={saving}>
+              <SwapIcon /> {saving ? 'Processing…' : type === 'lost' ? 'Replace Lost License' : 'Replace Damaged License'}
+            </button>
+          )}
+        </div>
       </div>
-      </>
-)
-}
 
-export default ReplacemenetDamagedOrLostLicense
+      <Toast message={toast.message} type={toast.type} />
+    </>
+  );
+};
+
+export default ReplacemenetDamagedOrLostLicense;

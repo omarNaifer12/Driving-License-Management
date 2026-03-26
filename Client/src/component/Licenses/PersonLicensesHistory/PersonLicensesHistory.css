@@ -1,0 +1,209 @@
+/* ── PersonLicensesHistory.css ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+.plh-container {
+  --clr-accent:        #c8a96e;
+  --clr-accent-light:  #f0e8d8;
+  --clr-border:        #e8e2d9;
+  --clr-text:          #1a1a1a;
+  --clr-muted:         #7a7068;
+  --clr-card:          #ffffff;
+  --clr-danger:        #b84040;
+  --clr-danger-light:  #fdf0ee;
+  --clr-success:       #2d7a50;
+  --clr-success-light: #eaf6ef;
+  --clr-blue:          #3a5a9a;
+  --clr-blue-light:    #eef1f8;
+  --clr-purple:        #6b3a9a;
+  --clr-purple-light:  #f3eef8;
+  --radius:            16px;
+  --shadow:            0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+
+  font-family: 'DM Sans', sans-serif;
+  padding: 36px 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Tab bar ── */
+.plh-tabs {
+  display: flex;
+  gap: 0;
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.plh-tab {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 20px;
+  border: none; background: transparent;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--clr-muted); cursor: pointer;
+  transition: all 0.2s; border-right: 1px solid var(--clr-border);
+}
+.LicensesTab{
+  color: #1a1a1a;
+}
+.plh-tab:last-child { border-right: none; }
+
+.plh-tab svg {
+  width: 15px; height: 15px; stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.plh-tab--active {
+  background: linear-gradient(135deg, #1a1a1a, #2d2620);
+  color: var(--clr-accent);
+}
+
+.plh-tab-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 20px; height: 20px; padding: 0 6px;
+  border-radius: 10px; font-size: 11px; font-weight: 600;
+}
+
+.plh-tab--active .plh-tab-count {
+  background: rgba(200,169,110,0.2); color: var(--clr-accent);
+}
+
+.plh-tab:not(.plh-tab--active) .plh-tab-count {
+  background: var(--clr-accent-light); color: #8a6d3b;
+}
+
+/* ── License grid ── */
+.plh-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+/* ── License card ── */
+.plh-card {
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeUp 0.35s ease both;
+}
+
+.plh-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.1);
+}
+
+.plh-card:nth-child(1) { animation-delay: 0.04s; }
+.plh-card:nth-child(2) { animation-delay: 0.08s; }
+.plh-card:nth-child(3) { animation-delay: 0.12s; }
+.plh-card:nth-child(4) { animation-delay: 0.16s; }
+.plh-card:nth-child(5) { animation-delay: 0.20s; }
+.plh-card:nth-child(6) { animation-delay: 0.24s; }
+
+.plh-card__header {
+  background: linear-gradient(135deg, #1a1a1a, #2d2620);
+  padding: 12px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.plh-card__id {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--clr-accent);
+}
+
+/* status pill */
+.plh-status {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 500;
+}
+.plh-status::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%; display: block;
+}
+.plh-status--active   { background: rgba(45,122,80,0.3);  color: #5ec990; }
+.plh-status--active::before  { background: #5ec990; }
+.plh-status--inactive { background: rgba(184,64,64,0.3);  color: #e07070; }
+.plh-status--inactive::before { background: #e07070; }
+
+.plh-card__body {
+  padding: 14px 18px;
+  display: flex; flex-direction: column; gap: 0;
+}
+
+.plh-card__row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--clr-border);
+}
+.plh-card__row:last-child { border-bottom: none; }
+
+.plh-card__key {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--clr-muted);
+}
+
+.plh-card__val { font-size: 13px; color: var(--clr-text); }
+
+.plh-class-badge {
+  display: inline-flex; padding: 1px 9px; border-radius: 20px;
+  background: var(--clr-blue-light); color: var(--clr-blue);
+  font-size: 12px; font-weight: 600;
+}
+
+.plh-intl-badge {
+  display: inline-flex; padding: 1px 9px; border-radius: 20px;
+  background: var(--clr-purple-light); color: var(--clr-purple);
+  font-size: 12px; font-weight: 600;
+}
+
+.plh-card__action {
+  padding: 12px 18px 14px;
+}
+
+.plh-view-btn {
+  width: 100%;
+  padding: 9px;
+  background: linear-gradient(135deg, #1a1a1a, #2d2620);
+  color: var(--clr-accent); border: none; border-radius: 9px;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: opacity 0.2s, transform 0.12s;
+}
+.plh-view-btn:hover  { opacity: 0.85; transform: translateY(-1px); }
+.plh-view-btn:active { transform: translateY(0); }
+.plh-view-btn svg {
+  width: 13px; height: 13px; stroke: var(--clr-accent); fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ── Empty state ── */
+.plh-empty {
+  text-align: center; padding: 48px 24px;
+  background: var(--clr-card);
+  border: 1px dashed var(--clr-border); border-radius: var(--radius);
+  color: var(--clr-muted);
+}
+.plh-empty svg {
+  width: 40px; height: 40px; stroke: var(--clr-border); fill: none;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 12px;
+}
+.plh-empty p { font-size: 14px; margin: 0; }
+
+@media (max-width: 640px) {
+  .plh-container { padding: 20px 14px; }
+  .plh-tab span { display: none; }
+  .plh-grid { grid-template-columns: 1fr; }
+}

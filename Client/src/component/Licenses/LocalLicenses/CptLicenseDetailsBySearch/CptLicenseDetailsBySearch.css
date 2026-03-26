@@ -1,0 +1,137 @@
+/* ── CptLicenseDetailsBySearch.css ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+.license-search-container {
+  --clr-accent:       #c8a96e;
+  --clr-accent-light: #f0e8d8;
+  --clr-border:       #e8e2d9;
+  --clr-text:         #1a1a1a;
+  --clr-muted:        #7a7068;
+  --clr-card:         #ffffff;
+  --clr-danger:       #b84040;
+  --clr-success:      #2d7a50;
+  --radius:           16px;
+  --shadow:           0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeUp 0.4s ease both;
+  
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 900px; /* control size here */
+  margin: 10px auto;   /* center horizontally */
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Search card ── */
+.license-search-card {
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.license-search-card__header {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.license-search-card__header-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(200,169,110,0.18);
+  border: 1px solid rgba(200,169,110,0.35);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.license-search-card__header-icon svg {
+  width: 15px; height: 15px; stroke: var(--clr-accent); fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.license-search-card__header-title {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--clr-accent);
+}
+
+/* ── Search body ── */
+.license-search-card__body {
+  padding: 20px 24px;
+  display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;
+}
+
+.license-search-field {
+  display: flex; flex-direction: column; gap: 7px; flex: 1; min-width: 180px;
+}
+
+.license-search-field__label {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--clr-muted);
+}
+
+.license-search-field__input {
+  padding: 11px 14px;
+  border: 1px solid var(--clr-border); border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--clr-text);
+  background: #faf9f7; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  box-sizing: border-box; width: 100%;
+}
+
+.license-search-field__input:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(200,169,110,0.15);
+  background: #fff;
+}
+
+.license-search-field__input:read-only {
+  background: var(--clr-accent-light); color: #8a6d3b;
+  cursor: not-allowed; border-color: rgba(200,169,110,0.4);
+}
+
+/* ── Search button ── */
+.license-search-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 24px; height: 42px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  color: var(--clr-accent); border: none; border-radius: 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+  white-space: nowrap; flex-shrink: 0;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.license-search-btn:hover:not(:disabled)  { opacity: 0.85; transform: translateY(-1px); }
+.license-search-btn:active:not(:disabled) { transform: translateY(0); }
+.license-search-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.license-search-btn svg {
+  width: 15px; height: 15px; stroke: var(--clr-accent); fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* locked badge */
+.license-search-locked {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 20px;
+  background: var(--clr-accent-light); color: #8a6d3b;
+  font-size: 11px; font-weight: 500; align-self: flex-end; margin-bottom: 2px;
+}
+
+.license-search-locked svg {
+  width: 12px; height: 12px; stroke: #8a6d3b; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+@media (max-width: 520px) {
+  .license-search-card__body { flex-direction: column; align-items: stretch; }
+  .license-search-btn { width: 100%; justify-content: center; }
+}

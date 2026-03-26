@@ -1,51 +1,68 @@
-import React, { useContext,useEffect } from 'react'
-import "./CptPersonInformation.css"
-import { StoreContext } from '../../../context/storeContext';
+import React, { useEffect } from 'react';
+import './CptPersonInformation.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOnePersonAction, ResetPersonData } from '../../../Redux/Actions/peopleAction';
-const CptPersonInformation = ({id}) => {
-    const person=useSelector((state)=>state.Persons.Person);
-    const dispatch=useDispatch();
-    useEffect(()=>{
-        const fetchPerson=async()=>{  
-          dispatch(ResetPersonData());  
-          console.log("id person is",id);
-            
-    if(id){ 
 
-   dispatch(getOnePersonAction(id));
-    }
-   
-    };
-    fetchPerson();
-    },[id]);
-  return (
-    <div className="person-info">
-    <h1 className="lbl-person-info">Person Information</h1>
-    <br />
-    <div className="person-image">
-      <img
-        src={person.PersonID&&id ? person.ImagePath : 'placeholder.jpg'}
-        alt={`${person.PersonID&&id ? `${person.FirstName} ${person.LastName}` : '????'}`}
-      />
-    </div>
-    <div className="person-text">
-      <h2>{person.PersonID&&id ? `${person.FirstName} ${person.SecondName} ${person.ThirdName} ${person.LastName}` : '????'}</h2>
-      <p><strong>Person ID:</strong> {person.PersonID&&id ? person.PersonID : '????'}</p>
-      <p><strong>First Name:</strong> {person.PersonID&&id ? person.FirstName : '????'}</p>
-      <p><strong>Second Name:</strong> {person.PersonID&&id ? person.SecondName : '????'}</p>
-      <p><strong>Third Name:</strong> {person.PersonID&&id ? person.ThirdName : '????'}</p>
-      <p><strong>Last Name:</strong> {person.PersonID&&id ? person.LastName : '????'}</p>
-      <p><strong>National No:</strong> {person.PersonID&&id ? person.NationalNo : '????'}</p>
-      <p><strong>Date of Birth:</strong> {person.PersonID&&id ? person.DateOfBirth : '????'}</p>
-      <p><strong>Gender:</strong> {person.PersonID&&id ? person.GendorCaption : '????'}</p>
-      <p><strong>Address:</strong> {person.PersonID&&id ? person.Address : '????'}</p>
-      <p><strong>Phone:</strong> {person.PersonID&&id ? person.Phone : '????'}</p>
-      <p><strong>Email:</strong> {person.PersonID&&id ? person.Email : '????'}</p>
-      <p><strong>Nationality:</strong> {person.PersonID&&id ? person.CountryName : '????'}</p>
+const Field = ({ label, value }) => (
+  <div className="person-info__field">
+    <div className="person-info__field-key">{label}</div>
+    <div className={`person-info__field-val${!value ? ' person-info__field-val--empty' : ''}`}>
+      {value || '—'}
     </div>
   </div>
-  )
-}
+);
 
-export default CptPersonInformation
+const CptPersonInformation = ({ id }) => {
+  const person = useSelector((state) => state.Persons.Person);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(ResetPersonData());
+    if (id) dispatch(getOnePersonAction(id));
+  }, [id, dispatch]);
+
+  const loaded = person.PersonID && id;
+  const fullName = loaded
+    ? [person.FirstName, person.SecondName, person.ThirdName, person.LastName]
+        .filter(Boolean)
+        .join(' ')
+    : null;
+
+  return (
+    <div className="person-info">
+      {/* ── Header ── */}
+      <div className="person-info__header">
+        <div className="person-info__avatar-wrap">
+          <img
+            src={loaded ? person.ImagePath : ''}
+            alt={fullName || 'Person'}
+          />
+        </div>
+        <div className="person-info__headline">
+          <div className="person-info__label">Person Information</div>
+          <div className="person-info__name">{fullName || '— — — —'}</div>
+        </div>
+      </div>
+
+      {/* ── Fields ── */}
+      <div className="person-info__body">
+        <div className="person-info__grid">
+          <Field label="Person ID"    value={loaded ? person.PersonID   : null} />
+          <Field label="National No"  value={loaded ? person.NationalNo : null} />
+          <Field label="First Name"   value={loaded ? person.FirstName  : null} />
+          <Field label="Second Name"  value={loaded ? person.SecondName : null} />
+          <Field label="Third Name"   value={loaded ? person.ThirdName  : null} />
+          <Field label="Last Name"    value={loaded ? person.LastName   : null} />
+          <Field label="Date of Birth" value={loaded ? person.DateOfBirth    : null} />
+          <Field label="Gender"       value={loaded ? person.GendorCaption   : null} />
+          <Field label="Phone"        value={loaded ? person.Phone           : null} />
+          <Field label="Email"        value={loaded ? person.Email           : null} />
+          <Field label="Nationality"  value={loaded ? person.CountryName     : null} />
+          <Field label="Address"      value={loaded ? person.Address         : null} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CptPersonInformation;

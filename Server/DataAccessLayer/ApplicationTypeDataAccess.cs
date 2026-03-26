@@ -61,5 +61,43 @@ namespace Server.DataAccessLayer
                 }
             }
        
+          public static List<ApplicationTypeDTO> GetAllApplicationTypes()
+        {
+            
+                using SqlConnection connection = new (DataAccessSettings.ConnectionString);
+var ApplicationTypes=new List<ApplicationTypeDTO>();
+                string query = "SELECT * FROM ApplicationTypes";
+
+                using SqlCommand command = new (query, connection);
+
+
+
+                try
+                {
+                    connection.Open();
+                    using SqlDataReader reader = command.ExecuteReader();
+
+while (reader.Read())
+                {
+                    ApplicationTypeDTO appType=new(
+                        (int)reader["ApplicationTypeID"],
+                        (string)reader["ApplicationTypeTitle"],
+                        Convert.ToSingle(reader["ApplicationFees"])
+
+                    );
+                    ApplicationTypes.Add(appType);
+                }
+                    
+
+                   
+
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+                return ApplicationTypes;
+        }
     }
 }

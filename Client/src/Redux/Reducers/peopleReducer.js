@@ -43,7 +43,7 @@ const peopleReducer=(state=initialState,action)=>{
             return{
                 ...state,People:state.People.filter((person)=>person.PersonID!==action.payload)
             };  
-            case people.RESET_PERSON_DATA:
+        case people.RESET_PERSON_DATA:
                 {
                     return {
                         ...state,Person:action.payload

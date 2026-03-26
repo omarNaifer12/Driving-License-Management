@@ -221,9 +221,9 @@ namespace Server.DataAccessLayer
         {
             var licensesPersonList = new List<LicensesPersonDTO>();
             using SqlConnection connection = new(DataAccessSettings.ConnectionString);
-            string query = @"SELECT  l.LicenseID l.ApplicationID l.IssueDate l.ExpirationDate l.IsActive 
-                               c.ClassName FROM Licenses l INNER JOIN LicenseClasses ON l.LicenseClass=c.LicenseClassID
-                               INNER JOIN Drivers ON l.DiverID=Drivers.DriverID Where Drivers.PersonID=@PersonID";
+            string query = @"SELECT l.LicenseID, l.ApplicationID, l.IssueDate, l.ExpirationDate, l.IsActive,
+                               c.ClassName FROM Licenses l INNER JOIN LicenseClasses c ON l.LicenseClass=c.LicenseClassID
+                               INNER JOIN Drivers ON l.DriverID=Drivers.DriverID Where Drivers.PersonID=@PersonID";
             using SqlCommand command = new(query, connection);
             command.Parameters.AddWithValue("@PersonID", PersonID);
 

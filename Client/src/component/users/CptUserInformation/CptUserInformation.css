@@ -1,50 +1,148 @@
-/* Container for the entire component */
+/* ── CptUserInformation ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
 .user-info-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    margin: 40px auto;
-  }
-  
-  /* Styling for person information */
-  .cpt-person-information {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  /* Container for user details */
-  .user-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px 20px;
-    width: 100%;
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Individual user detail styling */
-  .user-detail {
-    padding: 10px;
-    background: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .user-detail strong {
-    color: #555;
-  }
-  
-  /* Media queries for responsiveness */
-  @media (max-width: 768px) {
-    .user-details {
-      grid-template-columns: 1fr;
-    }
-  }
-  
+  --clr-accent: #c8a96e;
+  --clr-accent-light: #f0e8d8;
+  --clr-border: #e8e2d9;
+  --clr-text: #1a1a1a;
+  --clr-muted: #7a7068;
+  --radius: 16px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeUp 0.45s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── User details card ── */
+.user-details {
+  background: #ffffff;
+  border-radius: var(--radius);
+  border: 1px solid var(--clr-border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.user-details__header {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-details__header-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(200,169,110,0.2);
+  border: 1px solid rgba(200,169,110,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-details__header-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--clr-accent);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.user-details__header-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--clr-accent);
+}
+
+/* ── Fields ── */
+.user-details__row {
+  display: flex;
+  align-items: center;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--clr-border);
+  transition: background 0.15s;
+  gap: 16px;
+}
+
+.user-details__row:last-child {
+  border-bottom: none;
+}
+
+.user-details__row:hover {
+  background: var(--clr-accent-light);
+}
+
+.user-details__key {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  width: 110px;
+  flex-shrink: 0;
+}
+
+.user-details__val {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--clr-text);
+  flex: 1;
+}
+
+.user-details__val--empty {
+  color: #c0b8af;
+  font-style: italic;
+}
+
+/* ── Status badge ── */
+.user-details__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.user-details__badge::before {
+  content: '';
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.user-details__badge--active {
+  background: #eaf6ef;
+  color: #2d7a50;
+}
+
+.user-details__badge--active::before {
+  background: #2d7a50;
+  box-shadow: 0 0 0 2px rgba(45,122,80,0.25);
+}
+
+.user-details__badge--inactive {
+  background: #fdf0ee;
+  color: #b84040;
+}
+
+.user-details__badge--inactive::before {
+  background: #b84040;
+}

@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios"
+import { BASE_URL } from '../utils/config';
 export const StoreContext=createContext(null);
 const StoreContextProvider=({children})=>{
   
@@ -31,7 +32,7 @@ const StoreContextProvider=({children})=>{
       })
 const getPersonById=async(id)=>{
         try{
-          const response = await axios.get(`http://localhost:3000/people/${id}`);
+          const response = await axios.get(`${BASE_URL}/people/${id}`);
           setPerson(response.data);
          
           return true;
@@ -42,7 +43,7 @@ const getPersonById=async(id)=>{
       };
       const getUserById=async(id)=>{
         try{
-          const response = await axios.get(`http://localhost:3000/users/${id}`);
+          const response = await axios.get(`${BASE_URL}/users/${id}`);
           console.log("responsedata ",response.data);
           setUser(response.data);
          
@@ -57,7 +58,7 @@ const getPersonById=async(id)=>{
       useEffect(() => {
         const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/users');
+            const response = await axios.get(BASE_URL+'/users');
             setUsers(response.data);
           } catch (error) {
             console.error('Error fetching users:', error);

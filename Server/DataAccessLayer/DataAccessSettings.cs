@@ -7,6 +7,6 @@ namespace Server.DataAccessLayer
 {
     public class DataAccessSettings
     {
-        public static readonly string ConnectionString="Server=.;Database=dvld;Integrated Security=True;";
+        public static readonly string ConnectionString="Server=localhost\\SQLEXPRESS;Database=DVLD;Trusted_Connection=True;";
     }
 }

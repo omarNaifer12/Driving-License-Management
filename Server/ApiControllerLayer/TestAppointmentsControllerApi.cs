@@ -68,6 +68,7 @@ namespace Server.ApiControllerLayer
         {
             try
             {
+                Console.WriteLine("reach to data before it enter the add ddddddddddd");
                 var newAppointment = new TestAppointmentsBusiness(testAppointmentsDto);
                 Console.WriteLine("reach to data addd appointment test");
 

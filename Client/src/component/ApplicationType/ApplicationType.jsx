@@ -1,10 +1,11 @@
 import React,{useState,useEffect} from 'react'
 import "./ApplicationType.css"
 import axios from "axios"
+import { BASE_URL } from '../../utils/config'
 const ApplicationType = () => {
     const [applicationTypes, setApplicationTypes] = useState([]);
   const [editingApplication, setEditingApplication] = useState(null);
-  const [formData, setFormData] = useState({ id: '', ApplicationTypeTitle: '', ApplicationFees: '' });
+  const [formData, setFormData] = useState({ ApplicationTypeID: '', ApplicationTypeTitle: '', ApplicationFees: '' });
 
   useEffect(() => {
     fetchApplicationTypes();
@@ -12,7 +13,11 @@ const ApplicationType = () => {
 
   const fetchApplicationTypes = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/ApplicationType');
+      console.log("before fetch app type");
+      
+      const response = await axios.get(BASE_URL+'/api/ApplicationType/All');
+console.log("response of application type list",response.data);
+
       setApplicationTypes(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -20,13 +25,13 @@ const ApplicationType = () => {
   };
 
   const handleEditClick = (application) => {
-    setEditingApplication(application.id);
+    setEditingApplication(application.ApplicationTypeID);
     setFormData(application);
   };
 
   const handleCloseClick = () => {
     setEditingApplication(null);
-    setFormData({ id: '', ApplicationTypeTitle: '', ApplicationFees: '' });
+    setFormData({ ApplicationTypeID: '', ApplicationTypeTitle: '', ApplicationFees: '' });
   };
 
   const handleInputChange = (e) => {
@@ -37,7 +42,7 @@ const ApplicationType = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3000/ApplicationType/${formData.id}`, formData);
+      await axios.put(`${BASE_URL}/ApplicationType/${formData.ApplicationTypeID}`, formData);
       fetchApplicationTypes();
       handleCloseClick();
     } catch (error) {
@@ -59,8 +64,8 @@ const ApplicationType = () => {
         </thead>
         <tbody>
           {applicationTypes.map((application) => (
-            <tr key={application.id}>
-              <td>{application.id}</td>
+            <tr key={application.ApplicationTypeID}>
+              <td>{application.ApplicationTypeID}</td>
               <td>{application.ApplicationTypeTitle}</td>
               <td>${application.ApplicationFees}</td>
               <td>

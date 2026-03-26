@@ -49,29 +49,34 @@ export const GetOneLicense=(id)=>async(dispatch)=>{
             type:LicenseAction.RESET_LICENSE_DATA,
             payload:{
                 LicenseID: 0,
-                ApplicationID: 0,
-                DriverID: 0,
-                LicenseClass: 0,
-                IssueDate: "",
-                ExpirationDate: "",
-                Notes: "",
-                PaidFees: 250,
-                IsActive: true,
-                IssueReason: 1,
-                CreatedByUserID: 0,
-                PersonID:0,
-                FullName: "",
-                NationalNo: "",
-                DateOfBirth: "",
-                Gendor: 0,
-                ClassName: "",
-                ImagePath: ""
+    ApplicationID: 0,
+    DriverID: 0,
+    LicenseClass: 0,
+    IssueDate: "",
+    ExpirationDate: "",
+    Notes: "",
+    PaidFees: 250,
+    IsActive: true,
+    IssueReason: 1,
+    CreatedByUserID: 0,
+    PersonID:0,
+    FullName: "",
+    NationalNo: "",
+    DateOfBirth: "",
+    Gendor: 0,
+    ClassName: "",
+    ImagePath: "",
+    DefaultValidityLength:0,
+    ClassFees:0,
+    IsDetained:false
               }
         })
     }
 export const GetOneInetnationalLicense=(id)=>async(dispatch)=>{
     try{
         const response=await getDataAPI(`InternationalLicenses/one/${id}`);
+        console.log("response of GetOneInetnationalLicense",response.data);
+        
         const { INLbusinessDTO, OtherDetails } = response.data;
         const combinedData = { ...INLbusinessDTO, ...OtherDetails };
         console.log("combine data",combinedData);        

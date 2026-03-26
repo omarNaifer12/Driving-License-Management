@@ -1,75 +1,168 @@
-/* Container styling */
+/* ── AllDrivers ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
 .all-drivers-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+  --clr-accent:       #c8a96e;
+  --clr-accent-light: #f0e8d8;
+  --clr-border:       #e8e2d9;
+  --clr-text:         #1a1a1a;
+  --clr-muted:        #7a7068;
+  --clr-card:         #ffffff;
+  --clr-bg:           #f7f5f2;
+  --radius:           16px;
+  --shadow:           0 4px 24px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+
+  font-family: 'DM Sans', sans-serif;
+  padding: 36px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Heading style */
-.heading {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #333;
+/* ── Page header ── */
+.all-drivers-container .heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0 0 6px;
 }
 
-/* Styling for the drivers list */
+.all-drivers-container .heading-sub {
+  font-size: 13px;
+  color: var(--clr-muted);
+  margin: 0 0 28px;
+  letter-spacing: 0.03em;
+}
+
+/* ── Grid ── */
 .drivers-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 
-/* Styling for each driver card */
+/* ── Driver card ── */
 .driver-card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+  background: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: fadeUp 0.4s ease both;
 }
 
 .driver-card:hover {
-    transform: translateY(-5px);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.1);
 }
 
-/* Styling for driver name */
-.driver-name {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #007bff;
-    text-transform: uppercase;
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Styling for driver details */
-.driver-details {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 8px;
+/* staggered entrance */
+.driver-card:nth-child(1)  { animation-delay: 0.04s; }
+.driver-card:nth-child(2)  { animation-delay: 0.08s; }
+.driver-card:nth-child(3)  { animation-delay: 0.12s; }
+.driver-card:nth-child(4)  { animation-delay: 0.16s; }
+.driver-card:nth-child(5)  { animation-delay: 0.20s; }
+.driver-card:nth-child(6)  { animation-delay: 0.24s; }
+.driver-card:nth-child(7)  { animation-delay: 0.28s; }
+.driver-card:nth-child(8)  { animation-delay: 0.32s; }
+
+/* card header strip */
+.driver-card__header {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2620 100%);
+  padding: 16px 20px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.driver-details strong {
-    color: #333;
+.driver-card__avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(200,169,110,0.18);
+  border: 2px solid rgba(200,169,110,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--clr-accent);
 }
 
-/* Media queries for responsive design */
-@media (max-width: 768px) {
-    .heading {
-        font-size: 2rem;
-    }
+.driver-card__name {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-    .driver-card {
-        padding: 15px;
-    }
+/* card body */
+.driver-card__body {
+  padding: 16px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
 
-    .driver-name {
-        font-size: 1.3rem;
-    }
+.driver-card__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--clr-border);
+}
 
-    .driver-details {
-        font-size: 0.9rem;
-    }
+.driver-card__row:last-child { border-bottom: none; }
+
+.driver-card__key {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+}
+
+.driver-card__val {
+  font-size: 13px;
+  color: var(--clr-text);
+  font-weight: 400;
+}
+
+/* license badge */
+.driver-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--clr-accent-light);
+  color: #8a6d3b;
+}
+
+.driver-card__badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--clr-accent);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .all-drivers-container { padding: 24px 16px; }
+  .all-drivers-container .heading { font-size: 22px; }
 }

@@ -1,68 +1,107 @@
-/* Navbar.css */
-.navbar {
-    background-color: #333;
-    padding: 10px;
-  }
-  
-  .navbar-menu {
-    list-style: none;
-    padding: 0;
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+*,
+*::before,
+*::after {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.nav {
     display: flex;
-  }
-  
-  .navbar-item {
-    position: relative;
-    padding: 10px;
-    color: white;
+    justify-content: space-around;
+    align-items: center;
+    background-color: green;
+    color: #fff;
+    padding: 1rem 2rem;
+}
+
+.logo {
+    font-weight: bold;
     cursor: pointer;
-  }
-  
-  .navbar-item > a {
-    color: white;
+    letter-spacing: 1px;
+    font-size: 1.25rem;
+}
+
+ul, li, a{
+    list-style: none;
     text-decoration: none;
-  }
-  
-  .navbar-item:hover > .dropdown-menu {
-    display: block;
-  }
-  
-  .dropdown-menu {
+    color: #fff;
+}
+span{
+  color: #fff;
+}
+.navbar-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.home, .html, .js {
+    padding: 1rem 0;
+    position: relative;
+    cursor: pointer;
+}
+
+.html-chevron, .js-chevron {
+    margin-left: 5px;
+    transition: transform 0.4s;
+}
+
+.html:hover .html-chevron,
+.js:hover .js-chevron {
+    transform: rotate(-180deg);
+}
+
+/* Main dropdown menu */
+.html-sub-menu,
+.js-sub-menu {
     display: none;
+    flex-direction: column;
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #444;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    min-width: 200px; /* Consistent minimum width */
-  }
-  
-  .dropdown-menu li {
-    position: relative;
-  }
-  
-  .dropdown-menu li a {
-    color: white;
-    padding: 10px;
-    display: block;
-    text-decoration: none;
-    min-width: 200px; /* Ensuring links also have consistent width */
-  }
-  
-  .dropdown-menu li:hover > .dropdown-menu {
-    display: block;
+    background-color: #064e3b;
+    min-width: 220px;
+    z-index: 100;
+}
+
+.html:hover .html-sub-menu,
+.js:hover .js-sub-menu {
+    display: flex;
+}
+
+/* Nested submenu */
+.html-js-sub-menu {
+    display: none;
+    position: absolute;
     top: 0;
     left: 100%;
-    margin-left: 2px; /* Small margin to avoid overlap */
-  }
-  
-  .dropdown-menu li:hover > a {
-    background-color: #555;
-  }
-  
-  .dropdown-menu li a:hover {
-    background-color: #555;
-  }
-  
+    flex-direction: column;
+    background-color: #065f46;
+    min-width: 220px;
+}
+
+.html-sub-menu li:hover > .html-js-sub-menu {
+    display: flex;
+}
+.lin:hover{
+  position: relative;
+}
+/* Hover background for items */
+.html-sub-menu li:hover,
+.js-sub-menu li:hover {
+    background-color: #065f46;
+}
+
+/* Chevron for nested menus */
+.html-js-link i {
+    margin-left: 5px;
+}
+.html-sub-menu li,.js-sub-menu li{
+  padding: 10px;
+}

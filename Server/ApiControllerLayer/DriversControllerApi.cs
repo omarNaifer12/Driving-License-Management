@@ -24,18 +24,15 @@ namespace Server.ApiControllerLayer
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public ActionResult<List<dtoViewDriver>> GetAllDriversController()
     {
-         string cacheKey = "AllDrivers";
+         
         try
         {
-            if(!_cache.TryGetValue(cacheKey, out List<dtoViewDriver>? drivers)){
-             drivers = DriverBusiness.GetDriversList();
+            
+            var drivers = DriverBusiness.GetDriversList();
 
             if (drivers == null || drivers.Count == 0)
             {
                 return NotFound("No drivers found.");
-            }
-            var casheEntryOption=new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(3));
-            _cache.Set(cacheKey, drivers,casheEntryOption);
             }
             return Ok(drivers);
         }

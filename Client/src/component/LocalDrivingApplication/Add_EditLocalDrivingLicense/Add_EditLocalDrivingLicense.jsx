@@ -7,191 +7,191 @@ import { getDataAPI, postDataAPI, putDataAPI } from '../../../utils/fetchData';
 import './Add_EditLocalDrivingLicense.css'
 import { useParams } from 'react-router-dom';
 const Add_EditLocalDrivingLicense = () =>{
-    const {id}=useParams();
-    const dispatch=useDispatch();
-    const localDrivingLicenseFromRedux=useSelector((state)=>state.LocalDrivingLicenses.LocalDrivingLicense);
-    const user=useSelector((state)=>state.Users.user);
-    const personFromRedux=useSelector((state)=>state.Persons.Person);
-    const [dataApplicationType,setDataApplicationType]=useState({});
-  const [localDrivingLicense,setLocalDrivingLicense]=useState({
-    ApplicationID:0,
-    ApplicantPersonID: 0,
-    ApplicationDate: new Date().toISOString().split("T")[0],
-    ApplicationTypeID: 1,
-    ApplicationStatus: 1,
-    LastStatusDate: new Date().toISOString().split("T")[0],
-    PaidFees: 0,
-    CreatedByUserID: 0,
-    CreatedByUserName: '',
-    LicenseClassID: 1,
-    localDrivingLicenseID: 0
-  });
-  const [LicenseClasses,setLicenseClasses]=useState([]);
-  const fetchLicenseClasses=async()=>{
-    try{
-        const response=await getDataAPI("LicenseClasses/All");
-        setLicenseClasses(response.data);
+//     const {id}=useParams();
+//     const dispatch=useDispatch();
+//     const localDrivingLicenseFromRedux=useSelector((state)=>state.LocalDrivingLicenses.LocalDrivingLicense);
+//     const user=useSelector((state)=>state.Users.user);
+//     const personFromRedux=useSelector((state)=>state.Persons.Person);
+//     const [dataApplicationType,setDataApplicationType]=useState({});
+//   const [localDrivingLicense,setLocalDrivingLicense]=useState({
+//     ApplicationID:0,
+//     ApplicantPersonID: 0,
+//     ApplicationDate: new Date().toISOString().split("T")[0],
+//     ApplicationTypeID: 1,
+//     ApplicationStatus: 1,
+//     LastStatusDate: new Date().toISOString().split("T")[0],
+//     PaidFees: 0,
+//     CreatedByUserID: 0,
+//     CreatedByUserName: '',
+//     LicenseClassID: 1,
+//     localDrivingLicenseID: 0
+//   });
+//   const [LicenseClasses,setLicenseClasses]=useState([]);
+//   const fetchLicenseClasses=async()=>{
+//     try{
+//         const response=await getDataAPI("LicenseClasses/All");
+//         setLicenseClasses(response.data);
 
-    }
-    catch(error){
-        console.log("error",error);
+//     }
+//     catch(error){
+//         console.log("error",error);
         
 
-    }
-  }
-  const CheckPersonHaveSameLocalDrivingLicense=async(ApplicantPersonID,LicenseClassID)=>{
-    try{
-      const response =await getDataAPI(`LocalDrivingLicenses/checkPersonHaveSameLDL?ApplicationTypeID=${1}&ApplicantPersonID=${ApplicantPersonID}&LicenseClassID=${LicenseClassID}`);
-      if(response.data.success){
-        return false;
-      }
-      else {
-        return true;
-      }
-    }
-    catch(error){
-      console.log("errro ",error);
-    }
-  }
-  const CheckPersonHaveLicenseForLicenseClass=async(ApplicantPersonID,LicenseClassID)=>{
-    try{
-    const response =await getDataAPI(`Licenses/IsHaveLicenseForLicenseClass?PersonID=${ApplicantPersonID}&LicenseClassID=${LicenseClassID}`);
-    console.log("response data of check person have license for class",response.data,"status",response.status);
-    if(response.status==200){
-      return true;
-     }
+//     }
+//   }
+//   const CheckPersonHaveSameLocalDrivingLicense=async(ApplicantPersonID,LicenseClassID)=>{
+//     try{
+//       const response =await getDataAPI(`LocalDrivingLicenses/checkPersonHaveSameLDL?ApplicationTypeID=${1}&ApplicantPersonID=${ApplicantPersonID}&LicenseClassID=${LicenseClassID}`);
+//       if(response.data.success){
+//         return false;
+//       }
+//       else {
+//         return true;
+//       }
+//     }
+//     catch(error){
+//       console.log("errro ",error);
+//     }
+//   }
+//   const CheckPersonHaveLicenseForLicenseClass=async(ApplicantPersonID,LicenseClassID)=>{
+//     try{
+//     const response =await getDataAPI(`Licenses/IsHaveLicenseForLicenseClass?PersonID=${ApplicantPersonID}&LicenseClassID=${LicenseClassID}`);
+//     console.log("response data of check person have license for class",response.data,"status",response.status);
+//     if(response.status==200){
+//       return true;
+//      }
 
-    }
-    catch(error){
-      if (error.response && error.response.status === 404) {
+//     }
+//     catch(error){
+//       if (error.response && error.response.status === 404) {
        
-        console.log("he is not have license for this class ");
-        return false;
-      } else {
-        console.log("Error occurred", error);
-        return false;  
-      }
+//         console.log("he is not have license for this class ");
+//         return false;
+//       } else {
+//         console.log("Error occurred", error);
+//         return false;  
+//       }
     
-    }
+//     }
 
-  }
-  const Save=async(e)=>{
-    e.preventDefault();
+//   }
+//   const Save=async(e)=>{
+//     e.preventDefault();
 
-  // Format the time as HH:MM:SS.sss
-  const time =new Date().toISOString();
+//   // Format the time as HH:MM:SS.sss
+//   const time =new Date().toISOString();
 
-    const applicationDto={
+//     const applicationDto={
            
-              ApplicationID: localDrivingLicense.ApplicationID,
-              ApplicantPersonID: localDrivingLicense.ApplicantPersonID?localDrivingLicense.ApplicantPersonID:personFromRedux.PersonID,
-              ApplicationDate: localDrivingLicense.ApplicationDate,
-              ApplicationTypeID: localDrivingLicense.ApplicationTypeID,
-              ApplicationStatus: localDrivingLicense.ApplicationStatus,
-              LastStatusDate: time,
-              PaidFees: localDrivingLicense.PaidFees,
-              CreatedByUserID: localDrivingLicense.CreatedByUserID?localDrivingLicense.CreatedByUserID:user.UserID,
-    }
+//               ApplicationID: localDrivingLicense.ApplicationID,
+//               ApplicantPersonID: localDrivingLicense.ApplicantPersonID?localDrivingLicense.ApplicantPersonID:personFromRedux.PersonID,
+//               ApplicationDate: localDrivingLicense.ApplicationDate,
+//               ApplicationTypeID: localDrivingLicense.ApplicationTypeID,
+//               ApplicationStatus: localDrivingLicense.ApplicationStatus,
+//               LastStatusDate: time,
+//               PaidFees: localDrivingLicense.PaidFees,
+//               CreatedByUserID: localDrivingLicense.CreatedByUserID?localDrivingLicense.CreatedByUserID:user.UserID,
+//     }
     
     
-    try {
+//     try {
       
-      let response;
-      if(localDrivingLicense.localDrivingLicenseID===0&&!id){
-        const res=await CheckPersonHaveLicenseForLicenseClass(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID);
-        console.log("respose person have licens for this class",res);
+//       let response;
+//       if(localDrivingLicense.localDrivingLicenseID===0&&!id){
+//         const res=await CheckPersonHaveLicenseForLicenseClass(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID);
+//         console.log("respose person have licens for this class",res);
         
-        if(res){
-          alert("this person is already have an license issued");
-          return;
-        }
-        if(await CheckPersonHaveSameLocalDrivingLicense(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID)){
-          alert("this person already have active local Driving License");
-          return;
-        }
+//         if(res){
+//           alert("this person is already have an license issued");
+//           return;
+//         }
+//         if(await CheckPersonHaveSameLocalDrivingLicense(applicationDto.ApplicantPersonID,localDrivingLicense.LicenseClassID)){
+//           alert("this person already have active local Driving License");
+//           return;
+//         }
         
-        response=await postDataAPI(`LocalDrivingLicenses/Add?licenseClassID=${localDrivingLicense.LicenseClassID}`,applicationDto);
-        console.log("addedd success",response.data);
-        setLocalDrivingLicense({...localDrivingLicense,localDrivingLicenseID:response.data.localDrivingLicenseData
-           .LocalDrivingLicenseApplicationID,ApplicationID:response.data.applicationDto.ApplicationID
-        });
-        dispatch(GetLocalDrivingLicenseByIDAction(response.data.localDrivingLicenseData
-            .LocalDrivingLicenseApplicationID));
-        alert("data added successfuly");
-      }
-      else if(localDrivingLicense.localDrivingLicenseID){
-        response=await putDataAPI(`LocalDrivingLicenses/Update/${localDrivingLicense.localDrivingLicenseID}?licenseClassID=${localDrivingLicense.LicenseClassID}`,applicationDto);
-        alert("data updated successfuly");
-    }
-    } catch (error) {
-      console.log("Error  application", error);
-    }
-  }
-  useEffect(()=>{
- const loadData=async()=>{
-    dispatch(ResetLocalDrivingLicenseDataAction());
-    if(id){
- dispatch(GetLocalDrivingLicenseByIDAction(id));
-    }
-    else if(!id){
-        const userID=parseInt(localStorage.getItem("UserID"),10);
-        dispatch(getOneUserAction(userID));
-        console.log("userid from add is ",userID);    
-        const ApplicationsType= await GetApplicationTypeByID(1);
-        console.log("applicationtype in add is ",ApplicationsType);
+//         response=await postDataAPI(`LocalDrivingLicenses/Add?licenseClassID=${localDrivingLicense.LicenseClassID}`,applicationDto);
+//         console.log("addedd success",response.data);
+//         setLocalDrivingLicense({...localDrivingLicense,localDrivingLicenseID:response.data.localDrivingLicenseData
+//            .LocalDrivingLicenseApplicationID,ApplicationID:response.data.applicationDto.ApplicationID
+//         });
+//         dispatch(GetLocalDrivingLicenseByIDAction(response.data.localDrivingLicenseData
+//             .LocalDrivingLicenseApplicationID));
+//         alert("data added successfuly");
+//       }
+//       else if(localDrivingLicense.localDrivingLicenseID){
+//         response=await putDataAPI(`LocalDrivingLicenses/Update/${localDrivingLicense.localDrivingLicenseID}?licenseClassID=${localDrivingLicense.LicenseClassID}`,applicationDto);
+//         alert("data updated successfuly");
+//     }
+//     } catch (error) {
+//       console.log("Error  application", error);
+//     }
+//   }
+//   useEffect(()=>{
+//  const loadData=async()=>{
+//     dispatch(ResetLocalDrivingLicenseDataAction());
+//     if(id){
+//  dispatch(GetLocalDrivingLicenseByIDAction(id));
+//     }
+//     else if(!id){
+//         const userID=parseInt(localStorage.getItem("UserID"),10);
+//         dispatch(getOneUserAction(userID));
+//         console.log("userid from add is ",userID);    
+//         const ApplicationsType= await GetApplicationTypeByID(1);
+//         console.log("applicationtype in add is ",ApplicationsType);
         
-        setLocalDrivingLicense({...localDrivingLicense,PaidFees:ApplicationsType.ApplicationFees});
-    }
-    }
-    loadData();
-    fetchLicenseClasses();
-  },[id]);
-  useEffect(()=>{
-    console.log("from useefect localdriving redux one ",localDrivingLicenseFromRedux);
-  if(localDrivingLicenseFromRedux){
-            setLocalDrivingLicense(localDrivingLicenseFromRedux);
-            console.log("from useefect localdriving redux",localDrivingLicenseFromRedux);
+//         setLocalDrivingLicense({...localDrivingLicense,PaidFees:ApplicationsType.ApplicationFees});
+//     }
+//     }
+//     loadData();
+//     fetchLicenseClasses();
+//   },[id]);
+//   useEffect(()=>{
+//     console.log("from useefect localdriving redux one ",localDrivingLicenseFromRedux);
+//   if(localDrivingLicenseFromRedux){
+//             setLocalDrivingLicense(localDrivingLicenseFromRedux);
+//             console.log("from useefect localdriving redux",localDrivingLicenseFromRedux);
             
-    }
+//     }
 
-  },[id,user,localDrivingLicenseFromRedux,personFromRedux])
-  return (
-    <div className="application-details">
-      <div className="form-row">
-        <h1>{localDrivingLicense.localDrivingLicenseID?"Update ":"Add"}</h1>
-        <label>D.L. Application ID:</label>
-        <span>{localDrivingLicense.localDrivingLicenseID?localDrivingLicense.localDrivingLicenseID:"????"}</span>
-      </div>
-      <div className="form-row">
-        <label>Application Date:</label>
-        <span>{localDrivingLicense.ApplicationDate}</span>
-      </div>
-      <div className="form-row">
-        <label>License Class:</label>
-        <select
-          value={localDrivingLicense.LicenseClassID}
-          onChange={(e) => setLocalDrivingLicense({...localDrivingLicense,LicenseClassID:e.target.value})} // Handle change if necessary
-        >
-          {LicenseClasses.map((cls) => (
-            <option key={cls.LicenseClassID} value={cls.LicenseClassID}>
-              {cls.ClassName}
-            </option>
-          ))}
-        </select>
-      </div>
+//   },[id,user,localDrivingLicenseFromRedux,personFromRedux])
+//   return (
+//     <div className="application-details">
+//       <div className="form-row">
+//         <h1>{localDrivingLicense.localDrivingLicenseID?"Update ":"Add"}</h1>
+//         <label>D.L. Application ID:</label>
+//         <span>{localDrivingLicense.localDrivingLicenseID?localDrivingLicense.localDrivingLicenseID:"????"}</span>
+//       </div>
+//       <div className="form-row">
+//         <label>Application Date:</label>
+//         <span>{localDrivingLicense.ApplicationDate}</span>
+//       </div>
+//       <div className="form-row">
+//         <label>License Class:</label>
+//         <select
+//           value={localDrivingLicense.LicenseClassID}
+//           onChange={(e) => setLocalDrivingLicense({...localDrivingLicense,LicenseClassID:e.target.value})} // Handle change if necessary
+//         >
+//           {LicenseClasses.map((cls) => (
+//             <option key={cls.LicenseClassID} value={cls.LicenseClassID}>
+//               {cls.ClassName}
+//             </option>
+//           ))}
+//         </select>
+//       </div>
 
-      <div className="form-row">
-        <label>Application Fees:</label>
-        <span>{localDrivingLicense.PaidFees}$</span>
-      </div>
+//       <div className="form-row">
+//         <label>Application Fees:</label>
+//         <span>{localDrivingLicense.PaidFees}$</span>
+//       </div>
 
-      <div className="form-row">
-        <label >Created By: </label>
-        <span>{user.UserID?user.UserName:localDrivingLicense.CreatedByUserName}</span>
-      </div>
-      <button  onClick={(e) => Save(e)}>save</button>
-    </div>
-  );
+//       <div className="form-row">
+//         <label >Created By: </label>
+//         <span>{user.UserID?user.UserName:localDrivingLicense.CreatedByUserName}</span>
+//       </div>
+//       <button  onClick={(e) => Save(e)}>save</button>
+//     </div>
+//   );
 }
 
 export default Add_EditLocalDrivingLicense

@@ -97,21 +97,21 @@ namespace Server.ApiControllerLayer
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the international license.");
             }
         }
-         // GET: api/InternationalLicense/active/{driverID}
+        
         [HttpGet("active/{driverID:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<int> CheckActiveInternationalLicenseIDByDriverID(int driverID)
+        public ActionResult<bool> CheckActiveInternationalLicenseIDByDriverID(int driverID)
         {
             try
             {
+                Console.WriteLine("reach server api CheckActiveInternationalLicenseIDByDriverID");
                 int licenseID = InterNationalLicenseBusiness.GetActiveInternationalLicenseIDByDriverID(driverID);
-                if (licenseID == -1)  
-                {
-                    return NotFound($"No active international license found for Driver ID {driverID}.");
-                }
-                return Ok(licenseID);
+                if (licenseID == -1) {
+                   return Ok(false);  
+             }
+                 return Ok(true);
             }
             catch (Exception ex)
             {
@@ -128,7 +128,12 @@ namespace Server.ApiControllerLayer
         {
             try
             {
+                Console.WriteLine("international license get all");
+                Console.WriteLine(personID);
+
                 var licenses = InterNationalLicenseBusiness.GetAllInterNationalLicensesOfPerson(personID);
+                Console.WriteLine(licenses.Count);
+                
                 if (licenses == null || licenses.Count == 0)
                 {
                     return NotFound($"No international licenses found for Person ID {personID}.");
